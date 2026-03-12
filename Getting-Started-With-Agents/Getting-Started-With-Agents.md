@@ -1,17 +1,22 @@
 # Getting Started with UiPath Agents
 
-In this workshop you will:  
+In this workshop, you will build your first coded agent on UiPath.  
 
-1. Create an AI agent
-2. Run it locally
-3. Evaluate its performance
-4. Improve it using evaluation feedback
+1. Create an AI agent in UiPath Studio Cloud
+2. Clone the Agent and run it locally in your IDE
+3. Update the Agent to use an API tool
+4. Evaluate its performance
+5. Improve it using evaluation feedback
 
-By the end, you will have built a working AI-powered automation agent.  
+By the end, you will have built a working AI-powered automation agent.
 
 * * *
+This example builds an agent that validates addresses, but you can build your agent to do almost anything. If you are looking for ideas, you can find [ideas at the bottom of this lab.](#need-ideas-try-one-of-these-hackathon-projects)
 
-# Step 1 — Open UiPath Studio Cloud
+* * *
+# Building a Coded Agent in UiPath
+
+## Step 1 — Open UiPath Studio Cloud
 Navigate to your UiPath workspace: [https://staging.uipath.com/uipathlabsworkshop/studio_/projects](https://staging.uipath.com/uipathlabsworkshop/studio_/projects)  
 You should see your **Cloud Workspace with existing projects**.  
 Click:  
@@ -22,9 +27,9 @@ Create New
 
 ![step-01.png](images/step-01.png)
 
-* * *
 
-# Step 2 — Choose What to Build
+
+## Step 2 — Choose What to Build
 When creating a new solution you will see multiple options:  
 
 - Agentic Process
@@ -42,9 +47,8 @@ Agent
 
 ![step-02.png](images/step-02.png)
 
-* * *
 
-# Step 3 — Generate an Agent with Autopilot
+## Step 3 — Generate an Agent with Autopilot
 Autopilot can generate an agent from a simple description.  
 Example prompt:  
 
@@ -100,33 +104,33 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
 
    Initialize the Python environment by opening a terminal (top menu):
 
-   ```
-   uv init . --python 3.11
-   uv venv
-   uv add uipath
+   ```console
+   $ uv init . --python 3.11
+   $ uv venv
+   $ uv add uipath
    ```
 
    You will see various outputs after each, but should not see error messages.
 
 3. Validate the SDK has been installed by checking the version number:
 
-   ```
-   uipath --version
+   ```console
+   $ uipath --version
    ```
 
    The response will be: “uipath-ts-cli version 1.0.0-dev-actionApp.1”
 
 4. Authenticate to the UiPath Staging environment. This will open up a web browser to authenticate you:
 
-   ```
-   uipath auth --staging --force
+   ```console
+   $ uipath auth --staging --force
    ```
 
    ![step-06a.png](images/step-06a.png)
 
 5. Add your UiPath project information to your `.env` file:
 
-   ```
+   ```yml
    UIPATH_PROJECT_ID=abcdef12-3456-7890-abcd-ef1234567890
    ```
 
@@ -136,23 +140,21 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
 
 6. Pull the project:
 
-   ```
-   uipath pull
+   ```console
+   $ uipath pull
    ```
 
    ![step-06c.png](images/step-06c.png)
 
-* * *
 
-# Step 7a — Explore the UiPath Project
+
+## Step 7a — Explore the UiPath Project
 Project structure includes the following files. Note that these files may be empty, but we will populate them in Step 8.  
 
-```
-AGENTS.md
-main.py
-evaluation files
-input.json
-```
+* AGENTS.md
+* main.py
+* evaluation files
+* input.json
 
 ![step-07.png](images/step-07.png)
 
@@ -160,34 +162,35 @@ input.json
 The `AGENTS.md` file describes available CLI commands available from the Python SDK. We will be running these in the following steps.  
 Examples:  
 
-```
-uipath init
-uipath run
-uipath eval
+```console
+$ uipath init
+$ uipath run
+$ uipath eval
 ```
 
 * * *
 
-# Step 8 — Run the Agent
+## Step 8 — Run the Agent
 Run the agent locally using the CLI.
 
 1. Create an `input.json` file to store the address that you want to pass as an input parameter to the agent:
 
-   ```
-   { "address": "1600 Pennsylvania Ave NW, Washington DC 20500"}
+   ```json
+   {
+      "address": "1600 Pennsylvania Ave NW, Washington DC 20500"
+   }
    ```
 
 2. Run the agent locally using the following command, which will use address in your `input.json` file and run the agent:
 
-   ```
-   uv run uipath run agent --file input.json
+   ```console
+   $ uv run uipath run agent --file input.json
    ```
 
 ![step-08.png](images/step-08.png)
 
-* * *
 
-# Step 9 — Review the Agent Output
+## Step 9 — Review the Agent Output
 The terminal will display the parsed address components.  
 You will see:  
 
@@ -199,9 +202,8 @@ You will see:
 
 ![step-09.png](images/step-09.png)
 
-* * *
 
-# Step 10 — External API Validation
+## Step 10 — External API Validation
 Kevin’s example adds a **USPS validation API**. To do this, you'll need to do the following:  
 
 1. Register for a USPS account at [https://cop.usps.com/](https://cop.usps.com/) - and create an app on the site
@@ -211,7 +213,7 @@ Kevin’s example adds a **USPS validation API**. To do this, you'll need to do 
 
 To add this capability, you can use your AI Coding Agent of choice in VS Code or Cursor, but you will need to update the .env file yourself as they can't access that file.  
 
-```
+```yaml
 USPS_CLIENT_ID=your_client_id
 USPS_CLIENT_SECRET=your_client_secret
 ```
@@ -226,7 +228,7 @@ Let's update this coded agent to use the addressesv3 API from USPS to validate t
 
 Once you've updated your agent to use the USPS service, you can test it out using the same run command you used in Step 8.  
 
-```
+```console
 uv run uipath run agent --file input.json
 ```
 
@@ -242,9 +244,8 @@ As the agent is running, you should see in the terminal the calls to the USPS se
 
 ![step-10b.png](images/step-10b.png)
 
-* * *
 
-# Step 11 — Run Evaluation Tests
+## Step 11 — Run Evaluation Tests
 Run the evaluation suite.  
   
 Before we can run evals, `uipath.json` needs to be populated with entry points.  
@@ -252,7 +253,6 @@ Before we can run evals, `uipath.json` needs to be populated with entry points.
 Command:  
 
 ```
-uipath eval
 uipath eval agent evaluations/eval-sets/evaluation-set-default.json --output-file eval-results.json
 ```
 
@@ -265,9 +265,8 @@ Evaluation tests may include:
 
 ![step-11.png](images/step-11.png)
 
-* * *
 
-# Step 12 — Review Evaluation Results
+## Step 12 — Review Evaluation Results
 Open **Evaluation Sets** in UiPath Studio.  
 You will see evaluation scores such as:  
 
@@ -276,9 +275,8 @@ You will see evaluation scores such as:
 
 ![step-12.png](images/step-12.png)
 
-* * *
 
-# Step 13 — Inspect Evaluation Traces
+## Step 13 — Inspect Evaluation Traces
 Click an evaluation to see the detailed trace.  
 This shows:  
 
@@ -288,9 +286,8 @@ This shows:
 
 ![step-13.png](images/step-13.png)
 
-* * *
 
-# Step 14 — Iterate and Improve the Agent
+## Step 14 — Iterate and Improve the Agent
 Edit the logic inside:  
 
 ```
@@ -305,9 +302,8 @@ Example improvements:
 
 ![step-14.png](images/step-14.png)
 
-* * *
 
-# Step 15 — Rerun the Agent
+## Step 15 — Rerun the Agent
 After making changes, rerun:  
 
 ```
@@ -317,23 +313,20 @@ uipath eval
 
 ![step-15.png](images/step-15.png)
 
-* * *
 
-# Step 16 — Push Updates
+## Step 16 — Push Updates
 If you're using version control, commit and push updates.
 
 ![step-16.png](images/step-16.png)
 
-* * *
 
-# Step 17 — Final Evaluation Run
+## Step 17 — Final Evaluation Run
 Run the evaluation again to measure improvements.
 
 ![step-17.png](images/step-17.png)
 
-* * *
 
-# Step 18 — Confirm Successful Results
+## Step 18 — Confirm Successful Results
 You should see improved evaluation scores across tests.
 
 ![step-18.png](images/step-18.png)
