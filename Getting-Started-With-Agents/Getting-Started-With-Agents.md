@@ -329,9 +329,6 @@ $ uipath eval
 ## Step 16 — Push Updates
 If you're using version control, commit and push updates.
 
-![step-16.png](images/step-16.png)
-
-
 ## Step 17 — Final Evaluation Run
 Run the evaluation again to measure improvements.
 
