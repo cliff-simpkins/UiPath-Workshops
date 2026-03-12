@@ -92,15 +92,49 @@ To customize your agent with code, do the following:
 Let's open the generated project in **Cursor or VS Code** and examine it's contents.
 
 1. Open your IDE in the folder you want to use for the project.
+
 2. Configure the project to use the [UiPath Python SDK](https://github.com/UiPath/uipath-python) using the following commands.
 
    - Initialize the Python environment by opening a terminal (top menu):
+      - If you are using uv, use these commands:
+         ```console
+         $ uv init . --python 3.11
+         ```
+         ```console
+         $ uv venv
+         ```
+         ```console
+         # On Linux/mac
+         $ source .venv/bin/activate
+   
+         # On Windows (PowerShell)
+         $ .venv\Scripts\Activate.ps1
+         ```
+         ```console
+         $ uv add uipath
+         ```
+      - If you are using pip, use these commands once you have Python 3.11 installed:
+         ```console
+         # On Linux/mac
+         $ python -m venv .venv
 
-   ```console
-   $ uv init . --python 3.11
-   $ uv venv
-   $ uv add uipath
-   ```
+         #On Windows
+         $ py -m venv .venv
+         ```
+         ```console
+         # On Linux/mac
+         $ source .venv/bin/activate
+
+         #On Windows
+         $ .venv\Scripts\activate
+         ```
+         Upgrade to the latest version of pip
+         ```console
+         $ python -m pip install --upgrade pip
+         ```
+         ```console
+         $ pip install uipath
+         ```
 
    - You will see various outputs after each, but should not see error messages.
 
