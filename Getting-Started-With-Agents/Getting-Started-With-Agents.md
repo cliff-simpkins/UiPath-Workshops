@@ -251,15 +251,23 @@ As the agent is running, you should see in the terminal the calls to the USPS se
 
 
 ## Step 11 — Run Evaluation Tests
-Run the evaluation suite.  
+We will now use the evaluation suite to test and score how well our agent does its job.
+
+1.  Add the ``evals.md`` file (in this repo) to the  ``.agents`` folder in your coded agent project
+   ![step-11a.png](images/step-11a.png)
+
+2. Ask your coding agent to ``evals.md`` to create your evaluation test cases. You can use the following prompt:
+
+   ~~~
+   "Use @.agents/eval.md to create 3 evaluation test cases to test various address examples"
+   ~~~
   
-Before we can run evals, `uipath.json` needs to be populated with entry points.  
-  
+3. Populate `uipath.json` with entry points that the eval command will use to run your test cases.    
 You can do this by running the following command:  
 
-```console
-$ uipath eval agent evaluations/eval-sets/evaluation-set-default.json --output-file eval-results.json
-```
+   ```console
+   $ uipath eval agent evaluations/eval-sets/evaluation-set-default.json --output-file eval-results.json
+   ```
 
 Evaluation tests may include:  
 
@@ -268,7 +276,7 @@ Evaluation tests may include:
 - misspelled city
 - messy formatting
 
-![step-11.png](images/step-11.png)
+![step-11b.png](images/step-11b.png)
 
 
 ## Step 12 — Review Evaluation Results
