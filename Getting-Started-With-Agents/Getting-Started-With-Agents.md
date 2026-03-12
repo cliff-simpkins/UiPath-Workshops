@@ -210,13 +210,23 @@ To demonstrate use of external APIs, let's add the **USPS validation API** to ou
 
 To do this, we will need to do the following:  
 
-1. Register for a USPS account at [https://cop.usps.com/](https://cop.usps.com/) - and create an app on the site
+1. Register for a USPS account at [https://cop.usps.com/](https://cop.usps.com/) - and create a 'business account' on the website so that you have access to their developer APIs
+
+   ![step-10a.png](images/step-10a.png)
+
+   ![step-10b.png](images/step-10b.png)
+
+2. Once you have a developer acocunt created, create an application by selecting ``my apps`` from the top nav, select the ``developer apps`` tab, and create an app entry to clal the APIs.
+
+   ![step-10c.png](images/step-10c.png)
+
 2. Add your USPS Client ID and Client Secret to your ``.env`` file. This will enable your agent to call the service.
 
-```yaml
-USPS_CLIENT_ID=your_client_id
-USPS_CLIENT_SECRET=your_client_secret
-```
+   ```yaml
+   USPS_CLIENT_ID=your_client_id
+   USPS_CLIENT_SECRET=your_client_secret
+   ```
+
 
 3. Add the code to call the service (e.g., tools.py)
 4. Update the agent to call that tool
@@ -244,11 +254,11 @@ Upon execution, the agent should:
 
 As the agent is running, you should see in the terminal the calls to the USPS service...
 
-![step-10a.png](images/step-10a.png)
+![step-10d.png](images/step-10d.png)
 
 ...and a more fully formed address...
 
-![step-10b.png](images/step-10b.png)
+![step-10e.png](images/step-10e.png)
 
 
 ## Step 11 — Run Evaluation Tests
