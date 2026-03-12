@@ -120,7 +120,13 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
    $ uipath auth --staging --force
    ```
 
-   ![step-06a.png](images/step-06a.png)
+   - If prompted to select your organization, select the ``uipathlabsworkshop`` organization.
+
+      ![step-06aa.png](images/step-06aa.png)
+
+   - You will then be presented with the tenants within that organization that you have access to. For this lab, select the  ``SF_DevConnect_20260311`` tenant.
+
+      ![step-06a.png](images/step-06a.png)
 
 5. Add your UiPath project information to your `.env` file:
 
@@ -128,9 +134,11 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
    UIPATH_PROJECT_ID=abcdef12-3456-7890-abcd-ef1234567890
    ```
 
-   You can find this number in the Studio Web URL after `url/designer/` and before the `?solutionId=`
+   If the project didn't create a ``.env`` file in the root of your project, you can create one in your IDE and add the UIPATH_PROJECT_ID above to it.
 
-   ![step-06b.png](images/step-06b.png)
+   To find your Peoject ID number, you can pull it from the Studio Web URL after `url/designer/` and before the `?solutionId=`
+
+      ![step-06b.png](images/step-06b.png)
 
 6. Pull the project:
 
