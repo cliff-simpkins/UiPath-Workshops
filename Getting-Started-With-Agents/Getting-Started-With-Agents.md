@@ -1,4 +1,4 @@
-# Getting Started with UiPath Agents
+# Getting Started with Coded UiPath Agents
 
 In this workshop, you will build your first coded agent on UiPath.  
 
@@ -88,9 +88,7 @@ To customize your agent with code, do the following:
 
 ![step-05.png](images/step-05.png)
 
-* * *
-
-# Step 6 — Open the Project in Cursor or VS Code
+## Step 6 — Open the Project in Cursor or VS Code
 Let's open the generated project in **Cursor or VS Code** and examine it's contents.
 
 1. Open your IDE in the folder you want to use for the project.
@@ -150,30 +148,21 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
 
 
 ## Step 7 - Explore the new Project
-### Step 7a — Explore the UiPath Project
-Project structure includes the following files. Note that these files may be empty, but we will populate them in Step 8.  
+Now that the project is on your local machine, let's take a moment and explore what is there.
 
-* AGENTS.md
-* main.py
+You now have a project structure includes the following files. Note that these files may be empty, but we will populate them in Step 8.  
+
+* ``AGENTS.md`` describes the CLI commands that are available from the Python SDK. We will be running these in the following steps
+* ``main.py`` contains the agent properties that we setup in UiPath Studio Cloud
+* ``input.json`` provides the input values that the agent will use when it runs. This file is likely empty for you to start.
 * evaluation files
-* input.json
 
 ![step-07.png](images/step-07.png)
 
-## Step 7b — Explore the CLI Commands
-The `AGENTS.md` file describes available CLI commands available from the Python SDK. We will be running these in the following steps.  
-Examples:  
-
-```console
-$ uipath init
-$ uipath run
-$ uipath eval
-```
-
-## Step 8 — Run the Agent
+## Step 8 — Run the Agent with input values
 Run the agent locally using the CLI.
 
-1. Create an `input.json` file to store the address that you want to pass as an input parameter to the agent:
+1. Populate the `input.json` file to store the address that you want to pass as an input parameter to the agent:
 
    ```json
    {
