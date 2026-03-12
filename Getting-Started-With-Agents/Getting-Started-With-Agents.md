@@ -259,7 +259,7 @@ We will now use the evaluation suite to test and score how well our agent does i
 2. Ask your coding agent to ``evals.md`` to create your evaluation test cases. You can use the following prompt:
 
    ~~~
-   "Use @.agents/eval.md to create 3 evaluation test cases to test various address examples"
+   Use @.agents/eval.md to create 3 evaluation test cases to test various address examples
    ~~~
   
 3. Populate `uipath.json` with entry points that the eval command will use to run your test cases.    
