@@ -19,11 +19,8 @@ This example builds an agent that validates addresses, but you can build your ag
 ## Step 1 — Open UiPath Studio Cloud
 Navigate to your UiPath workspace: [https://staging.uipath.com/uipathlabsworkshop/studio_/projects](https://staging.uipath.com/uipathlabsworkshop/studio_/projects)  
 You should see your **Cloud Workspace with existing projects**.  
-Click:  
 
-```
-Create New
-```
+Click ``Create New``
 
 ![step-01.png](images/step-01.png)
 
@@ -39,36 +36,36 @@ When creating a new solution you will see multiple options:
 - App
 - Case Management
 
-For this workshop select:  
-
-```
-Agent
-```
+For this workshop select ``Agent``
 
 ![step-02.png](images/step-02.png)
 
 
 ## Step 3 — Generate an Agent with Autopilot
-Autopilot can generate an agent from a simple description.  
-Example prompt:  
+We can use UiPath Autopilot to generate an agent from a simple description.  
+
+To demonstrate this, do the following:
+1. Select ``Autonomous`` as the agent type
+2. Enter a prompt for ``what your agent should do``. For example:
 
 ```
 Create an address parser agent where you will be provided with an addressand your job is to break it into its parts.
 ```
 
-Click:  
+3. Click the ``Generate Agent`` button
 
-```
-Generate Agent
-```
+![step-03a.png](images/step-03a.png)
 
-* * *
+4. Review and accept Autopilot's recommendations as it configures your new Agent Solution
 
-# Step 4 — Review the Agent Canvas
-Approve the Autopilot recommendations  
-  
+![step-03b.png](images/step-03b.png)
+
+
+## Step 4 — Review the Agent Canvas
+
 Once created, the **Agent Canvas** will appear.  
-You can configure:  
+
+Selecitng the agent, Studio will open up the properties window, where you can configure properties such as:  
 
 - Model
 - System Prompt
@@ -78,19 +75,16 @@ You can configure:
 - Context
 - Guardrails
 
+The properties are also accessible using the wrench icon in the upper-right corner of the Studio design canvas.
+
 ![step-04.png](images/step-04.png)
 
-* * *
 
-# Step 5 — Clone the Agent as a Coded Agent
-If you want to customize your agent with code:  
-Click:  
+## Step 5 — Clone the Agent as a Coded Agent
+To customize your agent with code, do the following:
+1. Click on the ``Clone as Coded Agent`` button at the top of the design canvas.
 
-```
-Clone as Coded Agent
-```
-
-This generates a project you can open locally.
+2. Review the new ``Coded Copy of Agent`` part of the solution - this is code that was generated, which we will open in the next step.
 
 ![step-05.png](images/step-05.png)
 
@@ -102,7 +96,7 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
 1. Open your IDE in the folder you want to use for the project.
 2. Configure the project to use the [UiPath Python SDK](https://github.com/UiPath/uipath-python) using the following commands.
 
-   Initialize the Python environment by opening a terminal (top menu):
+   - Initialize the Python environment by opening a terminal (top menu):
 
    ```console
    $ uv init . --python 3.11
@@ -110,7 +104,7 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
    $ uv add uipath
    ```
 
-   You will see various outputs after each, but should not see error messages.
+   - You will see various outputs after each, but should not see error messages.
 
 3. Validate the SDK has been installed by checking the version number:
 
@@ -118,7 +112,7 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
    $ uipath --version
    ```
 
-   The response will be: “uipath-ts-cli version 1.0.0-dev-actionApp.1”
+   - The response will be: “uipath-ts-cli version 1.0.0-dev-actionApp.1”
 
 4. Authenticate to the UiPath Staging environment. This will open up a web browser to authenticate you:
 
@@ -147,8 +141,8 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
    ![step-06c.png](images/step-06c.png)
 
 
-
-## Step 7a — Explore the UiPath Project
+## Step 7 - Explore the new Project
+### Step 7a — Explore the UiPath Project
 Project structure includes the following files. Note that these files may be empty, but we will populate them in Step 8.  
 
 * AGENTS.md
@@ -158,7 +152,7 @@ Project structure includes the following files. Note that these files may be emp
 
 ![step-07.png](images/step-07.png)
 
-# Step 7b — Explore the CLI Commands
+## Step 7b — Explore the CLI Commands
 The `AGENTS.md` file describes available CLI commands available from the Python SDK. We will be running these in the following steps.  
 Examples:  
 
@@ -167,8 +161,6 @@ $ uipath init
 $ uipath run
 $ uipath eval
 ```
-
-* * *
 
 ## Step 8 — Run the Agent
 Run the agent locally using the CLI.
@@ -192,8 +184,8 @@ Run the agent locally using the CLI.
 
 ## Step 9 — Review the Agent Output
 The terminal will display the parsed address components.  
-You will see:  
 
+You should see the following in the output:  
 - street number
 - street name
 - city
@@ -203,20 +195,23 @@ You will see:
 ![step-09.png](images/step-09.png)
 
 
-## Step 10 — External API Validation
-Kevin’s example adds a **USPS validation API**. To do this, you'll need to do the following:  
+## Step 10 — Add an External API Tool
+Having a well-crafted agent prompt is awesome, but there is so much more that they can do when equiped with tools such as external APIs.
+
+To demonstrate use of external APIs, let's add the **USPS validation API** to our agent. 
+
+To do this, we will need to do the following:  
 
 1. Register for a USPS account at [https://cop.usps.com/](https://cop.usps.com/) - and create an app on the site
-2. Add your Client ID and Client Secret to your .env file
-3. Add the code to call the service (e.g., tools.py)
-4. Update the agent to call that tool
-
-To add this capability, you can use your AI Coding Agent of choice in VS Code or Cursor, but you will need to update the .env file yourself as they can't access that file.  
+2. Add your USPS Client ID and Client Secret to your ``.env`` file. This will enable your agent to call the service.
 
 ```yaml
 USPS_CLIENT_ID=your_client_id
 USPS_CLIENT_SECRET=your_client_secret
 ```
+
+3. Add the code to call the service (e.g., tools.py)
+4. Update the agent to call that tool
 
 To accelerate this work, you can use an AI coding agent (e.g., Claude Code) to update the agent to use this API. A prompt such as the below should work:  
 
@@ -226,7 +221,7 @@ Let's update this coded agent to use the addressesv3 API from USPS to validate t
 - I need you to add the proper tool to call the APIs and to update the prompt so that the agent calls that tool
 ```
 
-Once you've updated your agent to use the USPS service, you can test it out using the same run command you used in Step 8.  
+Your ***AI coding agent*** should now update your ***coded agent*** to use the USPS service, you can test it out using the same run command you used in Step 8.  
 
 ```console
 uv run uipath run agent --file input.json
@@ -234,13 +229,16 @@ uv run uipath run agent --file input.json
 
 Upon execution, the agent should:  
 
-1. Parses the address
-2. Validates the address via API
-3. Returns normalized output
+1. Parse the address
+2. Validate the address via API
+3. Return normalized output
+
 
 As the agent is running, you should see in the terminal the calls to the USPS service...
 
 ![step-10a.png](images/step-10a.png)
+
+...and a more fully formed address...
 
 ![step-10b.png](images/step-10b.png)
 
@@ -250,10 +248,10 @@ Run the evaluation suite.
   
 Before we can run evals, `uipath.json` needs to be populated with entry points.  
   
-Command:  
+You can do this by running the following command:  
 
-```
-uipath eval agent evaluations/eval-sets/evaluation-set-default.json --output-file eval-results.json
+```console
+$ uipath eval agent evaluations/eval-sets/evaluation-set-default.json --output-file eval-results.json
 ```
 
 Evaluation tests may include:  
@@ -288,11 +286,7 @@ This shows:
 
 
 ## Step 14 — Iterate and Improve the Agent
-Edit the logic inside:  
-
-```
-main.py
-```
+Edit the logic inside ``main.py``
 
 Example improvements:  
 
@@ -306,9 +300,9 @@ Example improvements:
 ## Step 15 — Rerun the Agent
 After making changes, rerun:  
 
-```
-uipath run agent
-uipath eval
+```console
+$ uipath run agent
+$ uipath eval
 ```
 
 ![step-15.png](images/step-15.png)
@@ -411,7 +405,10 @@ Action: Restart connection pool
 * * *
 
 ## Weather API Agent (Easy Starter)
-Agent calls a weather API and summarizes results.  
+Agent calls a weather API and summarizes results. 
+
+This example follows a very similar pattern to the postal address validation above.
+
 Example:  
 
 ```
