@@ -1,0 +1,451 @@
+# Getting Started with UiPath Agents
+
+In this workshop you will:  
+
+1. Create an AI agent
+2. Run it locally
+3. Evaluate its performance
+4. Improve it using evaluation feedback
+
+By the end, you will have built a working AI-powered automation agent.  
+
+* * *
+
+# Step 1 — Open UiPath Studio Cloud
+Navigate to your UiPath workspace: [https://staging.uipath.com/uipathlabsworkshop/studio_/projects](https://staging.uipath.com/uipathlabsworkshop/studio_/projects)  
+You should see your **Cloud Workspace with existing projects**.  
+Click:  
+
+```
+Create New
+```
+
+![step-01.png](images/step-01.png)
+
+* * *
+
+# Step 2 — Choose What to Build
+When creating a new solution you will see multiple options:  
+
+- Agentic Process
+- Agent
+- RPA Workflow
+- API Workflow
+- App
+- Case Management
+
+For this workshop select:  
+
+```
+Agent
+```
+
+![step-02.png](images/step-02.png)
+
+* * *
+
+# Step 3 — Generate an Agent with Autopilot
+Autopilot can generate an agent from a simple description.  
+Example prompt:  
+
+```
+Create an address parser agent where you will be provided with an addressand your job is to break it into its parts.
+```
+
+Click:  
+
+```
+Generate Agent
+```
+
+* * *
+
+# Step 4 — Review the Agent Canvas
+Approve the Autopilot recommendations  
+  
+Once created, the **Agent Canvas** will appear.  
+You can configure:  
+
+- Model
+- System Prompt
+- User Prompt
+- Tools
+- Input/Output arguments
+- Context
+- Guardrails
+
+![step-04.png](images/step-04.png)
+
+* * *
+
+# Step 5 — Clone the Agent as a Coded Agent
+If you want to customize your agent with code:  
+Click:  
+
+```
+Clone as Coded Agent
+```
+
+This generates a project you can open locally.
+
+![step-05.png](images/step-05.png)
+
+* * *
+
+# Step 6 — Open the Project in Cursor or VS Code
+Let's open the generated project in **Cursor or VS Code** and examine it's contents.
+
+1. Open your IDE in the folder you want to use for the project.
+2. Configure the project to use the [UiPath Python SDK](https://github.com/UiPath/uipath-python) using the following commands.
+
+   Initialize the Python environment by opening a terminal (top menu):
+
+   ```
+   uv init . --python 3.11
+   uv venv
+   uv add uipath
+   ```
+
+   You will see various outputs after each, but should not see error messages.
+
+3. Validate the SDK has been installed by checking the version number:
+
+   ```
+   uipath --version
+   ```
+
+   The response will be: “uipath-ts-cli version 1.0.0-dev-actionApp.1”
+
+4. Authenticate to the UiPath Staging environment. This will open up a web browser to authenticate you:
+
+   ```
+   uipath auth --staging --force
+   ```
+
+   ![step-06a.png](images/step-06a.png)
+
+5. Add your UiPath project information to your `.env` file:
+
+   ```
+   UIPATH_PROJECT_ID=abcdef12-3456-7890-abcd-ef1234567890
+   ```
+
+   You can find this number in the Studio Web URL after `url/designer/` and before the `?solutionId=`
+
+   ![step-06b.png](images/step-06b.png)
+
+6. Pull the project:
+
+   ```
+   uipath pull
+   ```
+
+   ![step-06c.png](images/step-06c.png)
+
+* * *
+
+# Step 7a — Explore the UiPath Project
+Project structure includes the following files. Note that these files may be empty, but we will populate them in Step 8.  
+
+```
+AGENTS.md
+main.py
+evaluation files
+input.json
+```
+
+![step-07.png](images/step-07.png)
+
+# Step 7b — Explore the CLI Commands
+The `AGENTS.md` file describes available CLI commands available from the Python SDK. We will be running these in the following steps.  
+Examples:  
+
+```
+uipath init
+uipath run
+uipath eval
+```
+
+* * *
+
+# Step 8 — Run the Agent
+Run the agent locally using the CLI.
+
+1. Create an `input.json` file to store the address that you want to pass as an input parameter to the agent:
+
+   ```
+   { "address": "1600 Pennsylvania Ave NW, Washington DC 20500"}
+   ```
+
+2. Run the agent locally using the following command, which will use address in your `input.json` file and run the agent:
+
+   ```
+   uv run uipath run agent --file input.json
+   ```
+
+![step-08.png](images/step-08.png)
+
+* * *
+
+# Step 9 — Review the Agent Output
+The terminal will display the parsed address components.  
+You will see:  
+
+- street number
+- street name
+- city
+- state
+- zip code
+
+![step-09.png](images/step-09.png)
+
+* * *
+
+# Step 10 — External API Validation
+Kevin’s example adds a **USPS validation API**. To do this, you'll need to do the following:  
+
+1. Register for a USPS account at [https://cop.usps.com/](https://cop.usps.com/) - and create an app on the site
+2. Add your Client ID and Client Secret to your .env file
+3. Add the code to call the service (e.g., tools.py)
+4. Update the agent to call that tool
+
+To add this capability, you can use your AI Coding Agent of choice in VS Code or Cursor, but you will need to update the .env file yourself as they can't access that file.  
+
+```
+USPS_CLIENT_ID=your_client_id
+USPS_CLIENT_SECRET=your_client_secret
+```
+
+To accelerate this work, you can use an AI coding agent (e.g., Claude Code) to update the agent to use this API. A prompt such as the below should work:  
+
+```
+Let's update this coded agent to use the addressesv3 API from USPS to validate the address.
+- I've updated the .env file to include my USPS_CLIENT_ID and USPS_CLIENT_SECRET
+- I need you to add the proper tool to call the APIs and to update the prompt so that the agent calls that tool
+```
+
+Once you've updated your agent to use the USPS service, you can test it out using the same run command you used in Step 8.  
+
+```
+uv run uipath run agent --file input.json
+```
+
+Upon execution, the agent should:  
+
+1. Parses the address
+2. Validates the address via API
+3. Returns normalized output
+
+As the agent is running, you should see in the terminal the calls to the USPS service...
+
+![step-10a.png](images/step-10a.png)
+
+![step-10b.png](images/step-10b.png)
+
+* * *
+
+# Step 11 — Run Evaluation Tests
+Run the evaluation suite.  
+  
+Before we can run evals, `uipath.json` needs to be populated with entry points.  
+  
+Command:  
+
+```
+uipath eval
+uipath eval agent evaluations/eval-sets/evaluation-set-default.json --output-file eval-results.json
+```
+
+Evaluation tests may include:  
+
+- valid address
+- invalid address
+- misspelled city
+- messy formatting
+
+![step-11.png](images/step-11.png)
+
+* * *
+
+# Step 12 — Review Evaluation Results
+Open **Evaluation Sets** in UiPath Studio.  
+You will see evaluation scores such as:  
+
+- semantic similarity
+- agent trajectory
+
+![step-12.png](images/step-12.png)
+
+* * *
+
+# Step 13 — Inspect Evaluation Traces
+Click an evaluation to see the detailed trace.  
+This shows:  
+
+- agent reasoning
+- API calls
+- intermediate outputs
+
+![step-13.png](images/step-13.png)
+
+* * *
+
+# Step 14 — Iterate and Improve the Agent
+Edit the logic inside:  
+
+```
+main.py
+```
+
+Example improvements:  
+
+- better parsing
+- stronger validation
+- improved formatting
+
+![step-14.png](images/step-14.png)
+
+* * *
+
+# Step 15 — Rerun the Agent
+After making changes, rerun:  
+
+```
+uipath run agent
+uipath eval
+```
+
+![step-15.png](images/step-15.png)
+
+* * *
+
+# Step 16 — Push Updates
+If you're using version control, commit and push updates.
+
+![step-16.png](images/step-16.png)
+
+* * *
+
+# Step 17 — Final Evaluation Run
+Run the evaluation again to measure improvements.
+
+![step-17.png](images/step-17.png)
+
+* * *
+
+# Step 18 — Confirm Successful Results
+You should see improved evaluation scores across tests.
+
+![step-18.png](images/step-18.png)
+
+* * *
+
+# Need Ideas? Try One of These Hackathon Projects
+
+* * *
+
+## AI Support Ticket Triage Agent
+Input:  
+
+```
+Customer support request
+```
+
+Agent outputs:  
+
+- issue category
+- priority level
+- suggested response
+- escalation recommendation
+
+Example output:  
+
+```
+Category: Billing
+Priority: High
+Suggested Response: Investigating payment gateway error
+```
+
+* * *
+
+## AI Data Extraction Agent
+Input:  
+
+```
+Email or document text
+```
+
+Agent extracts structured data:  
+
+```
+Name
+Order number
+Address
+Date
+```
+
+Example output:  
+
+```
+{ "name": "John Adams", "order_number": "88921", "address": "14 West Pine St, Phoenix AZ"}
+```
+
+* * *
+
+## DevOps Log Analysis Agent
+Input:  
+
+```
+System logs
+```
+
+Agent returns:  
+
+```
+Root cause
+Severity
+Suggested action
+```
+
+Example:  
+
+```
+Root cause: Database timeout
+Severity: Critical
+Action: Restart connection pool
+```
+
+* * *
+
+## Weather API Agent (Easy Starter)
+Agent calls a weather API and summarizes results.  
+Example:  
+
+```
+What is the weather in Chicago tomorrow?
+```
+
+Output:  
+
+```
+Chicago forecast: 72°F and sunny
+```
+
+* * *
+
+## Meeting Summary Agent
+Input:  
+
+```
+Meeting transcript
+```
+
+Output:  
+
+```
+Summary
+Key decisions
+Action items
+```
+
+* * *
