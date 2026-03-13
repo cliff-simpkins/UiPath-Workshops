@@ -1,6 +1,8 @@
 # Getting Started with Coded UiPath Agents
 
-In this workshop, you will build your first coded agent on UiPath.  
+***Note: This workshop assumes the Staging lab environment provided at DevConnect 2026 in San Francisco***. I'll generalize the lab by the end of March 2026.
+
+In this workshop, you will build your first coded agent on UiPath. We will do the following five tasks:
 
 1. Create an AI agent in UiPath Studio Cloud
 2. Clone the Agent and run it locally in your IDE
@@ -8,13 +10,20 @@ In this workshop, you will build your first coded agent on UiPath.
 4. Evaluate its performance
 5. Improve it using evaluation feedback
 
-By the end, you will have built a working AI-powered automation agent.
+By the end of the workshop, you will have built a working AI-powered automation agent and know how to test it using evaluation sets.
 
 * * *
-This example builds an agent that validates addresses, but you can build your agent to do almost anything. If you are looking for ideas, you can find [ideas at the bottom of this lab.](#need-ideas-try-one-of-these-hackathon-projects)
+This example builds an agent that validates addresses, but you can build your agent to do almost anything. 
 
-* * *
-# Building a Coded Agent in UiPath
+If you are looking for ideas, check out our [common hackathon ideas for agents.](Agent-Ideas.md)
+
+# Prerequisites
+This lab assumes you have the following:
+- **UiPath Staging environment** is required to use the *Clone a Coded Agent* feature. If you do not have access to a Staging tenant, connect with someone in the UiPath Community team or with someone on your account team (if you're a customer).
+- **VS Code or Cursor or Antigravity** with Python 3.11+ is assumed for the lab instructions.
+- No existing knowledge of UiPath is required for this lab, but it will make it go faster.
+
+# Workshop: Building a Coded Agent in UiPath
 
 ## Step 1 — Open UiPath Studio Cloud
 Navigate to your UiPath workspace: [https://staging.uipath.com/uipathlabsworkshop/studio_/projects](https://staging.uipath.com/uipathlabsworkshop/studio_/projects)  
@@ -91,52 +100,9 @@ To customize your agent with code, do the following:
 ## Step 6 — Open the Project in Cursor or VS Code
 Let's open the generated project in **Cursor or VS Code** and examine it's contents.
 
-1. Open your IDE in the folder you want to use for the project.
+1. Open your IDE into the folder you want to use as your project's "workspace." If you are unfamiliar with this concept, see [VS Code's 'What is a VS Code Workspace?'](https://code.visualstudio.com/docs/editing/workspaces/workspaces) for more info. 
 
-2. Configure the project to use the [UiPath Python SDK](https://github.com/UiPath/uipath-python) using the following commands.
-
-   - Initialize the Python environment by opening a terminal (top menu):
-      - If you are using uv, use these commands:
-         ```console
-         $ uv init . --python 3.11
-         ```
-         ```console
-         $ uv venv
-         ```
-         ```console
-         # On Linux/mac
-         $ source .venv/bin/activate
-   
-         # On Windows (PowerShell)
-         $ .venv\Scripts\Activate.ps1
-         ```
-         ```console
-         $ uv add uipath
-         ```
-      - If you are using pip, use these commands once you have Python 3.11 installed:
-         ```console
-         # On Linux/mac
-         $ python -m venv .venv
-
-         #On Windows
-         $ py -m venv .venv
-         ```
-         ```console
-         # On Linux/mac
-         $ source .venv/bin/activate
-
-         #On Windows
-         $ .venv\Scripts\activate
-         ```
-         Upgrade to the latest version of pip
-         ```console
-         $ python -m pip install --upgrade pip
-         ```
-         ```console
-         $ pip install uipath
-         ```
-
-   - You will see various outputs after each, but should not see error messages.
+2. Install the [UiPath Python SDK](https://github.com/UiPath/uipath-python) into your project using [the installation instructions on the UiPath Python SDK Getting Started with the CLI page](https://uipath.github.io/uipath-python/core/getting_started/#getting-started-with-the-cli).
 
 3. Validate the SDK has been installed by checking the version number:
 
@@ -144,7 +110,7 @@ Let's open the generated project in **Cursor or VS Code** and examine it's conte
    $ uipath --version
    ```
 
-   - The response will be: “uipath-ts-cli version 1.0.0-dev-actionApp.1”
+   The response will be something like: ``uipath version 2.0.29``
 
 4. Authenticate to the UiPath Staging environment. This will open up a web browser to authenticate you:
 
@@ -373,115 +339,3 @@ You should see improved evaluation scores across tests.
 
 * * *
 
-# Need Ideas? Try One of These Hackathon Projects
-
-* * *
-
-## AI Support Ticket Triage Agent
-Input:  
-
-```
-Customer support request
-```
-
-Agent outputs:  
-
-- issue category
-- priority level
-- suggested response
-- escalation recommendation
-
-Example output:  
-
-```
-Category: Billing
-Priority: High
-Suggested Response: Investigating payment gateway error
-```
-
-* * *
-
-## AI Data Extraction Agent
-Input:  
-
-```
-Email or document text
-```
-
-Agent extracts structured data:  
-
-```
-Name
-Order number
-Address
-Date
-```
-
-Example output:  
-
-```
-{ "name": "John Adams", "order_number": "88921", "address": "14 West Pine St, Phoenix AZ"}
-```
-
-* * *
-
-## DevOps Log Analysis Agent
-Input:  
-
-```
-System logs
-```
-
-Agent returns:  
-
-```
-Root cause
-Severity
-Suggested action
-```
-
-Example:  
-
-```
-Root cause: Database timeout
-Severity: Critical
-Action: Restart connection pool
-```
-
-* * *
-
-## Weather API Agent (Easy Starter)
-Agent calls a weather API and summarizes results. 
-
-This example follows a very similar pattern to the postal address validation above.
-
-Example:  
-
-```
-What is the weather in Chicago tomorrow?
-```
-
-Output:  
-
-```
-Chicago forecast: 72°F and sunny
-```
-
-* * *
-
-## Meeting Summary Agent
-Input:  
-
-```
-Meeting transcript
-```
-
-Output:  
-
-```
-Summary
-Key decisions
-Action items
-```
-
-* * *
