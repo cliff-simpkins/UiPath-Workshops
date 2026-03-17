@@ -65,7 +65,22 @@ To demonstrate this, do the following:
 2. Enter a prompt for ``what your agent should do``. For example:
 
 ```
-Create an address parser agent where you will be provided with an address and your job is to break it into its parts.
+You are an address parser, you will be provided with a single string of an address and your job is to break it down into the following parts:
+- streetNumber: the house/building number.​
+- preDirectional: directional prefix before the street name (N, S, E, W,
+NE, NW, SE, SW).​
+- streetName: the primary street name only, without number, direction, or
+suffix.​
+- streetType: the street suffix (St, Ave, Blvd, Dr, Ln, Rd, Ct, Pl, Way, Cir,
+etc.) in abbreviated form.​
+- postDirectional: directional suffix after the street name/type.​
+- unitType: secondary designator (Apt, Suite, Unit, Bldg, Floor, Rm, #).​
+- unitNumber: the unit number or letter.​
+- city: the city or municipality.​
+- state: 2-letter US state/territory abbreviation.​
+- zipCode: 5-digit ZIP code.​
+- zipPlus4: 4-digit ZIP+4 extension (no dash). Empty if not provided.​
+- country: defaults to \"US\" unless explicitly stated otherwise.
 ```
 
 3. Click the ``Generate Agent`` button
