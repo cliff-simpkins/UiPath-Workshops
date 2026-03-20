@@ -16,6 +16,159 @@ The UiPath evaluation framework tests agent quality using two categories of eval
 
 ---
 
+### Directory Structure
+
+```
+your-project/
+├── evaluations/
+│   ├── evaluators/          ← Built-in evaluator config .json files go here
+│   └── eval-sets/           ← Eval set .json files go here
+└── evals/
+    └── evaluators/
+        ├── custom/          ← Custom Python evaluator implementations go here
+        │   ├── my_evaluator.py
+        │   └── types/
+        │       └── my-evaluator-types.json
+        └── my-evaluator.json  ← Custom evaluator config (references Python file)
+```
+
+> **Note:** `evaluations/evaluators/` holds JSON config files for **built-in** evaluators. `evals/evaluators/custom/` holds Python code for **custom** evaluators. These are separate directories for separate purposes.
+
+---
+
+### Evaluator Config File Format
+
+Each built-in evaluator needs a JSON config file in `evaluations/evaluators/`. This is the format I needed from the GitHub source that was not in the original docs:
+
+```json
+{
+  "version": "1.0",
+  "id": "MyEvaluatorId",
+  "description": "Human-readable description of what this evaluator checks.",
+  "evaluatorTypeId": "<see table below>",
+  "evaluatorConfig": {
+    "name": "MyEvaluatorId",
+    "targetOutputKey": "*",
+    "defaultEvaluationCriteria": {
+      "expectedOutput": { "field": "value" }
+    }
+  }
+}
+```
+
+**Important:** `id` and `evaluatorConfig.name` must match. The `id` is what you reference in `evaluatorRefs` and `evaluationCriterias` in the eval set.
+
+#### `evaluatorTypeId` Values for Built-In Evaluators
+
+| Evaluator Type | `evaluatorTypeId` |
+|---|---|
+| Contains | `uipath-contains` |
+| Exact Match | `uipath-exact-match` |
+| JSON Similarity | `uipath-json-similarity` |
+| LLM Judge Output (semantic similarity) | `uipath-llm-judge-output-semantic-similarity` |
+| LLM Judge Output (strict JSON) | `uipath-llm-judge-output-strict-json-similarity` |
+| LLM Judge Trajectory | `uipath-llm-judge-trajectory-similarity` |
+
+#### Working Evaluator Config File Examples
+
+**`evaluations/evaluators/json-similarity.json`**
+```json
+{
+  "version": "1.0",
+  "id": "JsonSimilarityEvaluator",
+  "description": "Tree-based structural comparison. Strings use Levenshtein, booleans exact-match. Only expected keys are evaluated.",
+  "evaluatorTypeId": "uipath-json-similarity",
+  "evaluatorConfig": {
+    "name": "JsonSimilarityEvaluator",
+    "targetOutputKey": "*",
+    "defaultEvaluationCriteria": {
+      "expectedOutput": { "result": 5.0 }
+    }
+  }
+}
+```
+
+**`evaluations/evaluators/llm-judge-semantic-similarity.json`**
+```json
+{
+  "version": "1.0",
+  "id": "LLMJudgeSemanticSimilarity",
+  "description": "Uses an LLM to semantically score output quality.",
+  "evaluatorTypeId": "uipath-llm-judge-output-semantic-similarity",
+  "evaluatorConfig": {
+    "name": "LLMJudgeSemanticSimilarity",
+    "targetOutputKey": "*",
+    "model": "gpt-4.1-2025-04-14",
+    "prompt": "Compare the actual and expected output and score 0-100.\n\nActual Output: {{ActualOutput}}\nExpected Output: {{ExpectedOutput}}",
+    "temperature": 0.0,
+    "defaultEvaluationCriteria": {
+      "expectedOutput": { "result": "expected value" }
+    }
+  }
+}
+```
+
+**`evaluations/evaluators/trajectory.json`**
+```json
+{
+  "version": "1.0",
+  "id": "TrajectoryEvaluator",
+  "description": "Evaluates the agent's execution trajectory and decision sequence.",
+  "evaluatorTypeId": "uipath-llm-judge-trajectory-similarity",
+  "evaluatorConfig": {
+    "name": "TrajectoryEvaluator",
+    "model": "gpt-4.1-2025-04-14",
+    "prompt": "Evaluate the agent's execution trajectory based on the expected behavior.\n\nExpected Agent Behavior: {{ExpectedAgentBehavior}}\nAgent Run History: {{AgentRunHistory}}\n\nProvide a score from 0-100.",
+    "temperature": 0.0,
+    "defaultEvaluationCriteria": {
+      "expectedAgentBehavior": "The agent should correctly perform the task and return the result."
+    }
+  }
+}
+```
+
+**`evaluations/evaluators/contains.json`**
+```json
+{
+  "version": "1.0",
+  "id": "ContainsEvaluator",
+  "description": "Checks if the output includes specific text.",
+  "evaluatorTypeId": "uipath-contains",
+  "evaluatorConfig": {
+    "name": "ContainsEvaluator",
+    "targetOutputKey": "result",
+    "negated": false,
+    "ignoreCase": false,
+    "defaultEvaluationCriteria": {
+      "searchText": "expected text"
+    }
+  }
+}
+```
+
+**`evaluations/evaluators/exact-match.json`**
+```json
+{
+  "version": "1.0",
+  "id": "ExactMatchEvaluator",
+  "description": "Strict string comparison of output fields.",
+  "evaluatorTypeId": "uipath-exact-match",
+  "evaluatorConfig": {
+    "name": "ExactMatchEvaluator",
+    "targetOutputKey": "result",
+    "negated": false,
+    "ignoreCase": false,
+    "defaultEvaluationCriteria": {
+      "expectedOutput": { "result": "5.0" }
+    }
+  }
+}
+```
+
+> **camelCase note:** All field names inside the JSON config use camelCase (`targetOutputKey`, `ignoreCase`, `searchText`), not snake_case. The parameter tables below reflect this correctly.
+
+---
+
 ### Evaluation Set Structure
 
 Evaluation sets are JSON files in `evaluations/eval-sets/`. They define test cases and which evaluators to run.
@@ -25,7 +178,7 @@ Evaluation sets are JSON files in `evaluations/eval-sets/`. They define test cas
   "version": "1.0",
   "id": "my-eval-set",
   "name": "My Evaluation Set",
-  "evaluatorRefs": ["exact-match-1", "LLMJudgeTrajectory"],
+  "evaluatorRefs": ["JsonSimilarityEvaluator", "TrajectoryEvaluator"],
   "modelSettings": [
     {
       "id": "default",
@@ -40,24 +193,45 @@ Evaluation sets are JSON files in `evaluations/eval-sets/`. They define test cas
         "query": "What is 2+2?"
       },
       "evaluationCriterias": {
-        "exact-match-1": {
+        "JsonSimilarityEvaluator": {
           "expectedOutput": { "result": "4" }
         },
-        "LLMJudgeTrajectory": {
+        "TrajectoryEvaluator": {
           "expectedAgentBehavior": "The agent should compute the answer directly."
         }
       }
     }
-  ],
-  "selectedEntrypoint": "agent"
+  ]
 }
 ```
 
 **Key fields:**
-- `evaluatorRefs`: List of evaluator IDs used across test cases
-- `modelSettings`: LLM model overrides (the `"default"` ID is used by default)
+- `evaluatorRefs`: List of evaluator IDs — must match the `id` field in each evaluator config file
+- `modelSettings`: LLM model overrides for the eval run (the `"default"` ID is used unless `--model-settings-id` is specified)
 - `evaluations[].inputs`: Maps to your agent's `Input` model fields
-- `evaluations[].evaluationCriterias`: Keyed by evaluator ID, contains criteria for each evaluator
+- `evaluations[].evaluationCriterias`: Keyed by evaluator ID, contains per-evaluator criteria
+
+#### Eval-Level `expectedOutput` Shorthand
+
+You can set `expectedOutput` and `expectedAgentBehavior` at the evaluation level instead of repeating them inside every evaluator's criteria. Evaluators with `null` criteria will inherit them automatically:
+
+```json
+{
+  "id": "test-case-2",
+  "name": "Shorthand form",
+  "inputs": { "a": 3, "b": 7, "operator": "+" },
+  "expectedOutput": { "result": 10.0 },
+  "expectedAgentBehavior": "The agent should add the two numbers.",
+  "evaluationCriterias": {
+    "JsonSimilarityEvaluator": null,
+    "TrajectoryEvaluator": null
+  }
+}
+```
+
+Per-evaluator criteria override the eval-level value when both are present.
+
+> **`selectedEntrypoint` note:** This field appears in some older examples but is not required. Pass the entrypoint as a CLI argument instead: `uv run uipath eval main.py eval-sets/...`
 
 ---
 
@@ -67,29 +241,35 @@ Evaluation sets are JSON files in `evaluations/eval-sets/`. They define test cas
 
 Checks if output includes specific text. Returns 1.0 (found) or 0.0 (not found).
 
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `name` | str | `"ContainsEvaluator"` | Evaluator identifier |
-| `case_sensitive` | bool | `false` | Case-sensitive matching |
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `name` | str | `"ContainsEvaluator"` | Evaluator identifier (must match `id`) |
+| `ignoreCase` | bool | `false` | Case-insensitive matching |
 | `negated` | bool | `false` | Invert logic (fail when text IS found) |
-| `target_output_key` | str | `"*"` | Output field to check (`"*"` = entire output) |
+| `targetOutputKey` | str | `"*"` | Output field to check (`"*"` = entire output) |
 
-**Criteria:** `{ "search_text": "Paris" }`
+**Criteria:** `{ "searchText": "Paris" }`
+
+> **Note:** The criteria key is `searchText` (camelCase), not `search_text`.
+
+---
 
 #### Exact Match Evaluator
 
 Strict string comparison. Returns 1.0 (match) or 0.0 (mismatch).
 
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
 | `name` | str | `"ExactMatchEvaluator"` | Evaluator identifier |
-| `case_sensitive` | bool | `false` | Case-sensitive comparison |
+| `ignoreCase` | bool | `false` | Case-insensitive comparison |
 | `negated` | bool | `false` | Invert matching logic |
-| `target_output_key` | str | `"*"` | Output field to compare |
+| `targetOutputKey` | str | `"*"` | Output field to compare |
 
 **Criteria:** `{ "expectedOutput": { "result": "4" } }`
+
+---
 
 #### JSON Similarity Evaluator
 
@@ -101,33 +281,35 @@ Tree-based structural comparison of JSON outputs. Returns continuous 0.0–1.0 s
 - **Score**: `matched_leaves / total_leaves`
 - Extra keys in actual output are ignored; only expected keys are evaluated
 
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
 | `name` | str | `"JsonSimilarityEvaluator"` | Evaluator identifier |
-| `target_output_key` | str | `"*"` | Output field to compare |
+| `targetOutputKey` | str | `"*"` | Output field to compare |
 
 **Criteria:** `{ "expectedOutput": { "key": "value" } }`
+
+---
 
 #### LLM Judge Output Evaluator
 
 Uses an LLM to semantically assess output quality. Returns continuous 0.0–1.0 score.
 
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
 | `name` | str | `"LLMJudgeOutputEvaluator"` | Evaluator identifier |
 | `prompt` | str | — | Custom evaluation template |
 | `model` | str | — | LLM model to use |
 | `temperature` | float | `0.0` | Randomness (use 0.0 for consistency) |
-| `max_tokens` | int | — | Response length limit |
-| `target_output_key` | str | `"*"` | Output field to evaluate |
+| `maxTokens` | int | — | Response length limit |
+| `targetOutputKey` | str | `"*"` | Output field to evaluate |
 
 **Prompt placeholders:** `{{ActualOutput}}`, `{{ExpectedOutput}}`
 
 **Criteria:** `{ "expectedOutput": { "result": "expected value" } }`
 
-**Strict JSON variant** (`LLMJudgeStrictJsonSimilarityOutputEvaluator`): Per-key matching with penalty-based scoring for missing, wrong, similar, or extra keys.
+**Strict JSON variant** (`uipath-llm-judge-output-strict-json-similarity`): Per-key matching with penalty-based scoring for missing, wrong, similar, or extra keys.
 
 ---
 
@@ -135,13 +317,34 @@ Uses an LLM to semantically assess output quality. Returns continuous 0.0–1.0 
 
 These evaluators inspect the agent's execution trace (tool calls, order, arguments, outputs).
 
+#### LLM Judge Trajectory Evaluator
+
+Uses an LLM to evaluate the agent's execution trajectory and decision-making.
+
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `name` | str | `"TrajectoryEvaluator"` | Evaluator identifier |
+| `prompt` | str | — | Custom evaluation template |
+| `model` | str | — | LLM model |
+| `temperature` | float | `0.0` | Use 0.0 for consistency |
+
+**Prompt placeholders:** `{{AgentRunHistory}}`, `{{ExpectedAgentBehavior}}`, `{{UserOrSyntheticInput}}`, `{{SimulationInstructions}}`
+
+**Criteria:**
+```json
+{ "expectedAgentBehavior": "The agent should authenticate first, then fetch data." }
+```
+
+---
+
 #### Tool Call Order Evaluator
 
 Validates tools are called in expected sequence.
 
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
 | `name` | str | `"ToolCallOrderEvaluator"` | Evaluator identifier |
 | `strict` | bool | `false` | `true` = exact match (1.0/0.0), `false` = LCS-based partial credit |
 
@@ -152,13 +355,15 @@ Validates tools are called in expected sequence.
 { "tool_calls_order": ["authenticate", "fetch_data", "process"] }
 ```
 
+---
+
 #### Tool Call Count Evaluator
 
 Validates tool invocation frequency.
 
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
 | `name` | str | `"ToolCallCountEvaluator"` | Evaluator identifier |
 | `strict` | bool | `false` | `true` = all-or-nothing, `false` = ratio of matched counts |
 
@@ -174,13 +379,15 @@ Validates tool invocation frequency.
 
 Supported operators: `"="`, `"=="`, `">"`, `"<"`, `">="`, `"<="`
 
+---
+
 #### Tool Call Args Evaluator
 
 Validates tool call arguments.
 
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
 | `name` | str | `"ToolCallArgsEvaluator"` | Evaluator identifier |
 | `strict` | bool | `false` | All-or-nothing vs proportional scoring |
 | `subset` | bool | `false` | Allow actual args as subset of expected |
@@ -194,13 +401,15 @@ Validates tool call arguments.
 }
 ```
 
+---
+
 #### Tool Call Output Evaluator
 
 Validates tool return values.
 
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
+**`evaluatorConfig` fields:**
+| Field | Type | Default | Description |
+|---|---|---|---|
 | `name` | str | `"ToolCallOutputEvaluator"` | Evaluator identifier |
 | `strict` | bool | `false` | All-or-nothing vs proportional scoring |
 
@@ -211,25 +420,6 @@ Validates tool return values.
     { "name": "fetch_data", "output": "expected result" }
   ]
 }
-```
-
-#### LLM Judge Trajectory Evaluator
-
-Uses an LLM to evaluate the agent's execution trajectory and decision-making.
-
-**Config:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `name` | str | `"LLMJudgeTrajectoryEvaluator"` | Evaluator identifier |
-| `prompt` | str | — | Custom evaluation template |
-| `model` | str | — | LLM model |
-| `temperature` | float | `0.0` | Use 0.0 for consistency |
-
-**Prompt placeholders:** `{{AgentRunHistory}}`, `{{ExpectedAgentBehavior}}`, `{{UserOrSyntheticInput}}`, `{{SimulationInstructions}}`
-
-**Criteria:**
-```json
-{ "expectedAgentBehavior": "The agent should authenticate first, then fetch data." }
 ```
 
 ---
@@ -274,6 +464,22 @@ class MyCustomEvaluator(
         return NumericEvaluationResult(score=score, details="Justification")
 ```
 
+The custom evaluator's JSON config file references the Python implementation:
+```json
+{
+  "version": "1.0",
+  "id": "CorrectOperatorEvaluator",
+  "evaluatorTypeId": "file://types/correct-operator-evaluator-types.json",
+  "evaluatorSchema": "file://correct_operator.py:CorrectOperatorEvaluator",
+  "description": "A custom evaluator that checks if the correct operator is used.",
+  "evaluatorConfig": {
+    "name": "CorrectOperatorEvaluator",
+    "defaultEvaluationCriteria": { "operator": "+" },
+    "negated": false
+  }
+}
+```
+
 **CLI commands:**
 ```bash
 # Generate a template
@@ -302,9 +508,6 @@ uv run uipath eval main.py evaluations/eval-sets/evaluation-set-default.json --w
 
 # Run specific eval IDs only
 uv run uipath eval --eval-ids "['valid-standard-address', 'invalid-address']" --workers 10
-
-# Run with parallel workers
-uv run uipath eval --workers 10
 
 # Save results to file
 uv run uipath eval --workers 10 --output-file results.json
@@ -364,9 +567,11 @@ Design-time format (relative paths):
 1. **Combine evaluators**: Use output-based evaluators for result validation and trajectory-based for process validation
 2. **Set temperature to 0.0** for LLM judge evaluators to get deterministic results
 3. **Use non-strict mode** by default for trajectory evaluators — reserve strict for security-critical sequences
-4. **Start simple**: Begin with Contains/ExactMatch, add LLM Judge for semantic evaluation
-5. **Target specific fields**: Use `target_output_key` to minimize false positives
+4. **Start simple**: Begin with JsonSimilarity for structured output, add LLM Judge for semantic edge cases
+5. **Target specific fields**: Use `targetOutputKey` to minimize false positives
 6. **Write specific trajectory descriptions**: Include sequential steps and decision points in `expectedAgentBehavior`
+7. **Use eval-level `expectedOutput`** with `null` criteria when most evaluators share the same expected output — reduces repetition
+8. **Use a stronger model for judges**: Use `gpt-4.1-2025-04-14` (not mini) in evaluator configs for more reliable scoring
 
 ---
 

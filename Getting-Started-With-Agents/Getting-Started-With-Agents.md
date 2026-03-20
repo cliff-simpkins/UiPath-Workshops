@@ -184,7 +184,7 @@ Now that the project is on your local machine, let's take a moment and explore w
 Your project structure includes the following files. While some of these files may be empty, we will populate them in the next step.  
 
 * ``AGENTS.md`` describes the CLI commands that are available from the Python SDK that your coding agent can make use of. The file both defines the role of your coding agent and the UiPath skills that are available to it.
-   * This file and those in the ``.agents`` folder comes from the Python SDK.
+   * This file and those in the ``.agent`` folder comes from the Python SDK.
    * The SDK also creates a ``CLAUDE.md`` file that points Claude Code to this file
 * ``main.py`` contains the agent properties that we setup in UiPath Studio Web
 * ``input.json`` provides the input values that the agent will use when it runs. This file is likely empty for you to start.
