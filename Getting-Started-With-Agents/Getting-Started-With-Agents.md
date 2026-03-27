@@ -87,6 +87,8 @@ etc.) in abbreviated form.​
 
 4. Review and accept Autopilot's recommendations as it configures your new Agent Solution
 
+> **Autopilot is non-deterministic.** Your generated agent may differ from the screenshots — that's expected. What matters is that the agent is created and appears on the canvas.
+
 ![step-03b.png](images/step-03b.png)
 
 
@@ -223,30 +225,26 @@ Having a well-crafted agent prompt is awesome, but there is so much more that th
 
 To demonstrate use of external APIs, let's add the **USPS validation API** to our agent. 
 
-To do this, we will need to do the following:  
+To do this, we will need to do the following:
 
-1. Register for a USPS account at [https://cop.usps.com/](https://cop.usps.com/) - and create a 'business account' on the website so that you have access to their developer APIs
+1. If you haven't already, register for a USPS developer account at [https://cop.usps.com/](https://cop.usps.com/) and create a business account to get API access.
 
    ![step-10a.png](images/step-10a.png)
 
    ![step-10b.png](images/step-10b.png)
 
-2. Once you have a developer account created, create an application by selecting ``my apps`` from the top nav, select the ``developer apps`` tab, and create an app entry to call the APIs.
+2. Once your developer account is set up, create an application by selecting ``my apps`` from the top nav, select the ``developer apps`` tab, and create an app entry. This gives you a Client ID and Client Secret.
 
    ![step-10c.png](images/step-10c.png)
 
-3. Add your USPS Client ID and Client Secret to your ``.env`` file. This will enable your agent to call the service.
+3. Add your USPS Client ID and Client Secret to your ``.env`` file:
 
    ```yaml
    USPS_CLIENT_ID=your_client_id
    USPS_CLIENT_SECRET=your_client_secret
    ```
 
-
-4. Add the code to call the service (e.g., tools.py)
-5. Update the agent to call that tool
-
-To accelerate this work, you can use an AI coding agent (e.g., Claude Code) to update the agent to use this API. A prompt such as the below should work:  
+4. Use your AI coding agent (e.g., Claude Code) to implement the USPS integration. The prompt below should work as-is:  
 
 ```
 Let's update this coded agent to use the addressesv3 API from USPS to validate the address.
@@ -279,14 +277,14 @@ As the agent is running, you should see in the terminal the calls to the USPS se
 ## Step 11 — Run Evaluation Tests
 We will now use the evaluation suite to test and score how well our agent does its job.
 
-1. Copy the ``EVALS.md`` file (in this repo) into the ``.agents`` folder in your coded agent project. This file is a reference guide for your AI coding agent — it contains the evaluation framework patterns and examples it needs to write good test cases.
+1. Copy the ``EVALS.md`` file (in this repo) into the ``.agent`` folder in your coded agent project. This file is a reference guide for your AI coding agent — it contains the evaluation framework patterns and examples it needs to write good test cases.
 
    ![step-11a.png](images/step-11a.png)
 
 2. Ask your coding agent to use ``EVALS.md`` to create your evaluation test cases. You can use the following prompt:
 
    ~~~
-   Use @.agents/EVALS.md to create 3 evaluation test cases to test various address examples - testing for addresses that are invalid, have a misspelled city, or that have messy formatting. 
+   Use @.agent/EVALS.md to create 3 evaluation test cases to test various address examples - testing for addresses that are invalid, have a misspelled city, or that have messy formatting.
    ~~~
 
 3. Run the evaluation:
@@ -346,7 +344,7 @@ uv run uipath run agent --file input.json
 uv run uipath eval agent evaluations/eval-sets/evaluation-set-default.json --workers 10 --output-file eval-results.json
 ```
 
-Afer running your eval sets, you can return again to the Studio Web and hopefully see the scores inprove.
+After running your eval sets, you can return to Studio Web and see the updated scores.
 
 ![step-15.png](images/step-15.png)
 
