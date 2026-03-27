@@ -10,6 +10,8 @@ In this workshop, you will build your first coded agent on UiPath. We will do th
 
 By the end of the workshop, you will have built a working AI-powered automation agent and know how to test it using evaluation sets.
 
+**Estimated time:** 60 minutes (45 min without the USPS API step in Step 10)
+
 * * *
 This example builds an agent that validates addresses, but you can build your agent to do almost anything. 
 
@@ -87,7 +89,7 @@ etc.) in abbreviated form.​
 
 4. Review and accept Autopilot's recommendations as it configures your new Agent Solution
 
-> **Autopilot is non-deterministic.** Your generated agent may differ from the screenshots — that's expected. What matters is that the agent is created and appears on the canvas.
+> **Autopilot is non-deterministic.** Your generated agent may differ from the screenshots — that's expected. What matters is that the agent is created and appears on the canvas. If the agent canvas doesn't load or shows an error, try refreshing the page; if the agent wasn't created, repeat Step 3 with the same prompt.
 
 ![step-03b.png](images/step-03b.png)
 
@@ -294,11 +296,14 @@ Evaluation tests may include:
 
 
 ## Step 12 — Review Evaluation Results
-Open **Evaluation Sets** in UiPath Studio.  
-You will see evaluation scores such as:  
+Open **Evaluation Sets** in UiPath Studio. You will see two types of scores:
 
-- semantic similarity
-- agent trajectory
+| Score | What it measures |
+|---|---|
+| **Semantic similarity** | How closely the agent's output matches the expected output — are the right fields populated with the right values? |
+| **Agent trajectory** | Whether the agent took the expected reasoning path — catches cases where the right answer was reached the wrong way |
+
+Scores above 0.8 are generally solid. Below 0.6 means the agent is consistently missing something — use the trace in Step 13 to identify what.
 
 ![step-12.png](images/step-12.png)
 
@@ -348,7 +353,7 @@ uipath push
 
 Then commit and push your code for version control system, if applicable.
 
-*Note: If you receive errors while pushing your code back to UiPath, check to see if you are still authenticated. If needed, quickly reauthenticate using ``uipath auth --staging --force``*
+*Note: If you receive errors while pushing your code back to UiPath, check to see if you are still authenticated. If needed, quickly reauthenticate using ``uipath auth --staging``*
 
 * * *
 ## Congratulations!
@@ -359,4 +364,10 @@ You've successfully created a coded agent that runs on UiPath!
 - You then set up evaluation tests to exercise your agent - evaluating both the happy path (well formed inputs) and evaluations that tested bad and malformed inputs
 - Finally, you pushed your coded agent back into UiPath 
 
-Next, we invite you to try out more of the platform.
+## What's Next
+
+- [UiPath Python SDK docs](https://uipath.github.io/uipath-python/) — full reference for CLI commands, agent patterns, and SDK APIs
+- [Evaluation framework guide](https://uipath.github.io/uipath-python/eval/) — how to build, run, and interpret evaluation sets
+- [Agent Ideas](Agent-Ideas.md) — common use cases to try with your own agent
+- [LangGraph docs](https://langchain-ai.github.io/langgraph/) — the orchestration framework used in this lab
+- [UiPath Community](https://community.uipath.com) — forums, how-tos, and developer discussion

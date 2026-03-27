@@ -9,6 +9,8 @@ In this workshop, you will build your first coded agent on UiPath. We will do th
 
 By the end of the workshop, you will have built a working AI-powered automation agent and know how to test it using evaluation sets.
 
+**Estimated time:** 60 minutes (45 min without the USPS API step in Step 5)
+
 * * *
 This example builds an agent that validates addresses, but you can build your agent to do almost anything. 
 
@@ -191,6 +193,8 @@ etc.) in abbreviated form.​
    The terminal will display the parsed address components, and you should see the address broken down into the following parts among them: street number, street name, city, state, and zip code
 
    ![Step 04b](images/CodedAgents-IDE_Step-04b.png)
+
+   > **If the agent won't run:** re-run `uipath init` — the coding agent may have added dependencies that need to be registered. If fields are missing from the output, ask your coding agent to fix the specific field: *"The zipCode field is not appearing in the output — please fix that."*
 
 
 ## Step 5 — Add an External API Tool
@@ -425,4 +429,10 @@ You've successfully created a coded agent that runs on UiPath!
 - You set up evaluation tests to exercise your agent - evaluating both the happy path (well formed inputs) and evaluations that tested bad and malformed inputs
 - Finally, we pushed the code up to UiPath Studio and ran our evaluation sets from within UiPath Studio to test it out
 
-Next, we invite you to try out more of the platform.
+## What's Next
+
+- [UiPath Python SDK docs](https://uipath.github.io/uipath-python/) — full reference for CLI commands, agent patterns, and SDK APIs
+- [Evaluation framework guide](https://uipath.github.io/uipath-python/eval/) — how to build, run, and interpret evaluation sets
+- [Agent Ideas](Agent-Ideas.md) — common use cases to try with your own agent
+- [LangGraph docs](https://langchain-ai.github.io/langgraph/) — the orchestration framework used in this lab
+- [UiPath Community](https://community.uipath.com) — forums, how-tos, and developer discussion
