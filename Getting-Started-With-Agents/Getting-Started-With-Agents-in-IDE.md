@@ -32,6 +32,7 @@ This lab assumes you have the following:
 
    **If you cannot install `uv`** (e.g., due to corporate restrictions), activate your virtual environment manually and replace `uv run uipath ...` with `uipath ...` throughout the lab.
 
+- **USPS Developer account** *(required for Step 5)* — Step 5 adds a real address-validation API to your agent using USPS. You will need a free USPS developer account with a registered app to get a Client ID and Client Secret. [Register at cop.usps.com](https://cop.usps.com/) — allow 15–20 minutes if you're setting this up for the first time. You can complete Steps 1–4 while waiting for access.
 
 No existing knowledge of UiPath is required for this lab, but it will make it go faster.
 
@@ -199,30 +200,26 @@ Having a well-crafted agent prompt is awesome, but there is so much more that th
 
 To demonstrate use of external APIs, let's add the **USPS validation API** to our agent. 
 
-To do this, we will need to do the following:  
+To do this, we will need to do the following:
 
-1. Register for a USPS account at [https://cop.usps.com/](https://cop.usps.com/) - and create a 'business account' on the website so that you have access to their developer APIs
+1. If you haven't already, register for a USPS developer account at [https://cop.usps.com/](https://cop.usps.com/) and create a business account to get API access.
 
    ![step-10a.png](images/step-10a.png)
 
    ![step-10b.png](images/step-10b.png)
 
-2. Once you have a developer account created, create an application by selecting ``my apps`` from the top nav, select the ``developer apps`` tab, and create an app entry to call the APIs.
+2. Once your developer account is set up, create an application by selecting ``my apps`` from the top nav, select the ``developer apps`` tab, and create an app entry. This gives you a Client ID and Client Secret.
 
    ![step-10c.png](images/step-10c.png)
 
-3. Add your USPS Client ID and Client Secret to your ``.env`` file. This will enable your agent to call the service.
+3. Add your USPS Client ID and Client Secret to your ``.env`` file:
 
    ```yaml
    USPS_CLIENT_ID=your_client_id
    USPS_CLIENT_SECRET=your_client_secret
    ```
 
-
-4. Add the code to call the service (e.g., tools.py)
-5. Update the agent to call that tool
-
-To accelerate this work, you can use an AI coding agent (e.g., Claude Code) to update the agent to use this API. A prompt such as the below should work:  
+4. Use your AI coding agent (e.g., Claude Code) to implement the USPS integration. The prompt below includes the full API contract — use it as-is for best results:  
 
 ```
 Add a USPS addresses/v3 validation node to the LangGraph agent, running after address parsing.
