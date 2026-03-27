@@ -126,10 +126,10 @@ Hello, Agent! ^_^
 
 
 ## Step 4 — Generate your Coded Agent using your Coding Agent
-Now we can use our IDE's ***coding agent*** (e.g., Claude code) to create our ***coded agent***.  
+Now we can use our IDE's ***coding agent*** (e.g., Claude Code) to create our ***coded agent***.
 
 To demonstrate this, do the following:
-1. Open up your coding agent (e.g., Copilot or Claud Code) 
+1. Open up your coding agent (e.g., Copilot or Claude Code)
 2. Enter a prompt to explain what you want the agent to do. For example:
 
 ```
@@ -158,11 +158,13 @@ etc.) in abbreviated form.​
 - country: defaults to \"USA\" unless explicitly stated otherwise.
 ```
 
-   Note that I have added additional details:
-   * I am reinforcing that the agent should use the LangGraph approach. This short-hand helps prevent a lot of debugging from the agent taking its own bespoke approach.
-   * The ``Important implementation note`` ensures that the agent makes async calls and saves you some additional debugging.
+   Note that the prompt includes two important details:
+   * **LangGraph approach** — reinforcing this prevents the coding agent from taking a bespoke approach that may require extra debugging.
+   * **Async implementation note** — UiPath SDK LLM methods are async; this ensures the coding agent generates correct async code from the start.
 
-   You should see that it added a new ``input.json`` file that has a random sample address to use:
+   > **Coding agents are non-deterministic.** Your output will differ from the screenshots — that's expected. What matters is that `main.py` runs without errors and returns a parsed address.
+
+   You should see that it added a new ``input.json`` file with a sample address:
    ```json
    {
      "address": "1 Rockefeller Plaza, New York, NY 10020"
