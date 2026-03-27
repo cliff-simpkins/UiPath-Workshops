@@ -279,7 +279,6 @@ We will now use the evaluation suite to test and score how well our agent does i
    
    Include the evaluator JSON config files in `evaluations/evaluators/` and the eval set in `evaluations/eval-sets/`. Before writing any files, check the UiPath Python SDK source at https://github.com/UiPath/uipath-python — look in `packages/uipath/samples/calculator/evaluations/` for the correct evaluator config file format and structure. And also use the guide at https://uipath.github.io/uipath-python/eval/ 
 
-   Use @.agent/EVALS.md to create 3 evaluation test cases to test various address examples - testing for addresses that are invalid, have a misspelled city, or that have messy formatting. 
    ~~~
 
 3. Run the evaluation:
@@ -323,11 +322,11 @@ This creates an empty Agent project in UiPath Studio that you can connect your p
    ![Step 07c](images/CodedAgents-IDE_Step-07c.png)
 
 
-5. Update the ``pyproject.toml`` file to include the ``authors`` entry. After adding the entry, the file should look like the following:
+5. Update the ``pyproject.toml`` file to include an ``authors`` entry. UiPath requires this to package the project for push — it's a known requirement. After adding the entry, the file should look like the following (use your own project name):
 
 ```
 [project]
-name = "2026-03-19-full-coded-agent-from-ide-1"
+name = "your-project-name"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -371,8 +370,8 @@ With the agent in UiPath Studio, let's look at the project's **Evaluation Sets**
 
 3. After they run, you should see an entry in the ``Runs`` tab for the run - expand that run using the arrow to the left and you should see Evaluation Results for each of the evaluations.
 
-4. To explore the evaluation runs in more detail, select the run and view the run summary for this run - one for each evaluator. To do this, you can either...
-   - Click on the 8-character hexidecimal run number (e.g. 890abcde') 
+4. To explore the evaluation runs in more detail, select the run and view the run summary - one entry per evaluator. To do this, you can either...
+   - Click on the 8-character hexadecimal run number (e.g. `890abcde`)
    - Click on the three dots under ``Actions`` and select ``View Details``
 
       *Note*: hovering over a score box gives you a preview of the evaluation, as well as guidance for improving the evaluation.
@@ -380,12 +379,12 @@ With the agent in UiPath Studio, let's look at the project's **Evaluation Sets**
    ![Step 08b](images/CodedAgents-IDE_Step-08b.png)
 
 
-4. Then click on the evaluation that you want to see more information on. This will open up a trace for that evaluation run.
+5. Then click on the evaluation that you want to see more information on. This will open up a trace for that evaluation run.
    - You will have a tab for each of the evaluators that you can dig into
 
       ![Step 08c](images/CodedAgents-IDE_Step-08c.png)
 
-   - Each tab displays a three-panl view with a summary of the run, an execution trace, and evaluation results. 
+   - Each tab displays a three-panel view with a summary of the run, an execution trace, and evaluation results.
    
    You can use this rich set of information to inform how your agent performed given the input passed into it.
 
@@ -407,10 +406,10 @@ Example improvements:
 After making changes, rerun your agent, using either the ``input.json`` or eval sets you already created.
 
 ```bash
-uipath run main --file input.json
+uv run uipath run agent --file input.json
 ```
 ```bash
-uipath eval main evaluations/eval-sets/evaluation-set-default.json --workers 10
+uv run uipath eval agent evaluations/eval-sets/evaluation-set-default.json --workers 10
 ```
 
 Afer running your eval sets, you can return again to UiPath Studio, and you should see your eval results show up in the UiPath Studio Evaluation Set Runs table. Hopefully you should see the scores inprove based on the changes you made to your code.
