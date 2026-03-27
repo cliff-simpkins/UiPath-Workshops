@@ -1,7 +1,5 @@
 # Getting Started with Coded UiPath Agents
 
-***Note: This workshop assumes the Staging lab environment provided at DevConnect 2026***. I'll generalize the lab by the end of March 2026.
-
 In this workshop, you will build your first coded agent on UiPath. We will do the following five tasks:
 
 1. Create an AI agent in UiPath Studio Web
@@ -19,7 +17,8 @@ If you are looking for ideas, check out our [common hackathon ideas for agents.]
 
 ## Prerequisites
 This lab assumes you have the following:
-- **UiPath Staging environment** is required to use the ``Clone a Coded Agent`` feature. If you do not have access to a Staging tenant, connect with someone in the UiPath Community team or on your account team (if you're a customer).
+- **UiPath account on staging.uipath.com** — the ``Clone as Coded Agent`` feature used in this workshop is available on the staging environment. Sign up or log in at [staging.uipath.com](https://staging.uipath.com) before starting.
+- **USPS Developer account** *(required for Step 10)* — Step 10 adds a real address-validation API to your agent using USPS. You will need a free USPS developer account with a registered app to get a Client ID and Client Secret. [Register at cop.usps.com](https://cop.usps.com/) — allow 15–20 minutes if you're setting this up for the first time. You can complete Steps 1–9 while waiting for access.
 - **VS Code** with Python 3.11+ is assumed for the lab instructions.
 - **Bash terminal** — the commands in this lab use Bash syntax. In VS Code, open a new terminal and select **Git Bash** (or equivalent) as the terminal type. PowerShell and CMD syntax differ and may cause unexpected errors.
 - **uv** — a fast Python package manager used throughout this lab. It is preferred over `pip` because it is significantly faster, handles virtual environment activation automatically, and is the recommended path in the UiPath SDK docs. Install it with:
@@ -33,8 +32,7 @@ This lab assumes you have the following:
 # Workshop: Building a Coded Agent in UiPath
 
 ## Step 1 — Open UiPath Studio Web
-Navigate to your UiPath workspace: [https://staging.uipath.com/uipathlabsworkshop/studio_/projects](https://staging.uipath.com/uipathlabsworkshop/studio_/projects)  
-You should see your **Cloud Workspace with existing projects**.  
+Log into [staging.uipath.com](https://staging.uipath.com) and navigate to **Studio** from the side menu. You should see your **Cloud Workspace**.
 
 Click ``Create New``
 
@@ -122,7 +120,7 @@ To customize your agent with code, do the following:
 ## Step 6 — Open the Project in VS Code
 Let's open the generated project in **VS Code** and examine its contents.
 
-1. Open your IDE into the folder you want to use as your project's "workspace." If you are unfamiliar with this concept, see [VS Code's 'What is a VS Code Workspace?'](https://code.visualstudio.com/docs/editing/workspaces/workspaces) for more info. 
+1. Create a new empty folder for your project and open it in VS Code (**File → Open Folder**). This folder will be your project workspace — all commands in the lab run from its root.
 
 2. Install the [UiPath Python SDK](https://github.com/UiPath/uipath-python) into your project using [the installation instructions on the UiPath Python SDK Getting Started with the CLI page](https://uipath.github.io/uipath-python/core/getting_started/#getting-started-with-the-cli).
 
@@ -134,19 +132,14 @@ Let's open the generated project in **VS Code** and examine its contents.
 
    The response will be something like: ``uipath version 2.0.29``
 
-4. Authenticate to the UiPath Staging environment. This will open up a web browser to authenticate you:
+4. Authenticate to the UiPath staging environment. This will open a web browser to complete authentication:
 
    ```bash
-   uipath auth --staging --force
+   uipath auth --staging
    ```
 
-   - If prompted to select your organization, select the ``uipathlabsworkshop`` organization.
-
-      ![step-06aa.png](images/step-06aa.png)
-
-   - You will then be presented with the tenants within that organization that you have access to. For this lab, select the  ``SF_DevConnect_20260311`` tenant.
-
-      ![step-06a.png](images/step-06a.png)
+   - If you are a member of multiple UiPath organizations, you may be prompted to select which one to use.
+   - If you have multiple tenants in your organization, you may be prompted to select a tenant.
 
 5. Add your UiPath project information to the `.env` file that was created once you successfully authenticated and selected your tenant:
 
@@ -163,7 +156,7 @@ Let's open the generated project in **VS Code** and examine its contents.
    Note: If the project didn't create a ``.env`` file in the root of your project when you authenticated, you can create one in your IDE and authenticate again using the ``uipath auth`` command above.
 
 
-6. **Pull the coded agent project** that you creatd in UiPath Studio Web using the following command and electing ``y`` to overwrite the local files:
+6. **Pull the coded agent project** that you created in UiPath Studio Web using the following command and selecting ``y`` to overwrite the local files:
 
    ```bash
    uipath pull
