@@ -42,7 +42,7 @@ No existing knowledge of UiPath is required for this lab, but it will make it go
 ## Step 1 — Install UiPath into VS Code
 Let's setup your IDE to connect with UiPath.
 
-1. Open your IDE into the folder you want to use as your project's "workspace." If you are unfamiliar with this concept, see [VS Code's 'What is a VS Code Workspace?'](https://code.visualstudio.com/docs/editing/workspaces/workspaces) for more info. 
+1. Create a new empty folder for your project and open it in VS Code (**File → Open Folder**). This folder will be your project workspace — all commands in the lab run from its root.
 
 2. Install the [UiPath Python SDK](https://github.com/UiPath/uipath-python) into your project using [the installation instructions on the UiPath Python SDK Getting Started with the CLI page](https://uipath.github.io/uipath-python/core/getting_started/#getting-started-with-the-cli).
 
@@ -57,23 +57,19 @@ Let's setup your IDE to connect with UiPath.
 
    The response will be something like: ``uipath version 2.10.24``
 
-4. Authenticate to the UiPath Staging environment. This will open up a web browser to authenticate you:
+4. Authenticate to UiPath. This will open a web browser to complete authentication:
 
    ```bash
    uipath auth
    ```
 
-   If you are the member of multiple UiPath organizations, you may be prompted on uipath.com to select the organization you want to authenticate against.
-
-   If you have multiple tenants in your UiPath organization, you may be prompted to select the tenant you wish to use.
+   If you are a member of multiple UiPath organizations, you may be prompted to select which one to authenticate against. If you have multiple tenants, you may be prompted to select a tenant.
 
    ![Step 01b](images/CodedAgents-IDE_Step-01b.png)
 
-   Once authenticated, this step will create your `.env` file with your access token, organization, and tenant information.
+   Once authenticated, a `.env` file will be created in your project folder with your access token, organization, and tenant information.
 
-
-
-7. Initialize the project to generate the entry points needed to run the agent:
+5. Initialize the project to generate the entry points needed to run the agent:
 
    ```bash
    uipath init
