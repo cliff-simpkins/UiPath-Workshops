@@ -1,0 +1,84 @@
+{
+  "id": "dad3303b-476d-4fbf-8b30-d14784d265f8",
+  "name": "MonsterSelector",
+  "version": "1.0.0",
+  "type": "lowCode",
+  "projectId": "dad3303b-476d-4fbf-8b30-d14784d265f8",
+  "metadata": {
+    "storageVersion": "47.0.0",
+    "isConversational": false,
+    "showProjectCreationExperience": true,
+    "targetRuntime": "pythonAgent",
+    "name": "MonsterSelector",
+    "description": null
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a D&D dungeon master helping select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary — just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": "You are a D&D dungeon master helping select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary — just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": " {{questDescription}} {{monsters}}",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": " "
+        },
+        {
+          "type": "variable",
+          "rawString": "input.questDescription"
+        },
+        {
+          "type": "simpleText",
+          "rawString": " "
+        },
+        {
+          "type": "variable",
+          "rawString": "input.monsters"
+        }
+      ]
+    }
+  ],
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "questDescription": {
+        "type": "string",
+        "description": "Description of the quest"
+      },
+      "monsters": {
+        "type": "array",
+        "description": "Candidate monsters from the D&D 5e API"
+      }
+    },
+    "required": [
+      "questDescription",
+      "monsters"
+    ]
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "monsterIndex": {
+        "type": "string",
+        "description": "The index slug of the chosen monster"
+      }
+    }
+  },
+  "settings": {
+    "model": "gpt-4o-2024-11-20",
+    "maxTokens": 16384,
+    "temperature": 0,
+    "engine": "basic-v2",
+    "maxIterations": 25
+  },
+  "resources": [],
+  "features": []
+}

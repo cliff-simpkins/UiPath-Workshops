@@ -1,0 +1,37 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "/content/agent.json",
+      "uniqueId": "56534c14-9a6a-4093-8558-10bce5969a9a",
+      "type": "agent",
+      "input": {
+        "type": "object",
+        "properties": {
+          "questDescription": {
+            "type": "string",
+            "description": "Description of the quest"
+          },
+          "monsters": {
+            "type": "array",
+            "description": "Candidate monsters from the D&D 5e API"
+          }
+        },
+        "required": [
+          "questDescription",
+          "monsters"
+        ]
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "monsterIndex": {
+            "type": "string",
+            "description": "The index slug of the chosen monster"
+          }
+        }
+      }
+    }
+  ]
+}
