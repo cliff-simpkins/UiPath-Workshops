@@ -1,6 +1,6 @@
 {
   "ProjectType": "Agent",
-  "Name": "MonsterSelector",
+  "Name": "Agent",
   "Description": null,
   "MainFile": null
 }

@@ -1,49 +1,13 @@
 {
-  "version": "1.0.0",
-  "type": "lowCode",
-  "projectId": "dad3303b-476d-4fbf-8b30-d14784d265f8",
-  "metadata": {
-    "storageVersion": "47.0.0",
-    "isConversational": false,
-    "showProjectCreationExperience": true,
-    "targetRuntime": "pythonAgent",
-    "name": "MonsterSelector",
-    "description": null
+  "version": "1.1.0",
+  "settings": {
+    "model": "gpt-4o-2024-11-20",
+    "maxTokens": 16384,
+    "temperature": 0,
+    "engine": "basic-v2",
+    "maxIterations": 25,
+    "mode": "standard"
   },
-  "messages": [
-    {
-      "role": "system",
-      "content": "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.",
-      "contentTokens": [
-        {
-          "type": "simpleText",
-          "rawString": "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice."
-        }
-      ]
-    },
-    {
-      "role": "user",
-      "content": " {{questDescription}} {{monsters}}",
-      "contentTokens": [
-        {
-          "type": "simpleText",
-          "rawString": " "
-        },
-        {
-          "type": "variable",
-          "rawString": "input.questDescription"
-        },
-        {
-          "type": "simpleText",
-          "rawString": " "
-        },
-        {
-          "type": "variable",
-          "rawString": "input.monsters"
-        }
-      ]
-    }
-  ],
   "inputSchema": {
     "type": "object",
     "properties": {
@@ -70,11 +34,46 @@
       }
     }
   },
-  "settings": {
-    "model": "gpt-4o-2024-11-20",
-    "maxTokens": 16384,
-    "temperature": 0,
-    "engine": "basic-v2",
-    "maxIterations": 25
-  }
+  "metadata": {
+    "storageVersion": "50.0.0",
+    "isConversational": false,
+    "showProjectCreationExperience": false,
+    "targetRuntime": "pythonAgent"
+  },
+  "type": "lowCode",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": " {{questDescription}} {{monsters}}",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": " "
+        },
+        {
+          "type": "variable",
+          "rawString": "questDescription"
+        },
+        {
+          "type": "simpleText",
+          "rawString": " "
+        },
+        {
+          "type": "variable",
+          "rawString": "monsters"
+        }
+      ]
+    }
+  ],
+  "projectId": "695a1e51-21f1-4e1b-aa86-54fc54519795"
 }

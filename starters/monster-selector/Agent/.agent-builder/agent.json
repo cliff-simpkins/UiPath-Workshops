@@ -1,25 +1,21 @@
 {
-  "id": "dad3303b-476d-4fbf-8b30-d14784d265f8",
-  "name": "MonsterSelector",
-  "version": "1.0.0",
-  "type": "lowCode",
-  "projectId": "dad3303b-476d-4fbf-8b30-d14784d265f8",
+  "id": "695a1e51-21f1-4e1b-aa86-54fc54519795",
+  "version": "1.1.0",
+  "name": "Agent",
   "metadata": {
-    "storageVersion": "47.0.0",
+    "storageVersion": "50.0.0",
     "isConversational": false,
-    "showProjectCreationExperience": true,
-    "targetRuntime": "pythonAgent",
-    "name": "MonsterSelector",
-    "description": null
+    "showProjectCreationExperience": false,
+    "targetRuntime": "pythonAgent"
   },
   "messages": [
     {
       "role": "system",
-      "content": "You are a D&D dungeon master helping select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary — just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.",
+      "content": "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.",
       "contentTokens": [
         {
           "type": "simpleText",
-          "rawString": "You are a D&D dungeon master helping select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary — just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice."
+          "rawString": "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice."
         }
       ]
     },
@@ -33,7 +29,7 @@
         },
         {
           "type": "variable",
-          "rawString": "input.questDescription"
+          "rawString": "questDescription"
         },
         {
           "type": "simpleText",
@@ -41,7 +37,7 @@
         },
         {
           "type": "variable",
-          "rawString": "input.monsters"
+          "rawString": "monsters"
         }
       ]
     }
@@ -77,8 +73,11 @@
     "maxTokens": 16384,
     "temperature": 0,
     "engine": "basic-v2",
-    "maxIterations": 25
+    "maxIterations": 25,
+    "mode": "standard"
   },
+  "type": "lowCode",
+  "projectId": "695a1e51-21f1-4e1b-aa86-54fc54519795",
   "resources": [],
   "features": []
 }
