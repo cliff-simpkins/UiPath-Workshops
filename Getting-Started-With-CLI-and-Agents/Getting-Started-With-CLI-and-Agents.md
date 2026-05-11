@@ -11,7 +11,6 @@ In this workshop, you will use the UiPath command line interface (CLI) to build 
 
 **Estimated time:** 30-45 minutes
 
-
 ## What you are building
 
 This lab walks you through building a **Monster Selector** - a low-code agent for a fictional Adventurer's Guild in a fantasy role-playing game (RPG) world. The agent picks the most thematically appropriate monster for a quest from a list of candidates. It is deliberately simple so the focus stays on the CLI workflow, not the domain logic. This same agent is used in the companion [Getting Started with Agent Evals](../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) workshop.
@@ -19,7 +18,6 @@ This lab walks you through building a **Monster Selector** - a low-code agent fo
 > **Feel free to adapt the lab**
 >
 > You can follow along with the Monster Selector example or adapt it to your own use case. To customize it, you only need to adjust three things: the system prompt, your input fields, and your output fields. The rest of the lab works the same way for almost any single-turn classification or selection scenario.
-
 
 * * *
 
@@ -35,10 +33,7 @@ No prior UiPath experience is required.
 
 > **What this lab does not need.** Unlike the coded agent lab, this lab does not require Python, `uv`, or a coding agent. Low-code agents are configured entirely with a system prompt and JSON schemas - no code.
 
-
 * * *
-
-# Build an Agent using the CLI
 
 ## Step 1 - Install the UiPath CLI and Agent Tool
 
@@ -364,7 +359,6 @@ Key commands from this lab:
 | `uip agent validate <path>` | Validate the agent schema locally before upload |
 | `uip solution upload .` | Upload the solution to Studio Web as an editable project |
 
-
 ## What's Next
 
 - **Add a Tool to Your Agent** *(coming soon)* - extend Monster Selector with a tool that calls the D&D 5e API directly, removing the `monsters[]` input and letting the agent decide what to search for. This sets up trajectory evaluation in the Evals lab.
@@ -373,9 +367,8 @@ Key commands from this lab:
 - [UiPath Agents documentation](https://docs.uipath.com) - full reference for low-code and coded agent capabilities
 - [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion
 
-
 > **Next time, skip to the end.** Now that you understand what each command does, your coding agent can run the entire sequence from a single prompt. With UiPath skills installed (Step 2), try this in a fresh directory:
 >
-> *"Create a low-code UiPath agent that [describe your domain]. Scaffold the solution and agent, set the system prompt, define inputs and outputs, apply the user message workaround, validate, and upload to Studio Web."*
+> *"Create a low-code UiPath agent that [describe your domain]. Scaffold the solution and agent, configure agent.json and entry-points.json directly, validate, and upload to Studio Web."*
 >
-> Your coding agent will run the same CLI commands you ran manually. The manual walkthrough gives you the mental model to verify it got it right.
+> The skills are what keep your coding agent on the right path - they tell it which CLI commands are current, which configuration is done in files directly, and which commands to avoid. Without skills installed, a coding agent may discover and use deprecated CLI commands that no longer work. The manual walkthrough gives you the mental model to verify it got it right.
