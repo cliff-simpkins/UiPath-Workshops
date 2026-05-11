@@ -1,12 +1,12 @@
 {
-  "DocVersion": "1.0.0",
-  "StudioMinVersion": "2025.10.0",
-  "SolutionId": "61f55928-0299-4374-8a36-2c990679989d",
-  "Projects": [
-    {
-      "Type": "Agent",
-      "ProjectRelativePath": "Agent\\project.uiproj",
-      "Id": "863f170b-9d52-487a-9541-c1fec57be067"
-    }
-  ]
+    "DocVersion": "1.0.0",
+    "StudioMinVersion": "2025.10.0",
+    "SolutionId": "1b89fcec-23f1-4012-3609-08dead0a8cca",
+    "Projects": [
+        {
+            "Type": "Agent",
+            "ProjectRelativePath": "MonsterSelector\\project.uiproj",
+            "Id": "5602b382-f7b5-4a30-9660-3d3fb7ec48c4"
+        }
+    ]
 }

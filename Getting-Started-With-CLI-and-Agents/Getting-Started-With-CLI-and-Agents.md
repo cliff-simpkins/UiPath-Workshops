@@ -1,53 +1,50 @@
 # Getting Started with Agents using the CLI
 
-In this workshop, you will use the UiPath command line interface ('CLI') to build a low-code agent from scratch - without opening using UiPath Studio until the very last step. You will do the following:
+In this workshop, you will use the UiPath command line interface (CLI) to build a low-code agent from scratch - without opening UiPath Studio until the final step. You will do the following:
 
 1. Install the UiPath CLI, skills, and the agent tool
-2. Scaffold a new low-code agent project
+2. Scaffold a new solution and low-code agent project
 3. Set the system prompt that drives the agent's behavior
 4. Define the agent's input and output schemas
-5. Validate the agent and push it to UiPath Studio Web
+5. Validate the agent and upload it to UiPath Studio Web
 6. Test the agent in Studio Web with a real scenario
 
 **Estimated time:** 30-45 minutes
 
 
-## What we are building
-In this guide, we will build and publish a low-code agent for a fictional Adventurer's Guild for a fantasy role-playing game ('RPG') world. 
+## What you are building
 
-We will build a **Monster Selector** that picks the most thematically appropriate monster for a quest that it is provided from a list of potential foes. This agent will be ready to use in larger orchestration patterns and it will also be used in a companion 'Getting Started with Evals' guide.
+This lab walks you through building a **Monster Selector** - a low-code agent for a fictional Adventurer's Guild in a fantasy role-playing game (RPG) world. The agent picks the most thematically appropriate monster for a quest from a list of candidates. It is deliberately simple so the focus stays on the CLI workflow, not the domain logic. This same agent is used in the companion [Getting Started with Agent Evals](../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) workshop.
 
 > **Feel free to adapt the lab**
 >
-> As you complete the guide, you can follow along with the Monster Selector example, or adapt it to your own use-case. To customize it, you only need to adjust three things: the system prompt that details your scenario's persona and rules; your input values; and your output values.
->
-> After adjusting these values, the rest of the lab should enable almost any scenario.
+> You can follow along with the Monster Selector example or adapt it to your own use case. To customize it, you only need to adjust three things: the system prompt, your input fields, and your output fields. The rest of the lab works the same way for almost any single-turn classification or selection scenario.
 
 
 * * *
 
 ## Prerequisites
 
-This lab assumes you have the following:
-
-- **CLI version** - validated against UiPath CLI v0.2.0 (installed in Step 1). Different versions may behave differently; report drift with `uip feedback send`.
+- **UiPath CLI v0.9.1** - installed in Step 1. Different versions may behave differently; if commands produce unexpected output, check your version with `uip --version` and report drift with `uip feedback send`.
 - **UiPath account** - sign up or log in at [cloud.uipath.com](https://cloud.uipath.com) before starting.
-- **Node.js 18+** - required to install the UiPath CLI. Check with `node --version`. Download from [nodejs.org](https://nodejs.org/) if needed.
-- **Bash terminal** - the commands in this lab use Bash syntax. In VS Code, open a new terminal and select **Git Bash** (or equivalent) as the terminal type. PowerShell and CMD syntax differ and may cause unexpected errors.
-- **Admin rights** - installing global npm packages requires admin/elevated permissions. If you are on a work laptop with restrictions, confirm you can install packages before starting.
+- **Node.js 18+** - required to install the CLI. Check with `node --version`. Download from [nodejs.org](https://nodejs.org/) if needed.
+- **A terminal** - PowerShell or Bash both work. The commands in this lab are shell-agnostic.
+- **Admin rights** - installing global npm packages requires elevated permissions. Confirm you can run `npm install -g` before starting.
 
-No existing knowledge of UiPath is required for this lab.
+No prior UiPath experience is required.
 
-> **What this lab does NOT need.** Unlike the coded agent lab, this lab does not require Python, `uv`, or a coding agent. Low-code agents can be configured entirely using the Agent Builder or using the CLI - their "code" is a system prompt plus input/output schemas, not Python or Javascript.
+> **What this lab does not need.** Unlike the coded agent lab, this lab does not require Python, `uv`, or a coding agent. Low-code agents are configured entirely with a system prompt and JSON schemas - no code.
 
+
+* * *
 
 # Build an Agent using the CLI
 
 ## Step 1 - Install the UiPath CLI and Agent Tool
 
-The UiPath CLI (`uip`) is a cross-platform command-line tool for UiPath authentication, project scaffolding, and deployment. It uses a modular tool system - the base CLI handles auth, and you install additional tools for the project types you build.
+The UiPath CLI (`uip`) is a cross-platform tool for UiPath authentication, project scaffolding, and deployment. It uses a plugin system - the base CLI handles auth, and you install tools for the project types you build.
 
-Install the base CLI globally using npm:
+Install the base CLI globally:
 
 ```bash
 npm install -g @uipath/cli
@@ -59,15 +56,15 @@ Verify the installation:
 uip --version
 ```
 
-You should see a version number like `0.2.0`.
+You should see `0.9.1` or later.
 
-Now install the agent tool - this adds the `uip agent` command group used throughout this lab:
+Now install the agent tool, which adds the `uip agent` command group used throughout this lab:
 
 ```bash
 uip tools install agent-tool
 ```
 
-Verify the tool is installed:
+Confirm it installed:
 
 ```bash
 uip tools list
@@ -77,19 +74,21 @@ You should see `agent-tool` in the output.
 
 <!-- screenshot: step-01.png - terminal showing uip --version and tools list output -->
 
+* * *
 
 ## Step 2 - Install UiPath Skills for Your Coding Agent *(optional)*
 
-If you are using a coding agent (Claude Code, Cursor, Copilot, etc.) alongside the CLI, installing the UiPath skills gives it knowledge of agent project structure, CLI commands, and best practices. Skipping this step does not affect the lab - every command is explicit below - but skills make agent building faster when you want your coding agent to troubleshoot or edit the agent later.
+If you are using a coding agent (Claude Code, Cursor, Copilot, etc.) alongside the CLI, installing the UiPath skills gives it knowledge of agent project structure, CLI commands, and best practices. Every command in this lab is spelled out explicitly - skipping this step does not affect the walkthrough - but skills make it faster to troubleshoot or extend the agent afterward.
 
 ```bash
 uip skills install --agent claude
 ```
 
-If you are using a different coding agent, replace `claude` with your agent: `cursor`, `copilot`, `gemini`, or `codex`.
+Replace `claude` with your agent if you are using a different one: `cursor`, `copilot`, `gemini`, or `codex`.
 
-The skills are installed globally to your home directory (e.g., `~/.claude/skills/` for Claude Code). They are available in every project from this point forward.
+Skills install globally to your home directory (e.g., `~/.claude/skills/` for Claude Code) and are available in every project from this point forward.
 
+* * *
 
 ## Step 3 - Authenticate to UiPath
 
@@ -99,12 +98,7 @@ Authenticate the CLI to your UiPath account:
 uip login
 ```
 
-This opens a browser window where you will:
-
-1. Sign in to your UiPath account
-2. Select your tenant (if you have multiple)
-
-Once complete, the terminal confirms you are logged in.
+This opens a browser window where you sign in and select your tenant. Once complete, the terminal confirms you are logged in.
 
 Verify your login status at any time with:
 
@@ -112,89 +106,101 @@ Verify your login status at any time with:
 uip login status
 ```
 
+You should see `"Status": "Logged in"` along with your organization and tenant name.
+
 <!-- screenshot: step-03.png - terminal showing login status output -->
 
+* * *
 
-## Step 4 - Scaffold the Monster Selector Agent
+## Step 4 - Scaffold the Solution and Agent
 
-Create a working directory for the lab and scaffold a new low-code agent:
+Low-code agents live inside a **solution** - the deployable unit the CLI uploads to Studio Web. You create the solution first, then scaffold the agent inside it.
+
+Create a working directory and scaffold the solution:
 
 ```bash
 mkdir Monster-Selector-Lab
 cd Monster-Selector-Lab
-
-uip agent init MonsterSelector
+uip solution new MonsterSelector
 ```
 
-This creates a `MonsterSelector/` directory containing an `Agent/` subdirectory (the agent itself), a `MonsterSelector.uipx` solution manifest, a `resources/` folder, and an auto-generated project ID.
+This creates a `MonsterSelector/` directory containing `MonsterSelector.uipx` - the solution manifest.
 
-  ![Screenshot - Init Agent ](images/CLI_Agents-Step-04.png)
+Now scaffold the agent project inside the solution directory:
 
+```bash
+uip agent init MonsterSelector/MonsterSelector
+```
 
-Move into the solution root:
+`uip agent init <path>` creates the agent project at the given path. It generates `agent.json` (the system prompt, schemas, and model settings), `entry-points.json`, an empty `evals/` scaffold, and an auto-generated project ID.
+
+Move into the solution directory and register the agent with the solution:
 
 ```bash
 cd MonsterSelector
+uip solution project add MonsterSelector
 ```
 
-> **Run all `uip agent` commands from the solution root (`MonsterSelector/`), not from inside `Agent/`.** The CLI looks for the solution manifest in the current directory - running from `Agent/` will fail with *"Cannot read properties of null (reading 'inputSchema')"*.
+You should see `"Status": "Added successfully"`. This step is required - `uip agent init` does not reliably auto-register the project with the solution in the current CLI version.
 
-The scaffold gives you a minimal working agent with placeholder inputs and outputs. In the next three steps, you'll set the system prompt that drives the agent's behavior, then replace the placeholder input and output schemas.
+<!-- screenshot: step-04.png - terminal showing solution new, agent init, and project add output -->
 
-<!-- screenshot: step-04.png - terminal showing uip agent init output -->
+> **Two directories named MonsterSelector.** Your lab directory now contains `MonsterSelector/` (the solution) which in turn contains another `MonsterSelector/` (the agent project). This is normal - the solution and the agent project can share a name. As you work through the next steps, pay attention to which directory you are in. Step 4 ends with you inside the solution directory (`Monster-Selector-Lab/MonsterSelector/`).
 
+* * *
 
 ## Step 5 - Set the System Prompt
 
-The system prompt is where your agent's behavior is defined. It provides the instructions for how you want your agent to behave - what context it should assume to have, the rules for operation, the voice of its response, and the output format. Set it in one command:
+The system prompt defines the agent's behavior - its persona, the rules it follows, and the output format it must return. Move into the agent directory and set it:
 
 ```bash
+cd MonsterSelector
 uip agent config set systemPrompt "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice."
 ```
 
-Verify the prompt was stored:
+Verify it was stored:
 
 ```bash
 uip agent config get systemPrompt
 ```
 
-> **As you adapt the prompt to your use case**, you can use the prompt format above to structure your prompt:
->
-> (1) swap the "RPG game master" persona for the persona relevant to your agent's domain - a triage nurse picking the right specialist, a procurement officer matching vendors to requirements, a librarian recommending books.
->
-> (2) swap out the instructions to match what you want your agent to do - the rules that you want your agent persona to follow and the exact output that you want it to return. The more specific the prompt, the better your agent will perform.
->
-> Provided you tailor the prompt and the inputs/outputs in the next two steps to your use case, the rest of the lab works the same way for almost any scenario.
+You should see the prompt text returned under `"Value"`.
+
+> **Adapting the prompt to your use case:** swap the RPG game master persona for your domain (a triage nurse picking a specialist, a procurement officer matching vendors, a librarian recommending books), and replace the selection rules with the behavior you want. The more specific the instructions and output format, the better your agent will perform. The input and output fields you define in the next two steps should match what your prompt refers to.
+
+<!-- screenshot: step-05.png - terminal showing config set and config get output -->
+
+* * *
 
 ## Step 6 - Define the Input Schema
 
-A Monster Selector needs two inputs: the **quest description** (what the party is being asked to do) and the **list of candidate monsters** (already fetched from an external source like the D&D 5e API). *If you customized the prompt in Step 5, define inputs that match your own domain instead - e.g., patient symptoms + a list of specialists, or vendor requirements + a list of candidate vendors.*
-
-Add the first input:
+A Monster Selector needs two inputs: the **quest description** and the **list of candidate monsters**. Add them now (you are still inside the agent directory from Step 5):
 
 ```bash
 uip agent input add questDescription --type string --description "Description of the quest"
 ```
 
-Add the second input:
-
 ```bash
 uip agent input add monsters --type array --description "Candidate monsters from the D&D 5e API"
 ```
 
-Remove the placeholder input that came from the scaffold:
+Remove the placeholder input that came with the scaffold:
 
 ```bash
 uip agent input remove input
 ```
 
-![Screenshot - Adding Inputs](images/CLI_Agents-Step-06.png)
+Each command returns JSON confirming the change. The changes are written to both `agent.json` and `entry-points.json`.
 
-Each command emits JSON confirming the change (`"Status": "Input added"` or `"Status": "Input removed"`), and the added inputs are persisted into `Agent/agent.json` -  open it in your editor to see the updated schema.
+> **Adapting to your use case:** replace `questDescription` and `monsters` with the input fields your domain requires - for example, `patientSymptoms` and `specialistList`, or `vendorRequirements` and `candidateVendors`.
+
+<!-- screenshot: step-06.png - terminal showing input add and input remove output -->
+
+* * *
 
 ## Step 7 - Define the Output Schema
 
-The agent needs to return a single value: the **index slug** of the chosen monster (e.g., `"ancient-red-dragon"` or `"kraken"`). The caller uses this slug to look up the full monster stats from the D&D API. *If you're on a custom domain, your output should be whatever single value the caller actually needs - a specialist ID, a recommended vendor, a book title.*
+The agent returns a single value: the **index slug** of the chosen monster (e.g., `"aboleth"` or `"kraken"`). The caller uses this slug to look up full monster data from an API.
 
 Add the output:
 
@@ -208,66 +214,107 @@ Remove the placeholder output:
 uip agent output remove content
 ```
 
-![Screenshot - Adding Outputs](images/CLI_Agents-Step-07.png)
+<!-- screenshot: step-07.png - terminal showing output add and output remove output -->
 
+* * *
 
-## Step 8 - Validate the Agent
+## Step 8 - Fix the User Message (Workaround)
 
-Before pushing, validate the agent project locally:
+**This step corrects a known bug in `uip agent input add`.** Skip it and validation in the next step will fail with errors like `Expected "questDescription" but got "input.questDescription"`.
 
-```bash
-uip agent validate
-```
+When `uip agent input add` writes the user message template into `agent.json`, it produces inconsistent output: the `content` string uses bare variable references (`{{questDescription}}`), but the `contentTokens` array uses the `input.` prefix (`input.questDescription`). These must match, and they do not.
 
-You should see `"Status": "Valid — compatible with Studio Web"` in the JSON output.
-
-> **About the storage version warnings.** You may see warnings like `storageVersion is 47.0.0 but validation schemas are at 44.0.0`. These are safe to ignore - the CLI auto-migrates the storage version when it publishes the agent. The warning is a known noise issue in CLI 0.2.0 that does not block anything.
-
-
-## Step 9 - Push to UiPath Studio Web
-
-Push the agent to Studio Web:
-
-```bash
-uip agent push
-```
-
-The output confirms the push with a `SolutionId` and `CloudProjectId` - your agent now exists as an editable project in Studio Web.
+Open `agent.json` inside the agent directory (`Monster-Selector-Lab/MonsterSelector/MonsterSelector/agent.json`) and find the `messages` array. The second entry (the user message) will look like this:
 
 ```json
 {
-  "Result": "Success",
-  "Code": "AgentPush",
-  "Data": {
-    "Status": "Agent imported into Studio Web",
-    "Name": "MonsterSelector",
-    "SolutionId": "<uuid>",
-    "ProjectCount": 1,
-    "CloudProjectId": "<uuid>"
-  }
+  "role": "user",
+  "content": "{{questDescription}} {{monsters}}",
+  "contentTokens": [
+    { "type": "variable", "rawString": "input.questDescription" },
+    { "type": "simpleText", "rawString": " " },
+    { "type": "variable", "rawString": "input.monsters" }
+  ]
 }
 ```
 
-> **Push vs. publish.** `uip agent push` imports the agent as a **source project in Studio Web** - editable, testable, and ready for iteration. `uip agent publish` would instead pack and upload to **UiPath Orchestrator** as a deployable package. Publish is the right call for production deployment pipelines; push is the right call for development and testing, which is what this lab is doing.
+Update `content` to add the `input.` prefix to each variable reference, so the entry reads exactly:
 
-<!-- screenshot: step-09.png - terminal showing successful push output -->
+```json
+{
+  "role": "user",
+  "content": "{{input.questDescription}} {{input.monsters}}",
+  "contentTokens": [
+    { "type": "variable", "rawString": "input.questDescription" },
+    { "type": "simpleText", "rawString": " " },
+    { "type": "variable", "rawString": "input.monsters" }
+  ]
+}
+```
 
+Save the file. The `contentTokens` array does not need to change - only the `content` string.
 
-## Step 10 - Test the Agent in Studio Web
+> **Report this bug.** Run the following from any directory to file it directly from the CLI:
+>
+> ```bash
+> uip feedback send "uip agent input add writes bare {{fieldName}} in messages[1].content but input.fieldName in contentTokens - these must match and uip agent validate rejects the inconsistency. Repro: uip agent init, uip agent input add <field>, uip agent validate."
+> ```
 
-1. Log in to [cloud.uipath.com](https://cloud.uipath.com) and select **Studio** from the side menu.
+<!-- screenshot: step-08.png - agent.json open in editor showing the corrected user message block -->
 
-2. Find your **MonsterSelector** agent in the project list. Click it to open.
+* * *
 
-   <!-- screenshot: step-10a.png - Studio Web project list showing MonsterSelector -->
+## Step 9 - Validate the Agent
 
-3. Studio Web opens the agent in Agent Builder. You should see the system prompt you set in Step 5 in the prompt panel, and the `questDescription` + `monsters` inputs and `monsterIndex` output in their respective panels.
+Move back to the solution directory and validate the agent:
 
-4. Click **Debug** (top toolbar). Paste the following JSON as the input:
+```bash
+cd ..
+uip agent validate MonsterSelector
+```
+
+You should see `"Status": "Valid"` with `"StorageVersion": "50.0.0"` and a `"Validated"` summary showing `agent: true`. Validation also generates the `.agent-builder/` files used by Studio Web - you do not need to touch these.
+
+If validation fails, re-check that you applied the `content` fix in Step 8 and that the two variable references both use the `input.` prefix.
+
+<!-- screenshot: step-09.png - terminal showing valid validation output -->
+
+* * *
+
+## Step 10 - Upload to Studio Web
+
+Upload the solution to Studio Web from the solution directory:
+
+```bash
+uip solution upload .
+```
+
+A successful upload returns `"Status": "Uploaded successfully"` along with a `SolutionId` and a `DesignerUrl` you can open directly in a browser. Your agent now exists as an editable project in Studio Web.
+
+> **Upload vs. deploy.** `uip solution upload` sends the solution to Studio Web as an editable source project - the right target for development and testing. When you are ready to run the agent in production, you would instead use `uip solution pack` + `uip solution publish` to build a versioned package and deploy it to Orchestrator. This lab uses upload.
+
+<!-- screenshot: step-10.png - terminal showing successful upload output with SolutionId -->
+
+* * *
+
+## Step 11 - Test the Agent in Studio Web
+
+1. Log in to [cloud.uipath.com](https://cloud.uipath.com) and open **Studio** from the side menu.
+
+2. Find your **MonsterSelector** project in the project list and click to open it.
+
+   <!-- screenshot: step-11a.png - Studio Web project list showing MonsterSelector -->
+
+3. Studio Web opens the agent in Agent Builder. Confirm you can see:
+   - The system prompt in the right panel
+   - `questDescription` and `monsters` listed as inputs
+   - `monsterIndex` listed as the output
+
+4. Click **Debug** in the top toolbar. In the input panel, paste the following JSON:
 
    ```json
    {
-     "questDescription": "A wealthy merchant's caravan has been attacked by a massive creature while crossing the harbor. Eyewitnesses report tentacles, terrible hypnotic powers, and strange psychic disturbances for miles around.",
+     "questDescription": "A wealthy merchant's caravan has been attacked near the harbor. Eyewitnesses report tentacles, hypnotic powers, and strange psychic disturbances for miles around.",
      "monsters": [
        {"index": "aboleth", "name": "Aboleth"},
        {"index": "kraken", "name": "Kraken"},
@@ -278,60 +325,57 @@ The output confirms the push with a `SolutionId` and `CloudProjectId` - your age
    }
    ```
 
-5. Click the **Save & Debug** button to run the test.
+5. Click **Save & Debug** to run the agent.
 
-    ![Screenshot - Debugging](images/CLI_Agents-Step-10a.png)
+   <!-- screenshot: step-11b.png - Studio Web debug panel with input JSON entered -->
 
+6. The agent runs and returns a result in the Output panel. The `monsterIndex` output should contain `"aboleth"` or `"kraken"` - both are defensible picks. An aboleth is the iconic tentacled, mind-controlling aquatic horror in D&D lore; a kraken is larger and less cerebral. If the agent returns `"giant-octopus"`, the prompt may need tightening.
 
-5. The agent will run and you should see progress in the ``Output`` window. You should see both the inputs and outputs visible in the ``Agent run`` window.
+   <!-- screenshot: step-11c.png - Studio Web output panel showing monsterIndex result -->
 
-      ![Screenshot - Results](images/CLI_Agents-Step-10b.png)
+> **Agents are non-deterministic.** Even with `temperature: 0`, the model can produce different outputs across runs. The goal is a defensible pick, not a specific string. Use the next two examples to develop a feel for how the agent reasons - consistent wrong answers are a signal to refine the prompt.
 
-    Once done, the `monsterIndex` should contain the suggested monster - most likely `"aboleth"` (aboleths are the iconic tentacled, mind-controlling aquatic horror in D&D lore) or `"kraken"` (larger, less cerebral). Both are defensible picks.
+Try these additional inputs:
 
-
-> **Expect non-determinism.** Even with `temperature: 0`, LLMs can produce different outputs across runs, and the default model (`gpt-4o-2024-11-20`) can be updated behind the scenes. The goal here is *a defensible pick*, not a specific string. If the agent returns `"giant-octopus"`, that's a worse pick - worth testing with a few more inputs to see if the prompt needs tightening.
-
-Try a few more quests to get a feel for how the agent reasons:
-
-- `"questDescription": "Clear out the moon-worshipping coven that's been abducting village children under the full moon"` with monster candidates including `"sea-hag"`, `"night-hag"`, `"green-hag"`, `"dryad"` → should pick a hag
-- `"questDescription": "Slay the beast that's been terrorizing the northern kingdoms with fire and ancient cruelty"` with candidates including `"ancient-red-dragon"`, `"young-red-dragon"`, `"hell-hound"`, `"salamander"` → should pick the ancient red dragon
+- `"questDescription": "Clear out the moon-worshipping coven abducting village children under the full moon"` with candidates `"sea-hag"`, `"night-hag"`, `"green-hag"`, `"dryad"` - should return a hag variant
+- `"questDescription": "Slay the beast terrorizing the northern kingdoms with fire and ancient cruelty"` with candidates `"ancient-red-dragon"`, `"young-red-dragon"`, `"hell-hound"`, `"salamander"` - should return `"ancient-red-dragon"`
 
 * * *
 
+## Congratulations
 
-## Congratulations!
+You built and published a low-code agent using the UiPath CLI:
 
-You've built a published low-code agent using the UiPath CLI:
+- Scaffolded a solution and agent project from the terminal
+- Set the system prompt, input schema, and output schema using CLI commands
+- Validated the project locally before uploading
+- Uploaded to Studio Web and ran a live test
 
-- You scaffolded a new agent project with `uip agent init` - no browser, no code editor
-- You defined structured inputs and outputs via CLI commands - not JSON editing
-- You wrote the agent's behavior as a system prompt and stored it with `uip agent config set`
-- You validated and pushed it to Studio Web with two commands - ready for testing, iteration, and (eventually) evaluation
-
-The key commands you used:
+Key commands from this lab:
 
 | Command | What it does |
-|---|---|
-| `uip agent init` | Scaffold a new low-code agent project |
+| --- | --- |
+| `uip solution new <name>` | Create a new solution (the deployable container) |
+| `uip agent init <path>` | Scaffold a new low-code agent project |
+| `uip solution project add <path>` | Register an agent project with its solution |
+| `uip agent config set systemPrompt` | Write the system prompt into `agent.json` |
 | `uip agent input add` / `output add` | Define input and output parameters |
 | `uip agent input remove` / `output remove` | Remove a parameter |
-| `uip agent config set` / `get` | Read or write an agent configuration value (system prompt, model, etc.) |
-| `uip agent validate` | Local schema check against Studio Web requirements |
-| `uip agent push` | Import the agent as a source project in Studio Web |
+| `uip agent validate <path>` | Validate the agent schema locally before upload |
+| `uip solution upload .` | Upload the solution to Studio Web as an editable project |
 
 
 ## What's Next
 
-- **[Getting Started with Agent Evals](../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md)** *(coming soon)* - use your Monster Selector to learn how to build evaluation sets, run cloud evaluations, and interpret scores. Picks up exactly where this lab ends.
-- **Orchestration patterns** *(future lab)* - your agent is now callable from API workflows, UiPath Flow projects, and other agents. A future workshop will cover invoking it from an orchestration.
+- **Add a Tool to Your Agent** *(coming soon)* - extend Monster Selector with a tool that calls the D&D 5e API directly, removing the `monsters[]` input and letting the agent decide what to search for. This sets up trajectory evaluation in the Evals lab.
+- **[Getting Started with Agent Evals](../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md)** *(coming soon)* - build evaluation sets, run cloud evaluations, and interpret scores against this agent.
+- **Orchestration patterns** *(future lab)* - your agent is callable from UiPath Flow projects, API workflows, and other agents.
 - [UiPath Agents documentation](https://docs.uipath.com) - full reference for low-code and coded agent capabilities
 - [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion
-- **Hit a snag?** Run `uip feedback send` to report a bug or improvement directly from the CLI.
 
 
-> **Next time, you can skip to the end.** Now that you know what `uip agent init`, `input add`, `output add`, and `config set systemPrompt` do under the hood, your coding agent can do all of it from a single prompt. With the UiPath skills installed (Step 2), try this in a fresh empty directory:
+> **Next time, skip to the end.** Now that you understand what each command does, your coding agent can run the entire sequence from a single prompt. With UiPath skills installed (Step 2), try this in a fresh directory:
 >
-> > *"Create a low-code UiPath agent that [describe your domain in plain English - e.g., 'triages incoming patient messages and picks the right specialist based on symptoms']. Scaffold it, set the system prompt, define inputs and outputs, validate, and push to Studio Web."*
+> *"Create a low-code UiPath agent that [describe your domain]. Scaffold the solution and agent, set the system prompt, define inputs and outputs, apply the user message workaround, validate, and upload to Studio Web."*
 >
-> Your coding agent will read the skill, run the same CLI commands you just ran manually, and push the agent in about a minute. The manual walkthrough you did here is is intended to provide you with mental model to know whether your coding agent got it right.
+> Your coding agent will run the same CLI commands you ran manually. The manual walkthrough gives you the mental model to verify it got it right.

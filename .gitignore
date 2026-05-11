@@ -4,3 +4,14 @@ CLAUDE.md
 
 # DevRel internal operational files — never committed
 .devrel/
+
+# Generated lab tests (extracted on demand from guide.md; see ADR-0002)
+**/test_lab.py
+
+# Python runtime artifacts
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+**/.pytest_cache/
+.venv/

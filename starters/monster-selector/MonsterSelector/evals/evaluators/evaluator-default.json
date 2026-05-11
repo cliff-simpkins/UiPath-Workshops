@@ -1,6 +1,6 @@
 {
   "fileName": "evaluator-default.json",
-  "id": "226b69e5-3d39-414f-8f89-58c6fbd00701",
+  "id": "01f0cce2-9810-43ef-add1-57ec1c67929a",
   "name": "Default Evaluator",
   "description": "An evaluator that uses a LLM to score the similarity of the actual output to the expected output",
   "type": 5,
@@ -8,7 +8,6 @@
   "prompt": "As an expert evaluator, analyze the semantic similarity of these JSON contents to determine a score from 0-100. Focus on comparing the meaning and contextual equivalence of corresponding fields, accounting for alternative valid expressions, synonyms, and reasonable variations in language while maintaining high standards for accuracy and completeness. Provide your score with a justification, explaining briefly and concisely why you gave that score.\n----\nExpectedOutput:\n{{ExpectedOutput}}\n----\nActualOutput:\n{{ActualOutput}}\n",
   "model": "same-as-agent",
   "targetOutputKey": "*",
-  "targetSubOutputKey": "",
-  "createdAt": "2026-04-17T01:23:12.619Z",
-  "updatedAt": "2026-04-17T01:23:12.619Z"
+  "createdAt": "2026-05-11T08:49:13.379Z",
+  "updatedAt": "2026-05-11T08:49:13.379Z"
 }

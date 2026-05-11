@@ -17,7 +17,7 @@ By the end of the workshop, you will have a working coded agent built entirely t
 ## Prerequisites
 
 This lab assumes you have the following:
-- **CLI version** - validated against UiPath CLI v0.2.0 (installed in Step 1). Different versions may behave differently; report drift with `uip feedback send`.
+- **CLI version** - validated against UiPath CLI v0.9.1 (installed in Step 1). Different versions may behave differently; report drift with `uip feedback send`.
 - **UiPath account on cloud.uipath.com** - sign up or log in at [cloud.uipath.com](https://cloud.uipath.com) before starting.
 - **Node.js 18+** - required to install the UiPath CLI. Check with `node --version`. Download from [nodejs.org](https://nodejs.org/) if needed.
 - **VS Code** with a coding agent (Claude Code, Copilot, or Cursor). The lab instructions use Claude Code, but any supported coding agent will work.
@@ -50,7 +50,7 @@ Verify the installation:
 uip --version
 ```
 
-You should see a version number like `0.2.0`.
+You should see a version number like `0.9.1`.
 
 Now install the coded agent tool - this adds the `uip codedagent` command group used throughout this lab:
 
@@ -81,7 +81,7 @@ uip skills install --agent claude
 
 If you are using a different coding agent, replace `claude` with your agent: `cursor`, `copilot`, `gemini`, or `codex`.
 
-You should see output confirming the installed skills. As of CLI 0.2.0, the command emits JSON:
+The command emits JSON listing the installed skills. The skill catalog grows with each CLI release - your output may include more skills than shown here. The following reflects CLI v0.9.1:
 
 ```json
 {
@@ -91,20 +91,27 @@ You should see output confirming the installed skills. As of CLI 0.2.0, the comm
     "RootDir": "C:\\Users\\<you>",
     "Skills": [
       "uipath-agents",
-      "uipath-case-management",
       "uipath-coded-apps",
+      "uipath-data-fabric",
       "uipath-diagnostics",
       "uipath-feedback",
+      "uipath-gov-access-policy",
+      "uipath-gov-aops-policy",
       "uipath-human-in-the-loop",
+      "uipath-interact",
+      "uipath-maestro-case",
       "uipath-maestro-flow",
       "uipath-planner",
       "uipath-platform",
+      "uipath-review",
       "uipath-rpa",
       "uipath-rpa-legacy",
-      "uipath-servo"
+      "uipath-solution-design",
+      "uipath-tasks",
+      "uipath-test"
     ],
     "Agents": ["claude"],
-    "Installed": 12
+    "Installed": 19
   }
 }
 ```

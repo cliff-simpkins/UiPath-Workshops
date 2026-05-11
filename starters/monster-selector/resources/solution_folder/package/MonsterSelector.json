@@ -1,26 +1,22 @@
 {
   "docVersion": "1.0.0",
   "resource": {
-    "name": "Agent",
+    "name": "MonsterSelector",
     "kind": "package",
     "apiVersion": "orchestrator.uipath.com/v1",
-    "projectKey": "dad3303b-476d-4fbf-8b30-d14784d265f8",
-    "isOverridable": false,
+    "projectKey": "5602b382-f7b5-4a30-9660-3d3fb7ec48c4",
     "dependencies": [],
     "runtimeDependencies": [],
-    "files": [],
     "folders": [
       {
         "fullyQualifiedName": "solution_folder"
       }
     ],
     "spec": {
-      "fileName": null,
-      "fileReference": null,
-      "name": "Agent",
-      "description": null
+      "name": "MonsterSelector"
     },
     "locks": [],
-    "key": "f1ce768a"
+    "key": "2b38925b-53c0-4795-b08b-ad89a2a871e6",
+    "files": []
   }
 }

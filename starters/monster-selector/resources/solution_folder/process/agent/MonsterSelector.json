@@ -1,0 +1,38 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "MonsterSelector",
+    "kind": "process",
+    "type": "agent",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "5602b382-f7b5-4a30-9660-3d3fb7ec48c4",
+    "dependencies": [
+      {
+        "kind": "package",
+        "name": "MonsterSelector"
+      }
+    ],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "type": "Agent",
+      "name": "MonsterSelector",
+      "package": {
+        "key": "2b38925b-53c0-4795-b08b-ad89a2a871e6"
+      },
+      "inputArguments": "{}",
+      "targetFrameworkValue": "Portable",
+      "retentionAction": "Delete",
+      "retentionPeriod": 30,
+      "staleRetentionAction": "Delete",
+      "staleRetentionPeriod": 180
+    },
+    "locks": [],
+    "key": "b87168ae-e070-47bb-8492-9161db633b3c",
+    "files": []
+  }
+}
