@@ -373,8 +373,10 @@ Key commands from this lab:
 - [UiPath Agents documentation](https://docs.uipath.com) - full reference for low-code and coded agent capabilities
 - [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion
 
-> **Next time, skip to the end.** Now that you understand what each command does, your coding agent can run the entire sequence from a single prompt. With UiPath skills installed (Step 2), try this in a fresh directory:
+> **Next time, skip to the end.** Now that you understand what each command does, your coding agent can run the entire sequence from a single prompt. With UiPath skills installed (Step 2), the skills carry the CLI knowledge - your prompt only needs to supply what they cannot know: the agent name, inputs, outputs, and system prompt.
 >
-> *"Create a low-code UiPath agent that [describe your domain]. Scaffold the solution and agent, configure agent.json and entry-points.json directly, validate, and upload to Studio Web."*
+> *"Create a low-code UiPath agent named [AgentName]. Input schema: [list each field with name, type, and description]. Output schema: [list each field]. System prompt: '[your prompt]'. Validate and upload."*
 >
-> The skills are what keep your coding agent on the right path - they tell it which CLI commands are current, which configuration is done in files directly, and which commands to avoid.
+> For example, to recreate the Monster Selector agent you just built above:
+>
+> *"Create a low-code UiPath agent named MonsterSelector. Input schema: `questDescription` (string, "Description of the quest") and `monsters` (array, "Candidate monsters from the D&D 5e API"). Output schema: `monsterIndex` (string, "The index slug of the chosen monster"). System prompt: 'You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.' Validate and upload."*
