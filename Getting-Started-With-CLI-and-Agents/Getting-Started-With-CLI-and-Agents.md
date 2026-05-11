@@ -2,12 +2,11 @@
 
 In this workshop, you will use the UiPath command line interface (CLI) to build a low-code agent from scratch - without opening UiPath Studio until the final step. You will do the following:
 
-1. Install the UiPath CLI, skills, and the agent tool
+1. Install the UiPath CLI and the agent tool
 2. Scaffold a new solution and low-code agent project
-3. Set the system prompt that drives the agent's behavior
-4. Define the agent's input and output schemas
-5. Validate the agent and upload it to UiPath Studio Web
-6. Test the agent in Studio Web with a real scenario
+3. Configure the agent by editing `agent.json` and `entry-points.json` directly
+4. Validate the agent and upload it to UiPath Studio Web
+5. Test the agent in Studio Web with a real scenario
 
 **Estimated time:** 30-45 minutes
 
@@ -144,139 +143,145 @@ You should see `"Status": "Added successfully"`. This step is required - `uip ag
 
 * * *
 
-## Step 5 - Set the System Prompt
+## Step 5 - Configure the Agent
 
-The system prompt defines the agent's behavior - its persona, the rules it follows, and the output format it must return. Move into the agent directory and set it:
+Agent configuration is defined by the `agent.json` and `entry-points.json` files. You edit these files directly - replacing the placeholder content that the scaffold generated in the prior step.
 
-```bash
-cd MonsterSelector
-uip agent config set systemPrompt "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice."
-```
-
-Verify it was stored:
-
-```bash
-uip agent config get systemPrompt
-```
-
-You should see the prompt text returned under `"Value"`.
-
-> **Adapting the prompt to your use case:** swap the RPG game master persona for your domain (a triage nurse picking a specialist, a procurement officer matching vendors, a librarian recommending books), and replace the selection rules with the behavior you want. The more specific the instructions and output format, the better your agent will perform. The input and output fields you define in the next two steps should match what your prompt refers to.
-
-<!-- screenshot: step-05.png - terminal showing config set and config get output -->
-
-* * *
-
-## Step 6 - Define the Input Schema
-
-A Monster Selector needs two inputs: the **quest description** and the **list of candidate monsters**. Add them now (you are still inside the agent directory from Step 5):
-
-```bash
-uip agent input add questDescription --type string --description "Description of the quest"
-```
-
-```bash
-uip agent input add monsters --type array --description "Candidate monsters from the D&D 5e API"
-```
-
-Remove the placeholder input that came with the scaffold:
-
-```bash
-uip agent input remove input
-```
-
-Each command returns JSON confirming the change. The changes are written to both `agent.json` and `entry-points.json`.
-
-> **Adapting to your use case:** replace `questDescription` and `monsters` with the input fields your domain requires - for example, `patientSymptoms` and `specialistList`, or `vendorRequirements` and `candidateVendors`.
-
-<!-- screenshot: step-06.png - terminal showing input add and input remove output -->
-
-* * *
-
-## Step 7 - Define the Output Schema
-
-The agent returns a single value: the **index slug** of the chosen monster (e.g., `"aboleth"` or `"kraken"`). The caller uses this slug to look up full monster data from an API.
-
-Add the output:
-
-```bash
-uip agent output add monsterIndex --type string --description "The index slug of the chosen monster"
-```
-
-Remove the placeholder output:
-
-```bash
-uip agent output remove content
-```
-
-<!-- screenshot: step-07.png - terminal showing output add and output remove output -->
-
-* * *
-
-## Step 8 - Fix the User Message (Workaround)
-
-**This step corrects a known bug in `uip agent input add`.** Skip it and validation in the next step will fail with errors like `Expected "questDescription" but got "input.questDescription"`.
-
-When `uip agent input add` writes the user message template into `agent.json`, it produces inconsistent output: the `content` string uses bare variable references (`{{questDescription}}`), but the `contentTokens` array uses the `input.` prefix (`input.questDescription`). These must match, and they do not.
-
-Open `agent.json` inside the agent directory (`Monster-Selector-Lab/MonsterSelector/MonsterSelector/agent.json`) and find the `messages` array. The second entry (the user message) will look like this:
+To replace the scaffold, open `MonsterSelector/agent.json` (relative to the solution directory you are in). Replace its entire contents with the following. The one exception is the `projectId` value on the last line - keep the UUID your scaffold generated rather than using the placeholder shown here.
 
 ```json
 {
-  "role": "user",
-  "content": "{{questDescription}} {{monsters}}",
-  "contentTokens": [
-    { "type": "variable", "rawString": "input.questDescription" },
-    { "type": "simpleText", "rawString": " " },
-    { "type": "variable", "rawString": "input.monsters" }
+  "version": "1.1.0",
+  "settings": {
+    "model": "gpt-4.1-2025-04-14",
+    "maxTokens": 16384,
+    "temperature": 0,
+    "engine": "basic-v2",
+    "maxIterations": 25,
+    "mode": "standard"
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "questDescription": {
+        "type": "string",
+        "description": "Description of the quest"
+      },
+      "monsters": {
+        "type": "array",
+        "description": "Candidate monsters from the D&D 5e API"
+      }
+    },
+    "required": ["questDescription", "monsters"]
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "monsterIndex": {
+        "type": "string",
+        "description": "The index slug of the chosen monster"
+      }
+    }
+  },
+  "metadata": {
+    "storageVersion": "50.0.0",
+    "isConversational": false,
+    "showProjectCreationExperience": false,
+    "targetRuntime": "pythonAgent"
+  },
+  "type": "lowCode",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": "You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "{{input.questDescription}} {{input.monsters}}",
+      "contentTokens": [
+        { "type": "variable", "rawString": "input.questDescription" },
+        { "type": "simpleText", "rawString": " " },
+        { "type": "variable", "rawString": "input.monsters" }
+      ]
+    }
+  ],
+  "projectId": "your-scaffold-generated-uuid-here"
+}
+```
+
+Now open `MonsterSelector/entry-points.json` and replace its entire contents with the following. Again, keep the `uniqueId` value your scaffold generated rather than using the placeholder.
+
+```json
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "/content/agent.json",
+      "uniqueId": "your-scaffold-generated-uuid-here",
+      "type": "agent",
+      "input": {
+        "type": "object",
+        "properties": {
+          "questDescription": {
+            "type": "string",
+            "description": "Description of the quest"
+          },
+          "monsters": {
+            "type": "array",
+            "description": "Candidate monsters from the D&D 5e API"
+          }
+        },
+        "required": ["questDescription", "monsters"]
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "monsterIndex": {
+            "type": "string",
+            "description": "The index slug of the chosen monster"
+          }
+        }
+      }
+    }
   ]
 }
 ```
 
-Update `content` to add the `input.` prefix to each variable reference, so the entry reads exactly:
-
-```json
-{
-  "role": "user",
-  "content": "{{input.questDescription}} {{input.monsters}}",
-  "contentTokens": [
-    { "type": "variable", "rawString": "input.questDescription" },
-    { "type": "simpleText", "rawString": " " },
-    { "type": "variable", "rawString": "input.monsters" }
-  ]
-}
-```
-
-Save the file. The `contentTokens` array does not need to change - only the `content` string.
-
-> **Report this bug.** Run the following from any directory to file it directly from the CLI:
+> **What these JSON files do.** 
+>    - `agent.json` is the agent definition: the model settings, the system prompt, and the input and output schemas. 
+>    - `entry-points.json` exposes those schemas to the solution runtime. 
+>    - Important - The `inputSchema` and `outputSchema` blocks must be identical in both files - a mismatch will cause validation to fail.
 >
-> ```bash
-> uip feedback send "uip agent input add writes bare {{fieldName}} in messages[1].content but input.fieldName in contentTokens - these must match and uip agent validate rejects the inconsistency. Repro: uip agent init, uip agent input add <field>, uip agent validate."
-> ```
+> **Adapting to your use case.** To build a different agent, replace the `content` strings in `messages[0]` with your system prompt and update the `properties` blocks in `inputSchema` and `outputSchema` to match the fields your prompt refers to. Mirror those same changes in `entry-points.json`. The `settings`, `metadata`, `type`, and message structure stay the same.
 
-<!-- screenshot: step-08.png - agent.json open in editor showing the corrected user message block -->
+<!-- screenshot: step-05.png - editor showing agent.json with the system prompt and input/output schemas -->
 
 * * *
 
-## Step 9 - Validate the Agent
+## Step 6 - Validate the Agent
 
-Move back to the solution directory and validate the agent:
+From the solution directory, validate the agent:
 
 ```bash
-cd ..
 uip agent validate MonsterSelector
 ```
 
 You should see `"Status": "Valid"` with `"StorageVersion": "50.0.0"` and a `"Validated"` summary showing `agent: true`. Validation also generates the `.agent-builder/` files used by Studio Web - you do not need to touch these.
 
-If validation fails, re-check that you applied the `content` fix in Step 8 and that the two variable references both use the `input.` prefix.
+If validation fails, confirm that `inputSchema` and `outputSchema` are identical in both `agent.json` and `entry-points.json`, and that every variable reference in `messages[1].content` uses the `input.` prefix (e.g., `{{input.questDescription}}`).
 
-<!-- screenshot: step-09.png - terminal showing valid validation output -->
+<!-- screenshot: step-06.png - terminal showing valid validation output -->
 
 * * *
 
-## Step 10 - Upload to Studio Web
+## Step 7 - Upload to Studio Web
 
 Upload the solution to Studio Web from the solution directory:
 
@@ -288,17 +293,18 @@ A successful upload returns `"Status": "Uploaded successfully"` along with a `So
 
 > **Upload vs. deploy.** `uip solution upload` sends the solution to Studio Web as an editable source project - the right target for development and testing. When you are ready to run the agent in production, you would instead use `uip solution pack` + `uip solution publish` to build a versioned package and deploy it to Orchestrator. This lab uses upload.
 
-<!-- screenshot: step-10.png - terminal showing successful upload output with SolutionId -->
+<!-- screenshot: step-07.png - terminal showing successful upload output with SolutionId -->
 
 * * *
 
-## Step 11 - Test the Agent in Studio Web
+## Step 8 - Test the Agent in Studio Web
 
 1. Log in to [cloud.uipath.com](https://cloud.uipath.com) and open **Studio** from the side menu.
 
 2. Find your **MonsterSelector** project in the project list and click to open it.
 
-   <!-- screenshot: step-11a.png - Studio Web project list showing MonsterSelector -->
+   <!-- screenshot: step-08a.png - Studio Web project list showing MonsterSelector -->
+
 
 3. Studio Web opens the agent in Agent Builder. Confirm you can see:
    - The system prompt in the right panel
@@ -322,11 +328,14 @@ A successful upload returns `"Status": "Uploaded successfully"` along with a `So
 
 5. Click **Save & Debug** to run the agent.
 
-   <!-- screenshot: step-11b.png - Studio Web debug panel with input JSON entered -->
+   <!-- screenshot: step-08b.png - Studio Web debug panel with input JSON entered -->
+      ![Step 08a](images\CLI_Agents-Step-08a.png)
+
 
 6. The agent runs and returns a result in the Output panel. The `monsterIndex` output should contain `"aboleth"` or `"kraken"` - both are defensible picks. An aboleth is the iconic tentacled, mind-controlling aquatic horror in D&D lore; a kraken is larger and less cerebral. If the agent returns `"giant-octopus"`, the prompt may need tightening.
 
-   <!-- screenshot: step-11c.png - Studio Web output panel showing monsterIndex result -->
+   <!-- screenshot: step-08c.png - Studio Web output panel showing monsterIndex result -->
+      ![Step 08b](images\CLI_Agents-Step-08b.png)
 
 > **Agents are non-deterministic.** Even with `temperature: 0`, the model can produce different outputs across runs. The goal is a defensible pick, not a specific string. Use the next two examples to develop a feel for how the agent reasons - consistent wrong answers are a signal to refine the prompt.
 
@@ -342,7 +351,7 @@ Try these additional inputs:
 You built and published a low-code agent using the UiPath CLI:
 
 - Scaffolded a solution and agent project from the terminal
-- Set the system prompt, input schema, and output schema using CLI commands
+- Configured the system prompt, input schema, and output schema by editing `agent.json` and `entry-points.json` directly
 - Validated the project locally before uploading
 - Uploaded to Studio Web and ran a live test
 
@@ -353,9 +362,6 @@ Key commands from this lab:
 | `uip solution new <name>` | Create a new solution (the deployable container) |
 | `uip agent init <path>` | Scaffold a new low-code agent project |
 | `uip solution project add <path>` | Register an agent project with its solution |
-| `uip agent config set systemPrompt` | Write the system prompt into `agent.json` |
-| `uip agent input add` / `output add` | Define input and output parameters |
-| `uip agent input remove` / `output remove` | Remove a parameter |
 | `uip agent validate <path>` | Validate the agent schema locally before upload |
 | `uip solution upload .` | Upload the solution to Studio Web as an editable project |
 
@@ -371,4 +377,4 @@ Key commands from this lab:
 >
 > *"Create a low-code UiPath agent that [describe your domain]. Scaffold the solution and agent, configure agent.json and entry-points.json directly, validate, and upload to Studio Web."*
 >
-> The skills are what keep your coding agent on the right path - they tell it which CLI commands are current, which configuration is done in files directly, and which commands to avoid. Without skills installed, a coding agent may discover and use deprecated CLI commands that no longer work. The manual walkthrough gives you the mental model to verify it got it right.
+> The skills are what keep your coding agent on the right path - they tell it which CLI commands are current, which configuration is done in files directly, and which commands to avoid.
