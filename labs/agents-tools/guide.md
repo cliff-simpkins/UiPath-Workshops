@@ -36,7 +36,7 @@ You will do the following:
 node --version
 ```
 
-<!-- test:prereq name="uip" version=">=0.9" -->
+<!-- test:prereq name="uip" version=">=1.1" -->
 ```bash
 uip --version
 ```
@@ -44,7 +44,7 @@ uip --version
 - **Studio Web** - runs in your browser; no desktop installation required. Open [Studio Web](https://cloud.uipath.com) in Chrome, Edge, or Firefox before starting.
 - **UiPath account** - sign up or log in at [cloud.uipath.com](https://cloud.uipath.com) before starting.
 - **Node.js 18+** - required to install the UiPath CLI. Install from [nodejs.org](https://nodejs.org/) if needed.
-- **UiPath CLI v0.9+** - required to deploy the starter. Check with `uip --version`.
+- **UiPath CLI v1.1+** - required to deploy the starter. Check with `uip --version`.
 - **A Monster Selector agent in Studio Web** - this lab builds on the agent from [Getting Started with UiPath Agents](../agents/guide.md). If you completed that lab, your agent is already there. If not, deploy the starter:
 
 <!-- test:manual reason="requires git clone and uip login before starter upload" -->

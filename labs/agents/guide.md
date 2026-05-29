@@ -38,12 +38,12 @@ Here is the full design of what you are building:
 node --version
 ```
 
-<!-- test:prereq name="uip" version=">=0.9" -->
+<!-- test:prereq name="uip" version=">=1.1" -->
 ```bash
 uip --version
 ```
 
-- **CLI version** - validated against UiPath CLI v0.9.1. Check your version using `uip --version`. Different versions may behave differently; report drift with `uip feedback send`.
+- **CLI version** - validated against UiPath CLI v1.1.0. Check your version using `uip --version`. Different versions may behave differently; report drift with `uip feedback send`.
 - **UiPath account** - sign up or log in at [cloud.uipath.com](https://cloud.uipath.com) before starting.
 - **Node.js 18+** - required to install the CLI. Check with `node --version`. Download from [nodejs.org](https://nodejs.org/) if needed.
 - **A terminal** - PowerShell or Bash both work. The commands in this lab are shell-agnostic.
@@ -75,7 +75,7 @@ Verify the installation:
 uip --version
 ```
 
-You should see `0.9.1` or later.
+You should see `1.1.0` or later.
 
 Now install the agent tool, which adds the `uip agent` command group used throughout this lab:
 

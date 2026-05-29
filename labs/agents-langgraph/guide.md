@@ -25,7 +25,7 @@ node --version
 uv --version
 ```
 
-- **CLI version** - validated against UiPath CLI v0.9.1 (installed in Step 1). Different versions may behave differently; report drift with `uip feedback send`.
+- **CLI version** - validated against UiPath CLI v1.1.0 (installed in Step 1). Different versions may behave differently; report drift with `uip feedback send`.
 - **UiPath account on cloud.uipath.com** - sign up or log in at [cloud.uipath.com](https://cloud.uipath.com) before starting.
 - **Node.js 18+** - required to install the UiPath CLI. Check with `node --version`. Download from [nodejs.org](https://nodejs.org/) if needed.
 - **VS Code** with a coding agent (Claude Code, Copilot, or Cursor). The lab instructions use Claude Code, but any supported coding agent will work.
@@ -61,7 +61,7 @@ Verify the installation:
 uip --version
 ```
 
-You should see a version number like `0.9.1`.
+You should see a version number like `1.1.0`.
 
 Now install the coded agent tool - this adds the `uip codedagent` command group used throughout this lab:
 
@@ -96,7 +96,7 @@ uip skills install --agent claude
 
 If you are using a different coding agent, replace `claude` with your agent: `cursor`, `copilot`, `gemini`, or `codex`.
 
-The command emits JSON listing the installed skills. The skill catalog grows with each CLI release - your output may include more skills than shown here. The following reflects CLI v0.9.1:
+The command emits JSON listing the installed skills. The skill catalog grows with each CLI release - your output may include more skills than shown here. The following reflects CLI v1.1.0:
 
 ```json
 {
