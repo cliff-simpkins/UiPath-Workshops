@@ -5,8 +5,9 @@ Reusable UiPath artifacts - agents, workflows, and solutions - that the workshop
 ## Current starters
 
 | Starter | Type | Produced by | Consumed by |
-|---|---|---|---|
-| [monster-selector](monster-selector/) | Low-code agent | [Getting Started with Agents using the CLI](../Getting-Started-With-CLI-and-Agents/Getting-Started-With-CLI-and-Agents.md) | Getting Started with Agent Evals *(coming soon)* |
+| --- | --- | --- | --- |
+| [monster-selector](monster-selector/) | Low-code agent | [Getting Started with UiPath Agents](../labs/agents/guide.md) | [Getting Started with Agent Evals](../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) |
+| [monster-query-api](monster-query-api/) | API Workflow package | Pre-built | Future Maestro lab (participants build this themselves in [Adding Tools to Your UiPath Agent](../labs/agents-tools/guide.md)) |
 
 ## How to use a starter
 
@@ -16,7 +17,7 @@ Every starter includes a `README.md` with exact commands. The common pattern:
 # from this repo's root
 cd starters/<name>
 uip login
-uip agent push   # or the deployment command listed in the starter's README
+uip solution upload .   # or the deployment command listed in the starter's README
 ```
 
 Starters are **tenant-neutral** - no `SolutionStorage.json` or cloud project IDs are committed. The first `push` (or equivalent) creates fresh mappings in your own tenant.

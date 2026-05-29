@@ -1,0 +1,56 @@
+name: Lab CI
+
+# Runs each lab's tests nightly and on PR.
+# Per ADR-0002, test_lab.py is not committed — extracted on demand from guide.md.
+# Auth-required tests are skipped in CI (UIPATH_TEST_AUTH unset).
+# Wiring a test tenant is follow-up work (not needed for MVP).
+
+on:
+  schedule:
+    # Daily at 13:00 UTC (~06:00 PT). Catches drift from CLI/skills releases.
+    - cron: "0 13 * * *"
+  pull_request:
+    paths:
+      - "labs/**"
+      - "tools/extract.py"
+  push:
+    branches: [main]
+    paths:
+      - "labs/**"
+      - "tools/extract.py"
+  workflow_dispatch:
+
+jobs:
+  test-labs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest and uv
+        run: pip install pytest uv
+
+      - name: Extract and run tests for each lab
+        env:
+          # Auth-gated tests skipped; see .devrel/docs/test-annotations.md
+          UIPATH_TEST_AUTH: ""
+        run: |
+          shopt -s nullglob
+          fail=0
+          for guide in labs/*/guide.md; do
+            lab_dir=$(dirname "$guide")
+            echo "::group::extract + pytest $lab_dir"
+            python tools/extract.py "$guide" || { fail=1; echo "::endgroup::"; continue; }
+            pytest -v "$lab_dir/test_lab.py" || fail=1
+            echo "::endgroup::"
+          done
+          exit $fail
