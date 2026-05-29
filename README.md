@@ -6,29 +6,45 @@ Hands-on workshops for professional developers building agents on UiPath - coded
 
 ### Low-code agents
 
-#### [Getting Started with Agents using the CLI](Getting-Started-With-CLI-and-Agents/Getting-Started-With-CLI-and-Agents.md)
+#### [Getting Started with UiPath Agents](labs/agents/guide.md)
 
-Build a low-code agent from the terminal. You'll scaffold with `uip agent init`, set the system prompt, define input/output schemas, validate, and push to UiPath Studio Web. Produces a Monster Selector agent that picks the most thematically appropriate D&D monster for a quest.
+Build a low-code Monster Selector agent from the terminal using the UiPath CLI. Scaffold the solution, configure the system prompt and schemas, validate, and upload to Studio Web. Produces a Monster Selector agent used as the entry point for the tools and evals labs.
 
 **Time:** 30-45 min
 **Prerequisites:** UiPath account, Node.js 18+, Bash terminal
-**Validated:** UiPath CLI v0.2.0
+
+---
+
+#### [Adding Tools to Your UiPath Agent](labs/agents-tools/guide.md)
+
+Build a live API connector in Studio Web that searches the D&D 5e SRD, then connect it to your Monster Selector agent as a tool. The agent decides what to search for, calls the API, and selects the best match from live results - no pre-populated list required.
+
+**Time:** 30-45 min
+**Prerequisites:** UiPath account, Monster Selector agent from the previous lab (or the starter)
+
+---
+
+#### [Getting Started with Agent Evals](Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md)
+
+Evaluate the tool-using Monster Selector agent you built in the previous lab. Build an evaluation set, run cloud evaluations, and use the scores to drive prompt iteration.
+
+**Time:** 45-60 min
+**Prerequisites:** UiPath account, tool-using Monster Selector agent from the previous lab
 
 ---
 
 ### Coded agents (Python)
 
-#### [Getting Started with UiPath Skills & CLI](Getting-Started-With-UiPath-Skills-and-CLI/Getting-Started-With-UiPath-Skills-and-CLI.md)
+#### [Getting Started with UiPath Agents using LangGraph](labs/agents-langgraph/guide.md)
 
 Install the UiPath CLI and coding-agent skills, then use your coding agent to build, run, evaluate, and deploy a coded agent end-to-end from the IDE. Skills teach your coding agent LangGraph integration patterns, SDK imports, and evaluation framework conventions so a short prompt produces correct working code. Builds an intake classifier.
 
 **Time:** 45-60 min
 **Prerequisites:** UiPath account, VS Code with a coding agent (Claude Code, Cursor, Copilot), Node.js 18+, Bash terminal, uv
-**Validated:** UiPath CLI v0.2.0
 
 ---
 
-#### [Getting Started with Coded UiPath Agents (IDE-first)](Getting-Started-With-Agents/Getting-Started-With-Agents-in-IDE.md)
+#### [Getting Started with Coded UiPath Agents (IDE-first and Python SDK)](Getting-Started-With-Agents/Getting-Started-With-Agents-in-IDE.md)
 
 Build your first coded agent entirely from your IDE - no visual designer required. You'll generate an address validation agent using Claude Code and the UiPath Python SDK, extend it with a live USPS validation API, and evaluate its performance using UiPath's eval framework.
 
@@ -48,7 +64,7 @@ Build a coded agent starting from UiPath Studio Web - use Autopilot to generate 
 
 ## Starters
 
-Reusable agent and workflow artifacts that workshops produce or consume. Clone a starter when you want a running reference without walking through the full lab - useful as the entry point for follow-on labs (for example, the upcoming Agent Evals lab consumes the Monster Selector starter). See [starters/README.md](starters/) for the current list.
+Reusable agent and workflow artifacts that workshops produce or consume. Clone a starter when you want a running reference without walking through the full lab. See [starters/README.md](starters/) for the current list.
 
 ## Resources
 
