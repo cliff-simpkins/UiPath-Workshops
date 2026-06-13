@@ -1,0 +1,44 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "Invoice Processing Flow",
+    "kind": "process",
+    "type": "flow",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "f8a0b720-f2b6-4233-a87a-3a5a17fb5fa4",
+    "isOverridable": true,
+    "dependencies": [
+      {
+        "name": "Invoice Processing Flow",
+        "kind": "package"
+      }
+    ],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "type": "Flow",
+      "name": "Invoice Processing Flow",
+      "package": {
+        "key": "62060519-12b0-4879-af91-ae478f4c9aa7"
+      },
+      "packageName": "WAD2026.Workshop.flow.Invoice.Processing.Flow",
+      "inputArguments": "{}",
+      "hiddenForAttendedUser": false,
+      "alwaysRunning": false,
+      "autoStartProcess": false,
+      "targetFrameworkValue": "Portable",
+      "retentionAction": "Delete",
+      "retentionPeriod": 30,
+      "staleRetentionAction": "Delete",
+      "staleRetentionPeriod": 180,
+      "tags": []
+    },
+    "locks": [],
+    "key": "2797bb29-c7b5-47c5-968e-9df78f5deca6",
+    "files": []
+  }
+}

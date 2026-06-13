@@ -1,0 +1,84 @@
+{
+  "version": "1.1.0",
+  "settings": {
+    "model": "anthropic.claude-sonnet-4-6",
+    "maxTokens": 16384,
+    "temperature": 0,
+    "engine": "basic-v2",
+    "maxIterations": 25,
+    "mode": "standard"
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "script1__output__briefing": {
+        "description": "Bound from $vars.script1.output.briefing"
+      },
+      "discrepancyInvestigatorAgent1__output": {
+        "type": "object",
+        "description": "Bound from $vars.discrepancyInvestigatorAgent1.output"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "body"
+    ],
+    "properties": {
+      "content": {
+        "type": "string"
+      },
+      "body": {
+        "type": "string",
+        "description": "email body"
+      }
+    }
+  },
+  "metadata": {
+    "storageVersion": "50.0.0",
+    "isConversational": false,
+    "showProjectCreationExperience": false
+  },
+  "type": "lowCode",
+  "guardrails": [],
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an assistant tasked with responding to an email. Generate an appropriate concise and professional body of the email response in html format.",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": "You are an assistant tasked with responding to an email. Generate an appropriate concise and professional body of the email response in html format."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "{{input.script1__output__briefing}}\n- Write only the email body. Be concise and professional. Do not include a subject line.  \n- Full discrepancy investigation (if needed): {{input.discrepancyInvestigatorAgent1__output}}  \n ",
+      "contentTokens": [
+        {
+          "type": "variable",
+          "rawString": "input.script1__output__briefing"
+        },
+        {
+          "type": "simpleText",
+          "rawString": "\n- Write only the email body. Be concise and professional. Do not include a subject line.  \n- Full discrepancy investigation (if needed): "
+        },
+        {
+          "type": "variable",
+          "rawString": "input.discrepancyInvestigatorAgent1__output"
+        },
+        {
+          "type": "simpleText",
+          "rawString": "  \n "
+        }
+      ]
+    }
+  ],
+  "projectId": "00292830-ccbd-4e88-9bea-bf513f23381c",
+  "id": "00292830-ccbd-4e88-9bea-bf513f23381c",
+  "name": "Agent - Draft Email",
+  "resources": [],
+  "features": []
+}

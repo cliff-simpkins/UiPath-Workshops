@@ -1,0 +1,155 @@
+{
+  "version": "1.1.0",
+  "settings": {
+    "model": "gpt-5.4",
+    "maxTokens": 128000,
+    "temperature": 0,
+    "engine": "basic-v2",
+    "maxIterations": 25,
+    "mode": "standard"
+  },
+  "inputSchema": {
+    "type": "object",
+    "required": [
+      "invoiceData",
+      "poData"
+    ],
+    "properties": {
+      "invoiceData": {
+        "type": "string",
+        "description": "Extracted invoice data as a structured JSON string. Expected fields include vendorName, invoiceNumber, invoiceDate, dueDate, poReference (the PO number this invoice claims to fulfill), currency, lineItems (array of {sku, description, quantity, unitPrice, lineTotal}), subtotal, taxAmount, freightAmount, totalAmount, remitTo. Field names may vary by extractor; reason over the structure you receive."
+      },
+      "poData": {
+        "type": "string",
+        "description": "Extracted purchase order data as a structured JSON string. Expected fields parallel invoiceData: vendorName, poNumber, poDate, currency, lineItems (array of {sku, description, quantity, unitPrice, lineTotal}), subtotal, taxAmount, freightAmount, totalAmount, paymentTerms. Field names may vary by extractor."
+      }
+    },
+    "title": "Inputs"
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "discrepancies",
+      "totalAmountDelta",
+      "recommendation",
+      "escalated",
+      "reasoning"
+    ],
+    "properties": {
+      "discrepancies": {
+        "type": "array",
+        "description": "Each discrepancy found between invoice and PO.",
+        "items": {
+          "type": "object",
+          "required": [
+            "field",
+            "severity",
+            "explanation",
+            "evidence"
+          ],
+          "properties": {
+            "field": {
+              "type": "string",
+              "description": "Name of the discrepant field, e.g. totalAmount, lineItems[2].unitPrice, vendorName."
+            },
+            "invoiceValue": {
+              "description": "Value of the field on the invoice. Use the natural JSON type (string, number, boolean)."
+            },
+            "poValue": {
+              "description": "Value of the field on the PO."
+            },
+            "deltaAmount": {
+              "type": "number",
+              "description": "Absolute USD difference where applicable. 0 for non-monetary fields."
+            },
+            "severity": {
+              "type": "string",
+              "description": "minor: note but does not change recommendation on its own. major: needs human review. critical: blocks payment.",
+              "enum": [
+                "minor",
+                "major",
+                "critical"
+              ]
+            },
+            "explanation": {
+              "type": "string",
+              "description": "Why this is a discrepancy and what the implication is."
+            },
+            "evidence": {
+              "type": "string",
+              "description": "Contract clause, catalog entry, step-by-step arithmetic, or 'direct field comparison'. Required for every item."
+            }
+          }
+        }
+      },
+      "totalAmountDelta": {
+        "type": "number",
+        "description": "Absolute USD difference between invoice totalAmount and PO totalAmount. 0 when totals match. Used to apply the USD 100 escalation threshold."
+      },
+      "recommendation": {
+        "type": "string",
+        "description": "Recommended downstream action.",
+        "enum": [
+          "approve",
+          "escalate",
+          "reject"
+        ]
+      },
+      "escalated": {
+        "type": "boolean",
+        "description": "True if and only if the Human Review escalation was actually triggered during this run."
+      },
+      "reasoning": {
+        "type": "string",
+        "description": "2-4 sentence explanation of why this recommendation was reached, citing the primary discrepancy and any contract evidence retrieved."
+      }
+    },
+    "title": "Outputs"
+  },
+  "metadata": {
+    "storageVersion": "50.0.0",
+    "isConversational": false,
+    "targetRuntime": "pythonAgent",
+    "showProjectCreationExperience": false
+  },
+  "type": "lowCode",
+  "projectId": "3500a098-9cc6-4e6f-8c44-c30741d4199c",
+  "messages": [
+    {
+      "role": "system",
+      "content": "## 1. Context\nYou are the Discrepancy Investigation Agent. An invoice and its matching purchase order have been extracted into structured JSON. Compare the two documents, identify every meaningful discrepancy, gather supporting evidence from vendor contracts when prices disagree, and recommend one of three actions: `approve`, `escalate`, or `reject`.\n\nCommon discrepancy types:\n- Total amount mismatch\n- Unit price variance on a line item\n- Quantity variance (invoiced more or fewer than ordered)\n- Tax or freight miscalculation\n- Line items on the invoice with no matching PO line\n- Date issues (invoice dated before PO, implausible payment terms)\n\nYou have one tool:\n- **vendor_contracts** (search over signed vendor contracts and master service agreements). Use it to verify negotiated unit prices, allowable price escalation, payment terms, and approved freight rates when you find a price discrepancy.\n\n## 2. How to investigate\n\nWork through these steps in order.\n\n1. **Compute `totalAmountDelta`.** Absolute USD difference between invoice `totalAmount` and PO `totalAmount`. If either total is missing, set delta to 0 and add a `critical` discrepancy noting the missing field.\n\n2. **Line-by-line comparison.** For each invoice line, find the matching PO line (match by `sku` first, then `description`). Record quantity differences, unit price differences, and extension errors (`quantity * unitPrice != lineTotal`). Any invoice line with no PO counterpart is automatically `critical`.\n\n3. **Tax and freight.** Compare `taxAmount` and `freightAmount` separately. A variance greater than 10% of the PO value is not a rounding difference.\n\n4. **Look up contracts.** When you find a unit price discrepancy, call **vendor_contracts** with the vendor name and product or SKU. Look for negotiated pricing, escalation clauses, or approved freight rates that explain the variance.\n\n5. **Decide.** Apply the recommendation rules in section 4\n\n6. **Summarize** Summarize your reasoning in the `reasoning` field in 2-4 sentences that explain your recommendation for a human reviewer who will see this in an approval email. If you are recommending an escalation, cite the primary discrepancy, the totalAmountDelta, and any contract evidence you retrieved.\n\n## 3. Rules of evidence\n\nEvery item in `discrepancies` must include a concrete `evidence` field:\n- A specific contract clause retrieved via **vendor_contracts** — cite the document name and clause.\n- Step-by-step arithmetic for tax, freight, or line extensions. Show the operands.\n- `direct field comparison` for straight value mismatches (vendor name, date, currency).\n\nIf you label a discrepancy as \"explained by contract\", you must have actually retrieved that evidence in this run. Do not assume a contract clause exists without retrieving it.\n\n## 4. Recommendation rules\n\n- **`approve`**: `totalAmountDelta` ≤ $100, every invoice line has a matching PO line, all discrepancies are `minor`, and vendor name matches.\n- **`escalate`**: `totalAmountDelta` > $100, OR any discrepancy is `major` or `critical`, OR an invoice line has no matching PO line, OR contract evidence contradicts the invoice. Set `escalated: true`.\n- **`reject`**: Direct evidence of fraud — fabricated line items absent from contract and catalog, remit-to changed to an unauthorized account, severe vendor mismatch. Reject is rare; when uncertain, escalate.\n\n`escalated` must be `true` if and only if your recommendation is `escalate` or `reject`.\n\n## 5. Output format\n\nReturn ONLY valid JSON matching the output schema. No prose, no markdown, no commentary outside the JSON object.\n\nRequired fields: `discrepancies`, `totalAmountDelta`, `recommendation`, `escalated`, `reasoning`.",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": "## 1. Context\nYou are the Discrepancy Investigation Agent. An invoice and its matching purchase order have been extracted into structured JSON. Compare the two documents, identify every meaningful discrepancy, gather supporting evidence from vendor contracts when prices disagree, and recommend one of three actions: `approve`, `escalate`, or `reject`.\n\nCommon discrepancy types:\n- Total amount mismatch\n- Unit price variance on a line item\n- Quantity variance (invoiced more or fewer than ordered)\n- Tax or freight miscalculation\n- Line items on the invoice with no matching PO line\n- Date issues (invoice dated before PO, implausible payment terms)\n\nYou have one tool:\n- **vendor_contracts** (search over signed vendor contracts and master service agreements). Use it to verify negotiated unit prices, allowable price escalation, payment terms, and approved freight rates when you find a price discrepancy.\n\n## 2. How to investigate\n\nWork through these steps in order.\n\n1. **Compute `totalAmountDelta`.** Absolute USD difference between invoice `totalAmount` and PO `totalAmount`. If either total is missing, set delta to 0 and add a `critical` discrepancy noting the missing field.\n\n2. **Line-by-line comparison.** For each invoice line, find the matching PO line (match by `sku` first, then `description`). Record quantity differences, unit price differences, and extension errors (`quantity * unitPrice != lineTotal`). Any invoice line with no PO counterpart is automatically `critical`.\n\n3. **Tax and freight.** Compare `taxAmount` and `freightAmount` separately. A variance greater than 10% of the PO value is not a rounding difference.\n\n4. **Look up contracts.** When you find a unit price discrepancy, call **vendor_contracts** with the vendor name and product or SKU. Look for negotiated pricing, escalation clauses, or approved freight rates that explain the variance.\n\n5. **Decide.** Apply the recommendation rules in section 4\n\n6. **Summarize** Summarize your reasoning in the `reasoning` field in 2-4 sentences that explain your recommendation for a human reviewer who will see this in an approval email. If you are recommending an escalation, cite the primary discrepancy, the totalAmountDelta, and any contract evidence you retrieved.\n\n## 3. Rules of evidence\n\nEvery item in `discrepancies` must include a concrete `evidence` field:\n- A specific contract clause retrieved via **vendor_contracts** — cite the document name and clause.\n- Step-by-step arithmetic for tax, freight, or line extensions. Show the operands.\n- `direct field comparison` for straight value mismatches (vendor name, date, currency).\n\nIf you label a discrepancy as \"explained by contract\", you must have actually retrieved that evidence in this run. Do not assume a contract clause exists without retrieving it.\n\n## 4. Recommendation rules\n\n- **`approve`**: `totalAmountDelta` ≤ $100, every invoice line has a matching PO line, all discrepancies are `minor`, and vendor name matches.\n- **`escalate`**: `totalAmountDelta` > $100, OR any discrepancy is `major` or `critical`, OR an invoice line has no matching PO line, OR contract evidence contradicts the invoice. Set `escalated: true`.\n- **`reject`**: Direct evidence of fraud — fabricated line items absent from contract and catalog, remit-to changed to an unauthorized account, severe vendor mismatch. Reject is rare; when uncertain, escalate.\n\n`escalated` must be `true` if and only if your recommendation is `escalate` or `reject`.\n\n## 5. Output format\n\nReturn ONLY valid JSON matching the output schema. No prose, no markdown, no commentary outside the JSON object.\n\nRequired fields: `discrepancies`, `totalAmountDelta`, `recommendation`, `escalated`, `reasoning`."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "Compare the invoice and purchase order below. Identify discrepancies, look up contracts and the product catalog as needed to explain price differences, and produce a recommendation.\n\nInvoice (extracted JSON):\n{{input.invoiceData}}\n\nPurchase order (extracted JSON):\n{{input.poData}}\n\nReturn only the JSON output.",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": "Compare the invoice and purchase order below. Identify discrepancies, look up contracts and the product catalog as needed to explain price differences, and produce a recommendation.\n\nInvoice (extracted JSON):\n"
+        },
+        {
+          "type": "variable",
+          "rawString": "input.invoiceData"
+        },
+        {
+          "type": "simpleText",
+          "rawString": "\n\nPurchase order (extracted JSON):\n"
+        },
+        {
+          "type": "variable",
+          "rawString": "input.poData"
+        },
+        {
+          "type": "simpleText",
+          "rawString": "\n\nReturn only the JSON output."
+        }
+      ]
+    }
+  ]
+}

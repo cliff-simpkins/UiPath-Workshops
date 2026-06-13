@@ -1,0 +1,45 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "Discrepancy Investigator Agent",
+    "kind": "process",
+    "type": "agent",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "53e7e6fb-7382-40c8-b355-553f447d128b",
+    "isOverridable": true,
+    "dependencies": [
+      {
+        "name": "Discrepancy Investigator Agent",
+        "kind": "package"
+      }
+    ],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "type": "Agent",
+      "name": "Discrepancy Investigator Agent",
+      "package": {
+        "key": "be65086c-93d3-4ec6-a148-584a027747a4"
+      },
+      "packageName": "WAD2026.Workshop.agent.Discrepancy.Investigator.Agent",
+      "inputArguments": "{}",
+      "hiddenForAttendedUser": false,
+      "alwaysRunning": false,
+      "autoStartProcess": false,
+      "targetFrameworkValue": "Portable",
+      "agentMemory": false,
+      "retentionAction": "Delete",
+      "retentionPeriod": 30,
+      "staleRetentionAction": "Delete",
+      "staleRetentionPeriod": 180,
+      "tags": []
+    },
+    "locks": [],
+    "key": "3677af20-722c-4a3e-a46e-9c322013f715",
+    "files": []
+  }
+}

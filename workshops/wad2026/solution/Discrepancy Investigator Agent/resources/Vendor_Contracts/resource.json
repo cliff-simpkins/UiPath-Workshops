@@ -1,0 +1,25 @@
+{
+  "$resourceType": "context",
+  "id": "ace99fcb-b7d6-49d1-852e-05052cff1813",
+  "referenceKey": "f3a34ad2-a11a-43da-0b4b-08dec18059f1",
+  "name": "Vendor_Contracts",
+  "description": "",
+  "contextType": "index",
+  "folderPath": "solution_folder",
+  "indexName": "Vendor_Contracts",
+  "settings": {
+    "query": {
+      "description": "The query for the Semantic strategy.",
+      "variant": "dynamic"
+    },
+    "threshold": 0,
+    "resultCount": 3,
+    "retrievalMode": "semantic",
+    "folderPathPrefix": {
+      "variant": "static"
+    },
+    "fileExtension": {
+      "value": "All"
+    }
+  }
+}

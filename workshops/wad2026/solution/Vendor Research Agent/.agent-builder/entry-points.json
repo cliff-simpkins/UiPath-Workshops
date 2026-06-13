@@ -1,0 +1,85 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "/content/agent.json",
+      "type": "agent",
+      "uniqueId": "53bfe35b-5f59-463b-9311-1917ac4932e8",
+      "input": {
+        "type": "object",
+        "required": [
+          "invoiceVendorName",
+          "poVendorName"
+        ],
+        "properties": {
+          "invoiceVendorName": {
+            "type": "string",
+            "description": "Vendor name exactly as it appears on the invoice. Pass through verbatim. Preserve casing, punctuation, suffixes (Inc, LLC, GmbH, etc.)."
+          },
+          "poVendorName": {
+            "type": "string",
+            "description": "Vendor name exactly as it appears on the matching purchase order. Pass through verbatim. Preserve casing, punctuation, and corporate suffixes."
+          }
+        },
+        "title": "Inputs"
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "relationship",
+          "flag",
+          "confidence",
+          "reasoning",
+          "sources"
+        ],
+        "properties": {
+          "relationship": {
+            "type": "string",
+            "description": "Relationship between the invoice vendor and the PO vendor. same_entity: different legal names, same company (DBA, abbreviation, translation, with/without suffix). parent_subsidiary: one is the legal parent of the other. affiliate: both share a common parent or are under common control. acquired_or_merged: one acquired or merged with the other. predecessor_successor: rebrand or legal name change. unrelated: no documented relationship. look_alike_or_typosquat: deliberate fraudulent look-alike. unknown: insufficient information.",
+            "enum": [
+              "same_entity",
+              "parent_subsidiary",
+              "affiliate",
+              "acquired_or_merged",
+              "predecessor_successor",
+              "unrelated",
+              "look_alike_or_typosquat",
+              "unknown"
+            ]
+          },
+          "flag": {
+            "type": "string",
+            "description": "Recommended downstream action. approve: legitimate relationship verified with high confidence. review: ambiguous, needs human review. reject: likely fraud or unrelated entity.",
+            "enum": [
+              "approve",
+              "review",
+              "reject"
+            ]
+          },
+          "confidence": {
+            "type": "string",
+            "description": "Confidence in the relationship classification, based on quality and corroboration of sources.",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "reasoning": {
+            "type": "string",
+            "description": "Concise explanation of how the relationship was determined. Reference specific corporate facts (acquisition year, parent/subsidiary structure, rebrand) discovered via web search."
+          },
+          "sources": {
+            "type": "array",
+            "description": "URLs of authoritative sources used to determine the relationship (SEC filings, official corporate pages, press releases, reputable news). At least 1 if relationship != unknown.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "title": "Outputs"
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "content/invoice-processing.bpmn#emailReceived",
+      "uniqueId": "6876831a-59c5-4079-a320-85dc8c37a96d",
+      "type": "processorchestration",
+      "input": {
+        "type": "object",
+        "properties": {}
+      },
+      "output": {
+        "type": "object",
+        "properties": {}
+      },
+      "displayName": "Trigger - Email Received"
+    },
+    {
+      "filePath": "content/00292830-ccbd-4e88-9bea-bf513f23381c/agent.json",
+      "uniqueId": "00292830-ccbd-4e88-9bea-bf513f23381c",
+      "type": "agent",
+      "targetRuntime": "pythonAgent",
+      "input": {
+        "type": "object",
+        "properties": {
+          "script1__output__briefing": {
+            "description": "Bound from $vars.script1.output.briefing"
+          },
+          "discrepancyInvestigatorAgent1__output": {
+            "type": "object",
+            "description": "Bound from $vars.discrepancyInvestigatorAgent1.output"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "body"
+        ],
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string",
+            "description": "email body"
+          }
+        }
+      },
+      "displayName": "Agent - Draft Email",
+      "hiddenAtDesignTime": true
+    }
+  ]
+}

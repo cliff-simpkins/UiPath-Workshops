@@ -1,0 +1,23 @@
+{
+    "DocVersion": "1.0.0",
+    "StudioMinVersion": "2025.04.0",
+    "SolutionId": "578864c4-dd92-415a-6a1e-08dec6ebd11a",
+    "Projects": [
+        {
+            "Type": "Flow",
+            "ProjectRelativePath": "Invoice Processing Flow/project.uiproj",
+            "Id": "f8a0b720-f2b6-4233-a87a-3a5a17fb5fa4"
+        },
+        {
+            "Type": "Agent",
+            "ProjectRelativePath": "Vendor Research Agent/project.uiproj",
+            "Id": "f9d6b5eb-d968-4418-807a-df9926bca93e"
+        },
+        {
+            "Type": "Agent",
+            "ProjectRelativePath": "Discrepancy Investigator Agent/project.uiproj",
+            "Id": "53e7e6fb-7382-40c8-b355-553f447d128b"
+        }
+    ],
+    "AutomationHubIdeaUrl": null
+}

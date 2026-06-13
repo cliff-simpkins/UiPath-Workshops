@@ -1,0 +1,109 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "/content/agent.json",
+      "type": "agent",
+      "uniqueId": "fa1bbe7c-51be-4f4f-bdaf-5a874718d744",
+      "input": {
+        "type": "object",
+        "required": [
+          "invoiceData",
+          "poData"
+        ],
+        "properties": {
+          "invoiceData": {
+            "type": "string",
+            "description": "Extracted invoice data as a structured JSON string. Expected fields include vendorName, invoiceNumber, invoiceDate, dueDate, poReference (the PO number this invoice claims to fulfill), currency, lineItems (array of {sku, description, quantity, unitPrice, lineTotal}), subtotal, taxAmount, freightAmount, totalAmount, remitTo. Field names may vary by extractor; reason over the structure you receive."
+          },
+          "poData": {
+            "type": "string",
+            "description": "Extracted purchase order data as a structured JSON string. Expected fields parallel invoiceData: vendorName, poNumber, poDate, currency, lineItems (array of {sku, description, quantity, unitPrice, lineTotal}), subtotal, taxAmount, freightAmount, totalAmount, paymentTerms. Field names may vary by extractor."
+          }
+        },
+        "title": "Inputs"
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "discrepancies",
+          "totalAmountDelta",
+          "recommendation",
+          "escalated",
+          "reasoning"
+        ],
+        "properties": {
+          "discrepancies": {
+            "type": "array",
+            "description": "Each discrepancy found between invoice and PO.",
+            "items": {
+              "type": "object",
+              "required": [
+                "field",
+                "severity",
+                "explanation",
+                "evidence"
+              ],
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "Name of the discrepant field, e.g. totalAmount, lineItems[2].unitPrice, vendorName."
+                },
+                "invoiceValue": {
+                  "description": "Value of the field on the invoice. Use the natural JSON type (string, number, boolean)."
+                },
+                "poValue": {
+                  "description": "Value of the field on the PO."
+                },
+                "deltaAmount": {
+                  "type": "number",
+                  "description": "Absolute USD difference where applicable. 0 for non-monetary fields."
+                },
+                "severity": {
+                  "type": "string",
+                  "description": "minor: note but does not change recommendation on its own. major: needs human review. critical: blocks payment.",
+                  "enum": [
+                    "minor",
+                    "major",
+                    "critical"
+                  ]
+                },
+                "explanation": {
+                  "type": "string",
+                  "description": "Why this is a discrepancy and what the implication is."
+                },
+                "evidence": {
+                  "type": "string",
+                  "description": "Contract clause, catalog entry, step-by-step arithmetic, or 'direct field comparison'. Required for every item."
+                }
+              }
+            }
+          },
+          "totalAmountDelta": {
+            "type": "number",
+            "description": "Absolute USD difference between invoice totalAmount and PO totalAmount. 0 when totals match. Used to apply the USD 100 escalation threshold."
+          },
+          "recommendation": {
+            "type": "string",
+            "description": "Recommended downstream action.",
+            "enum": [
+              "approve",
+              "escalate",
+              "reject"
+            ]
+          },
+          "escalated": {
+            "type": "boolean",
+            "description": "True if and only if the Human Review escalation was actually triggered during this run."
+          },
+          "reasoning": {
+            "type": "string",
+            "description": "2-4 sentence explanation of why this recommendation was reached, citing the primary discrepancy and any contract evidence retrieved."
+          }
+        },
+        "title": "Outputs"
+      }
+    }
+  ]
+}
