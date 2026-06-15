@@ -1,15 +1,16 @@
 {
   "fileName": "evaluation-set-default.json",
   "id": "66aecebc-1f99-46fd-a305-3d467e01aabf",
-  "name": "Default Evaluation Set",
+  "name": "DIA Eval Set",
   "batchSize": 10,
   "evaluatorRefs": [
-    "ef02d2de-e95d-4d90-887c-a1e13fe23932"
+    "ef02d2de-e95d-4d90-887c-a1e13fe23932",
+    "58255ea9-f7bc-41d6-89a2-05bc6c834c22"
   ],
   "evaluations": [
     {
       "id": "8b8f8a6d-08e5-4188-bc90-67ccdfc6817b",
-      "name": "Debug Run 6/10/2026, 4:00:46 PM",
+      "name": "Stratton Office Supply — Freight Discrepancy",
       "inputs": {
         "invoiceData": "\"{   \"\"document_type\"\": \"\"invoice\"\",   \"\"vendor\"\": \"\"Stratton Office Supply Co.\"\",   \"\"invoice_number\"\": \"\"SOS-2026-3389\"\",   \"\"invoice_date\"\": \"\"2026-05-20\"\",   \"\"due_date\"\": \"\"2026-06-19\"\",   \"\"customer_po\"\": \"\"PO-2026-10872\"\",   \"\"payment_terms\"\": \"\"Net 30\"\",   \"\"currency\"\": \"\"USD\"\",   \"\"bill_to\"\": \"\"Customer Accounts Payable\"\",   \"\"remit_to\"\": \"\"445 Industrial Blvd, Austin, TX 78744\"\",   \"\"vendor_contact\"\": {     \"\"address\"\": \"\"445 Industrial Blvd, Austin, TX 78744\"\",     \"\"phone\"\": \"\"(512) 555-0148\"\",     \"\"email\"\": \"\"ar@strattonoffice.com\"\"   },   \"\"line_items\"\": [     {       \"\"description\"\": \"\"Dell Latitude 7440 - 14\\\"\" laptop, i7, 16GB RAM, 512GB SSD\"\",       \"\"sku\"\": \"\"LAPTOP-DELL-7440\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 1450.00,       \"\"amount\"\": 4350.00     },     {       \"\"description\"\": \"\"Dell UltraSharp U2723QE 27\\\"\" 4K monitor\"\",       \"\"sku\"\": \"\"MON-DELL-U2723\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 620.00,       \"\"amount\"\": 1860.00     },     {       \"\"description\"\": \"\"Dell Thunderbolt Dock WD22TB4\"\",       \"\"sku\"\": \"\"DOCK-WD22TB4\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 320.00,       \"\"amount\"\": 960.00     }   ],   \"\"subtotal\"\": 7170.00,   \"\"tax\"\": 573.60,   \"\"freight\"\": 150.00,   \"\"total\"\": 7893.60 }\"",
         "poData": "\"{   \"\"document_type\"\": \"\"purchase_order\"\",   \"\"buyer\"\": \"\"Acme Procurement\"\",   \"\"po_number\"\": \"\"PO-2026-10872\"\",   \"\"po_date\"\": \"\"2026-04-30\"\",   \"\"payment_terms\"\": \"\"Net 30\"\",   \"\"currency\"\": \"\"USD\"\",   \"\"status\"\": \"\"Issued\"\",   \"\"vendor\"\": \"\"Stratton Office Supply Co.\"\",   \"\"ship_to\"\": \"\"Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606\"\",   \"\"instructions\"\": \"\"Reference PO number PO-2026-10872 on all shipping documents and invoices. Send invoices to ap@acmeprocurement.com.\"\",   \"\"line_items\"\": [     {       \"\"description\"\": \"\"Dell Latitude 7440 - 14\\\"\" laptop, i7, 16GB RAM, 512GB SSD\"\",       \"\"sku\"\": \"\"LAPTOP-DELL-7440\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 1450.00,       \"\"extended\"\": 4350.00     },     {       \"\"description\"\": \"\"Dell UltraSharp U2723QE 27\\\"\" 4K monitor\"\",       \"\"sku\"\": \"\"MON-DELL-U2723\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 620.00,       \"\"extended\"\": 1860.00     },     {       \"\"description\"\": \"\"Dell Thunderbolt Dock WD22TB4\"\",       \"\"sku\"\": \"\"DOCK-WD22TB4\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 320.00,       \"\"extended\"\": 960.00     }   ],   \"\"subtotal\"\": 7170.00,   \"\"tax\"\": 573.60,   \"\"total\"\": 7743.60 }\""
@@ -39,7 +40,7 @@
         "recommendation": "escalate",
         "escalated": true
       },
-      "expectedAgentBehavior": "",
+      "expectedAgentBehavior": "Agent must call the vendor_contracts tool after detecting the freight discrepancy, searching for any contract clause that authorizes the $150.00 freight charge before reaching a recommendation. Agent should escalate after finding no authorizing clause.",
       "simulationInstructions": "",
       "simulateInput": false,
       "inputGenerationInstructions": "",
@@ -47,24 +48,24 @@
       "evalSetId": "66aecebc-1f99-46fd-a305-3d467e01aabf",
       "createdAt": "2026-06-10T23:00:46.022Z",
       "updatedAt": "2026-06-10T23:00:46.022Z",
-      "source": "firstSuccessfulRun"
+      "source": "debugRun"
     },
     {
       "id": "c5d4466c-1180-4b0f-8637-96bca840501c",
-      "name": "Stratton Office Supply — Perfect Match",
+      "name": "Perfect Match- Stratton Office Supply",
       "inputs": {
         "invoiceData": "{\"document_type\": \"invoice\", \"vendor\": \"Stratton Office Supply Co.\", \"invoice_number\": \"SOS-2026-4412\", \"invoice_date\": \"2026-06-01\", \"due_date\": \"2026-07-01\", \"customer_po\": \"PO-2026-14880\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"bill_to\": \"Customer Accounts Payable\", \"remit_to\": \"445 Industrial Blvd, Austin, TX 78744\", \"line_items\": [{\"description\": \"HP Office Pro Ink Cartridge 4-pack\", \"sku\": \"INK-HP-8034E\", \"qty\": 10, \"unit_price\": 42.0, \"amount\": 420.0}, {\"description\": \"Hammermill Premium Copy Paper 500-sheet ream\", \"sku\": \"PAPER-HM-500\", \"qty\": 20, \"unit_price\": 12.5, \"amount\": 250.0}], \"subtotal\": 670.0, \"tax\": 53.6, \"freight\": 0.0, \"total\": 723.6}",
         "poData": "{\"document_type\": \"purchase_order\", \"buyer\": \"Acme Procurement\", \"po_number\": \"PO-2026-14880\", \"po_date\": \"2026-05-15\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"status\": \"Issued\", \"vendor\": \"Stratton Office Supply Co.\", \"ship_to\": \"Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606\", \"line_items\": [{\"description\": \"HP Office Pro Ink Cartridge 4-pack\", \"sku\": \"INK-HP-8034E\", \"qty\": 10, \"unit_price\": 42.0, \"extended\": 420.0}, {\"description\": \"Hammermill Premium Copy Paper 500-sheet ream\", \"sku\": \"PAPER-HM-500\", \"qty\": 20, \"unit_price\": 12.5, \"extended\": 250.0}], \"subtotal\": 670.0, \"tax\": 53.6, \"total\": 723.6}"
       },
       "expectedOutput": {
-        "discrepancies": [],
+        "discrepancies": [{}],
         "totalAmountDelta": 0,
         "recommendation": "approve",
         "escalated": false,
         "reasoning": "Invoice and purchase order match exactly on all fields. Vendor name, all line items, quantities, unit prices, tax, freight, and totals are identical. No discrepancies found; payment may proceed."
       },
       "simulationInstructions": "",
-      "expectedAgentBehavior": "",
+      "expectedAgentBehavior": "There should be no agent run history because no tool calls were required and everything can be handled within the LLM.",
       "simulateInput": false,
       "inputGenerationInstructions": "",
       "simulateTools": false,
@@ -75,7 +76,7 @@
     },
     {
       "id": "85bb542e-373b-4fd3-99c8-727ab8841c15",
-      "name": "Meridian Tech Supplies — Unit Price Discrepancy",
+      "name": "Unit Price Discrepancy - Meridian Tech Supplies",
       "inputs": {
         "invoiceData": "{\"document_type\": \"invoice\", \"vendor\": \"Meridian Tech Supplies\", \"invoice_number\": \"MTS-2026-0892\", \"invoice_date\": \"2026-06-03\", \"due_date\": \"2026-07-03\", \"customer_po\": \"PO-2026-12045\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"bill_to\": \"Customer Accounts Payable\", \"remit_to\": \"7200 Technology Park Dr, Austin, TX 78758\", \"line_items\": [{\"description\": \"1TB NVMe SSD, PCIe Gen4\", \"sku\": \"SSD-1TB-NVME-G4\", \"qty\": 5, \"unit_price\": 195.0, \"amount\": 975.0}, {\"description\": \"USB-C Cable 6ft\", \"sku\": \"USBC-6FT\", \"qty\": 10, \"unit_price\": 18.0, \"amount\": 180.0}], \"subtotal\": 1155.0, \"tax\": 92.4, \"freight\": 0.0, \"total\": 1247.4}",
         "poData": "{\"document_type\": \"purchase_order\", \"buyer\": \"Acme Procurement\", \"po_number\": \"PO-2026-12045\", \"po_date\": \"2026-05-20\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"status\": \"Issued\", \"vendor\": \"Meridian Tech Supplies\", \"ship_to\": \"Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606\", \"line_items\": [{\"description\": \"1TB NVMe SSD, PCIe Gen4\", \"sku\": \"SSD-1TB-NVME-G4\", \"qty\": 5, \"unit_price\": 175.0, \"extended\": 875.0}, {\"description\": \"USB-C Cable 6ft\", \"sku\": \"USBC-6FT\", \"qty\": 10, \"unit_price\": 18.0, \"extended\": 180.0}], \"subtotal\": 1055.0, \"tax\": 84.4, \"total\": 1139.4}"

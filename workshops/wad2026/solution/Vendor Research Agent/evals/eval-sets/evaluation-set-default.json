@@ -5,7 +5,8 @@
   "batchSize": 10,
   "timeoutMinutes": 20,
   "evaluatorRefs": [
-    "5653e1a6-af82-4476-bf92-bb768364bc4b"
+    "5653e1a6-af82-4476-bf92-bb768364bc4b",
+    "e55733c7-221b-40b3-b5dc-634a67fbf7f4"
   ],
   "evaluations": [
     {
@@ -25,7 +26,7 @@
           "https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231.htm"
         ]
       },
-      "expectedAgentBehavior": "",
+      "expectedAgentBehavior": "Agent must perform at least one web search to verify the corporate relationship between Meta and Instagram, confirming Instagram is a wholly-owned subsidiary of Meta Platforms, Inc.",
       "simulationInstructions": "",
       "simulateInput": false,
       "inputGenerationInstructions": "",
@@ -33,7 +34,7 @@
       "evalSetId": "8907420f-de51-466d-b044-8bd396ab1869",
       "createdAt": "2026-06-11T22:14:01.687Z",
       "updatedAt": "2026-06-11T22:14:01.687Z",
-      "source": "firstSuccessfulRun"
+      "source": "debugRun"
     },
     {
       "id": "1f1d2892-c134-43e4-b7a2-21149592033d",
