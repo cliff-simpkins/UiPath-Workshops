@@ -8,6 +8,7 @@
     "isOverridable": true,
     "dependencies": [],
     "runtimeDependencies": [],
+    "files": [],
     "folders": [
       {
         "fullyQualifiedName": "solution_folder"
@@ -17,7 +18,6 @@
       "name": "Vendor Research Agent"
     },
     "locks": [],
-    "key": "043260a6-5691-4b3b-880f-71d6451f4f32",
-    "files": []
+    "key": "043260a6-5691-4b3b-880f-71d6451f4f32"
   }
 }

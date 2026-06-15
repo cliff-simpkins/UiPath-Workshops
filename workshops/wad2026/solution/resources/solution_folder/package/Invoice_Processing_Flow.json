@@ -8,6 +8,7 @@
     "isOverridable": true,
     "dependencies": [],
     "runtimeDependencies": [],
+    "files": [],
     "folders": [
       {
         "fullyQualifiedName": "solution_folder"
@@ -17,7 +18,6 @@
       "name": "Invoice Processing Flow"
     },
     "locks": [],
-    "key": "62060519-12b0-4879-af91-ae478f4c9aa7",
-    "files": []
+    "key": "62060519-12b0-4879-af91-ae478f4c9aa7"
   }
 }

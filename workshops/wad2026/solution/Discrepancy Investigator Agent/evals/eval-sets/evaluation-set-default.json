@@ -40,8 +40,8 @@
         "recommendation": "escalate",
         "escalated": true
       },
-      "expectedAgentBehavior": "Agent must call the vendor_contracts tool after detecting the freight discrepancy, searching for any contract clause that authorizes the $150.00 freight charge before reaching a recommendation. Agent should escalate after finding no authorizing clause.",
       "simulationInstructions": "",
+      "expectedAgentBehavior": "Agent must call the vendor_contracts tool after detecting the freight discrepancy, searching for any contract clause that authorizes the $150.00 freight charge before reaching a recommendation. Agent should escalate after finding no authorizing clause.",
       "simulateInput": false,
       "inputGenerationInstructions": "",
       "simulateTools": false,
@@ -58,20 +58,23 @@
         "poData": "{\"document_type\": \"purchase_order\", \"buyer\": \"Acme Procurement\", \"po_number\": \"PO-2026-14880\", \"po_date\": \"2026-05-15\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"status\": \"Issued\", \"vendor\": \"Stratton Office Supply Co.\", \"ship_to\": \"Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606\", \"line_items\": [{\"description\": \"HP Office Pro Ink Cartridge 4-pack\", \"sku\": \"INK-HP-8034E\", \"qty\": 10, \"unit_price\": 42.0, \"extended\": 420.0}, {\"description\": \"Hammermill Premium Copy Paper 500-sheet ream\", \"sku\": \"PAPER-HM-500\", \"qty\": 20, \"unit_price\": 12.5, \"extended\": 250.0}], \"subtotal\": 670.0, \"tax\": 53.6, \"total\": 723.6}"
       },
       "expectedOutput": {
-        "discrepancies": [{}],
-        "totalAmountDelta": 0,
-        "recommendation": "approve",
+        "discrepancies": [
+          {}
+        ],
         "escalated": false,
-        "reasoning": "Invoice and purchase order match exactly on all fields. Vendor name, all line items, quantities, unit prices, tax, freight, and totals are identical. No discrepancies found; payment may proceed."
+        "reasoning": "Invoice and purchase order match exactly on all fields. Vendor name, all line items, quantities, unit prices, tax, freight, and totals are identical. No discrepancies found; payment may proceed.",
+        "recommendation": "approve",
+        "totalAmountDelta": 0
       },
       "simulationInstructions": "",
-      "expectedAgentBehavior": "There should be no agent run history because no tool calls were required and everything can be handled within the LLM.",
+      "expectedAgentBehavior": "If there is no discrepancies, there should be no agent run history because no tool calls were required and everything can be handled within the LLM. If a discrepancy is found, then Agent must call the vendor_contracts to validate findings.",
       "simulateInput": false,
       "inputGenerationInstructions": "",
       "simulateTools": false,
+      "toolsToSimulate": [],
       "evalSetId": "66aecebc-1f99-46fd-a305-3d467e01aabf",
       "createdAt": "2026-06-12T23:50:12.562Z",
-      "updatedAt": "2026-06-12T23:50:12.563Z",
+      "updatedAt": "2026-06-15T19:00:31.907Z",
       "source": "manual"
     },
     {
@@ -112,16 +115,24 @@
       "simulateInput": false,
       "inputGenerationInstructions": "",
       "simulateTools": false,
+      "toolsToSimulate": [],
       "evalSetId": "66aecebc-1f99-46fd-a305-3d467e01aabf",
       "createdAt": "2026-06-12T23:51:08.752Z",
-      "updatedAt": "2026-06-12T23:51:08.753Z",
+      "updatedAt": "2026-06-15T18:42:10.535Z",
       "source": "manual"
     }
   ],
   "modelSettings": [],
   "createdAt": "2026-06-10T22:38:11.029Z",
-  "updatedAt": "2026-06-10T23:00:46.022Z",
+  "updatedAt": "2026-06-15T19:00:31.907Z",
   "agentMemoryEnabled": false,
-  "agentMemorySettings": [],
+  "agentMemorySettings": [
+    {
+      "id": "default",
+      "resultCount": "same-as-agent",
+      "searchMode": "same-as-agent",
+      "threshold": "same-as-agent"
+    }
+  ],
   "lineByLineEvaluation": false
 }

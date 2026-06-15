@@ -8,6 +8,7 @@
     "isOverridable": true,
     "dependencies": [],
     "runtimeDependencies": [],
+    "files": [],
     "folders": [
       {
         "fullyQualifiedName": "solution_folder"
@@ -22,7 +23,6 @@
       "pollingInterval": 5
     },
     "locks": [],
-    "key": "36696529-8630-4fa4-993e-93ec8656fa82",
-    "files": []
+    "key": "36696529-8630-4fa4-993e-93ec8656fa82"
   }
 }

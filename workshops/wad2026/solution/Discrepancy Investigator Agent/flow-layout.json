@@ -1,3 +1,7 @@
 {
-  "zoom": 1.03
+  "zoom": 1.17,
+  "agentPosition": {
+    "x": 0,
+    "y": 0
+  }
 }
