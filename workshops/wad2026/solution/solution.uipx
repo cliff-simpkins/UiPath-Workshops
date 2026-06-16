@@ -1,0 +1,11 @@
+{
+  "SchemaVersion": "1",
+  "SolutionId": "71cbfaa2-7253-4f25-a8f3-4de7b00e91b0",
+  "Projects": [
+    {
+      "Id": "a5ecb925-faf6-4acb-9eae-2c0c9bab431c",
+      "Type": "Flow",
+      "ProjectRelativePath": "Invoice Processing Flow/project.uiproj"
+    }
+  ]
+}

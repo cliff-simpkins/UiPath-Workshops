@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
   "settings": {
-    "model": "anthropic.claude-sonnet-4-6",
+    "model": "gpt-5.4",
     "maxTokens": 16384,
     "temperature": 0,
     "engine": "basic-v2",
@@ -11,8 +11,13 @@
   "inputSchema": {
     "type": "object",
     "properties": {
-      "script1__output__briefing": {
-        "description": "Bound from $vars.script1.output.briefing"
+      "vendorName": {
+        "type": "string",
+        "description": "Bound from $vars.vendorName"
+      },
+      "emailBriefing": {
+        "type": "string",
+        "description": "Bound from $vars.emailBriefing"
       },
       "discrepancyInvestigatorAgent1__output": {
         "type": "object",
@@ -45,33 +50,37 @@
   "messages": [
     {
       "role": "system",
-      "content": "You are an assistant tasked with responding to an email. Generate an appropriate concise and professional body of the email response in html format.",
+      "content": "You are an accounts payable assistant writing a vendor-facing email response. The recipient is the company that submitted the invoice. Write in a professional, external-facing tone.\r\n\r\nRules:\n- Write only the email body in HTML. No subject line.\n- Address the email to the vendor (invoice submitter), not an internal approver.\n- If approved: confirm the invoice was reviewed and approved for payment processing.\n- If escalated: let the vendor know their invoice was flagged for deeper review **and approved**, and **briefly** state why it was flagged.\n- If rejected: inform the vendor the invoice cannot be processed and **briefly** state why.",
       "contentTokens": [
         {
           "type": "simpleText",
-          "rawString": "You are an assistant tasked with responding to an email. Generate an appropriate concise and professional body of the email response in html format."
+          "rawString": "You are an accounts payable assistant writing a vendor-facing email response. The recipient is the company that submitted the invoice. Write in a professional, external-facing tone.\r\n\r\nRules:\n- Write only the email body in HTML. No subject line.\n- Address the email to the vendor (invoice submitter), not an internal approver.\n- If approved: confirm the invoice was reviewed and approved for payment processing.\n- If escalated: let the vendor know their invoice was flagged for deeper review **and approved**, and **briefly** state why it was flagged.\n- If rejected: inform the vendor the invoice cannot be processed and **briefly** state why."
         }
       ]
     },
     {
       "role": "user",
-      "content": "{{input.script1__output__briefing}}\n- Write only the email body. Be concise and professional. Do not include a subject line.  \n- Full discrepancy investigation (if needed): {{input.discrepancyInvestigatorAgent1__output}}  \n ",
+      "content": "- Vendor name:  {{input.vendorName}}\n- Briefing:  {{input.emailBriefing}}\n- Full discrepancy investigation (if needed):  JSON.stringify($agent.discrepancyInvestigatorAgent1__output)\n ",
       "contentTokens": [
         {
-          "type": "variable",
-          "rawString": "input.script1__output__briefing"
-        },
-        {
           "type": "simpleText",
-          "rawString": "\n- Write only the email body. Be concise and professional. Do not include a subject line.  \n- Full discrepancy investigation (if needed): "
+          "rawString": "- Vendor name:  "
         },
         {
           "type": "variable",
-          "rawString": "input.discrepancyInvestigatorAgent1__output"
+          "rawString": "input.vendorName"
         },
         {
           "type": "simpleText",
-          "rawString": "  \n "
+          "rawString": "\n- Briefing:  "
+        },
+        {
+          "type": "variable",
+          "rawString": "input.emailBriefing"
+        },
+        {
+          "type": "simpleText",
+          "rawString": "\n- Full discrepancy investigation (if needed):  JSON.stringify($agent.discrepancyInvestigatorAgent1__output)\n "
         }
       ]
     }

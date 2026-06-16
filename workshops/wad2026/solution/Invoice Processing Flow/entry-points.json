@@ -24,8 +24,13 @@
       "input": {
         "type": "object",
         "properties": {
-          "script1__output__briefing": {
-            "description": "Bound from $vars.script1.output.briefing"
+          "vendorName": {
+            "type": "string",
+            "description": "Bound from $vars.vendorName"
+          },
+          "emailBriefing": {
+            "type": "string",
+            "description": "Bound from $vars.emailBriefing"
           },
           "discrepancyInvestigatorAgent1__output": {
             "type": "object",
