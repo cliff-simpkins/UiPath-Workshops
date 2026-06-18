@@ -4,7 +4,7 @@
     "name": "Discrepancy Investigator Agent",
     "kind": "package",
     "apiVersion": "orchestrator.uipath.com/v1",
-    "projectKey": "53e7e6fb-7382-40c8-b355-553f447d128b",
+    "projectKey": "7d8c2e2a-1be5-4234-bfd2-9323217ef4bb",
     "isOverridable": true,
     "dependencies": [],
     "runtimeDependencies": [],
@@ -15,9 +15,12 @@
       }
     ],
     "spec": {
-      "name": "Discrepancy Investigator Agent"
+      "fileName": null,
+      "fileReference": null,
+      "name": "Discrepancy Investigator Agent",
+      "description": null
     },
     "locks": [],
-    "key": "be65086c-93d3-4ec6-a148-584a027747a4"
+    "key": "26370469-b935-4d3f-ad63-1220b4ce56d2"
   }
 }

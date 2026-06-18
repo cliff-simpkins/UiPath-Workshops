@@ -3,8 +3,8 @@
   "$id": "entry-points.json",
   "entryPoints": [
     {
-      "filePath": "content/invoice-processing.bpmn#emailReceived",
-      "uniqueId": "6876831a-59c5-4079-a320-85dc8c37a96d",
+      "filePath": "content/invoice-intake.bpmn#emailReceived",
+      "uniqueId": "82158464-c32d-4026-83a9-0dd7e5083b32",
       "type": "processorchestration",
       "input": {
         "type": "object",
@@ -14,27 +14,27 @@
         "type": "object",
         "properties": {}
       },
-      "displayName": "Trigger - Email Received"
+      "displayName": "Email Received"
     },
     {
-      "filePath": "content/00292830-ccbd-4e88-9bea-bf513f23381c/agent.json",
-      "uniqueId": "00292830-ccbd-4e88-9bea-bf513f23381c",
+      "filePath": "content/39d2c5db-e8b7-4e67-b311-9dd1724cdb32/agent.json",
+      "uniqueId": "39d2c5db-e8b7-4e67-b311-9dd1724cdb32",
       "type": "agent",
       "targetRuntime": "pythonAgent",
       "input": {
         "type": "object",
         "properties": {
-          "vendorName": {
+          "vendorName_invoice": {
             "type": "string",
-            "description": "Bound from $vars.vendorName"
+            "description": "Bound from $vars.vendorName_invoice"
           },
-          "emailBriefing": {
-            "type": "string",
-            "description": "Bound from $vars.emailBriefing"
-          },
-          "discrepancyInvestigatorAgent1__output": {
+          "scriptPrepareBrief__output": {
             "type": "object",
-            "description": "Bound from $vars.discrepancyInvestigatorAgent1.output"
+            "description": "Bound from $vars.scriptPrepareBrief.output"
+          },
+          "discrepancyInvestigatorAgent__output": {
+            "type": "object",
+            "description": "Bound from $vars.discrepancyInvestigatorAgent.output"
           }
         }
       },
@@ -44,12 +44,8 @@
           "body"
         ],
         "properties": {
-          "content": {
-            "type": "string"
-          },
           "body": {
-            "type": "string",
-            "description": "email body"
+            "type": "string"
           }
         }
       },

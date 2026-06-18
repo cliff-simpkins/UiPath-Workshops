@@ -1,22 +1,27 @@
 {
   "DocVersion": "1.0.0",
   "StudioMinVersion": "2025.04.0",
-  "SolutionId": "578864c4-dd92-415a-6a1e-08dec6ebd11a",
+  "SolutionId": "baa720e6-c392-44f3-2551-08decd1474e1",
   "Projects": [
+    {
+      "Type": "WebApp",
+      "ProjectRelativePath": "EscalationApp/project.uiproj",
+      "Id": "1332b929-cffc-464e-97ae-5b3a8f02d3b9"
+    },
     {
       "Type": "Flow",
       "ProjectRelativePath": "Invoice Processing Flow/project.uiproj",
-      "Id": "f8a0b720-f2b6-4233-a87a-3a5a17fb5fa4"
-    },
-    {
-      "Type": "Agent",
-      "ProjectRelativePath": "Vendor Research Agent/project.uiproj",
-      "Id": "f9d6b5eb-d968-4418-807a-df9926bca93e"
+      "Id": "08334af9-e3b3-4117-ac71-92accf205801"
     },
     {
       "Type": "Agent",
       "ProjectRelativePath": "Discrepancy Investigator Agent/project.uiproj",
-      "Id": "53e7e6fb-7382-40c8-b355-553f447d128b"
+      "Id": "7d8c2e2a-1be5-4234-bfd2-9323217ef4bb"
+    },
+    {
+      "Type": "Agent",
+      "ProjectRelativePath": "Vendor Research Agent/project.uiproj",
+      "Id": "e3831d6c-f089-475e-8d55-43fd38beed43"
     }
   ],
   "AutomationHubIdeaUrl": null

@@ -1,7 +1,16 @@
 {
-  "zoom": 0.88,
+  "zoom": 0.84,
   "agentPosition": {
     "x": 0,
     "y": 0
-  }
+  },
+  "resourceNodes": [
+    {
+      "id": "agent=>Large Discrepancy:666e6701-f60a-4579-ac36-76968b15908a",
+      "position": {
+        "x": 256,
+        "y": -288
+      }
+    }
+  ]
 }

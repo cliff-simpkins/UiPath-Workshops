@@ -3,43 +3,34 @@
   "resource": {
     "name": "Vendor Research Agent",
     "kind": "process",
-    "type": "agent",
     "apiVersion": "orchestrator.uipath.com/v1",
-    "projectKey": "f9d6b5eb-d968-4418-807a-df9926bca93e",
-    "isOverridable": true,
-    "dependencies": [
-      {
-        "name": "Vendor Research Agent",
-        "kind": "package"
-      }
-    ],
+    "dependencies": [],
     "runtimeDependencies": [],
-    "files": [],
     "folders": [
       {
         "fullyQualifiedName": "solution_folder"
       }
     ],
     "spec": {
-      "type": "Agent",
       "name": "Vendor Research Agent",
-      "package": {
-        "key": "043260a6-5691-4b3b-880f-71d6451f4f32"
-      },
-      "packageName": "WAD2026.Workshop.agent.Vendor.Research.Agent",
+      "package": "",
       "inputArguments": "{}",
-      "hiddenForAttendedUser": false,
+      "jobPriority": "Medium",
       "alwaysRunning": false,
       "autoStartProcess": false,
+      "jobRecording": "Disabled",
       "targetFrameworkValue": "Portable",
-      "agentMemory": false,
+      "duration": 40,
+      "frequency": 500,
+      "quality": 100,
+      "remoteControlAccess": "None",
       "retentionAction": "Delete",
       "retentionPeriod": 30,
       "staleRetentionAction": "Delete",
-      "staleRetentionPeriod": 180,
-      "tags": []
+      "staleRetentionPeriod": 180
     },
     "locks": [],
-    "key": "6e1659dd-2ac5-450a-ba49-92806f970e6d"
+    "key": "43c7b234-8675-4e9e-b567-0a0ed5cc16b3",
+    "files": []
   }
 }

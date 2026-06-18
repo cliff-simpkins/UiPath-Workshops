@@ -4,7 +4,7 @@
     "name": "Vendor Research Agent",
     "kind": "package",
     "apiVersion": "orchestrator.uipath.com/v1",
-    "projectKey": "f9d6b5eb-d968-4418-807a-df9926bca93e",
+    "projectKey": "e3831d6c-f089-475e-8d55-43fd38beed43",
     "isOverridable": true,
     "dependencies": [],
     "runtimeDependencies": [],
@@ -15,9 +15,12 @@
       }
     ],
     "spec": {
-      "name": "Vendor Research Agent"
+      "fileName": null,
+      "fileReference": null,
+      "name": "Vendor Research Agent",
+      "description": null
     },
     "locks": [],
-    "key": "043260a6-5691-4b3b-880f-71d6451f4f32"
+    "key": "88fa387d-cc8d-417e-b3c3-77e489c2c83e"
   }
 }

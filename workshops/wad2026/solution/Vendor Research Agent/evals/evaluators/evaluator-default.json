@@ -1,6 +1,6 @@
 {
   "fileName": "evaluator-default.json",
-  "id": "5653e1a6-af82-4476-bf92-bb768364bc4b",
+  "id": "b4b4fcce-f6af-4187-837c-d9968ab31e2c",
   "name": "Default Evaluator",
   "description": "An evaluator that uses a LLM to score the similarity of the actual output to the expected output",
   "type": 5,
@@ -9,6 +9,6 @@
   "model": "same-as-agent",
   "targetOutputKey": "*",
   "targetSubOutputKey": "",
-  "createdAt": "2026-06-11T22:12:03.310Z",
-  "updatedAt": "2026-06-11T22:12:03.310Z"
+  "createdAt": "2026-06-18T15:06:12.355Z",
+  "updatedAt": "2026-06-18T15:06:12.355Z"
 }

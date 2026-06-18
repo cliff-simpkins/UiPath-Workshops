@@ -1,5 +1,5 @@
 {
-  "id": "1ae359cf-7468-4ec1-9f91-1718fbc5d48c",
+  "id": "ee25d011-f40a-4411-8490-fe8b6b44cbe1",
   "version": "1.1.0",
   "name": "Vendor Research Agent",
   "metadata": {
@@ -120,7 +120,7 @@
   },
   "settings": {
     "model": "gpt-5.4",
-    "maxTokens": 64000,
+    "maxTokens": 128000,
     "temperature": 0,
     "engine": "basic-v2",
     "maxIterations": 25,
@@ -228,7 +228,7 @@
         "toolDescription": "Web search executes a search of the public domain using a natural language search query. The search results are available in the output. Web search offers near-real time search results, but certain time sensitive data like stock prices or weather will not consistently be current. There could be a few days lag. Be sure to pass in date/time and/or location as arguments in the query if required.",
         "method": "POST",
         "connection": {
-          "id": "36696529-8630-4fa4-993e-93ec8656fa82",
+          "id": "7e8ed8d1-f77e-4f01-a8fa-c67d15885d30",
           "name": "UiPath GenAI Activities",
           "elementInstanceId": 0,
           "apiBaseUri": "",
@@ -237,15 +237,15 @@
           "connector": {
             "key": "uipath-uipath-airdk",
             "name": "UiPath GenAI Activities",
-            "image": "https://staging.uipath.com/elements_/scaleunit_/4a9b6040-645f-4006-a000-829794b794d4/v3/element/elements/uipath-uipath-airdk/image",
+            "image": "https://cloud.uipath.com/elements_/scaleunit_/a6827719-5651-4da8-a093-6b3e05f247c7/v3/element/elements/uipath-uipath-airdk/image",
             "enabled": true
           },
           "folder": {
-            "key": "38e61b75-2699-4b7e-bafb-e2656e4955c9",
-            "path": "38e61b75-2699-4b7e-bafb-e2656e4955c9"
+            "key": "b0581cc5-eda5-4ed5-bde0-90124169e078",
+            "path": "b0581cc5-eda5-4ed5-bde0-90124169e078"
           },
           "solutionProperties": {
-            "resourceKey": "36696529-8630-4fa4-993e-93ec8656fa82"
+            "resourceKey": "7e8ed8d1-f77e-4f01-a8fa-c67d15885d30"
           }
         },
         "parameters": [
@@ -370,8 +370,8 @@
       "guardrail": {
         "policies": []
       },
-      "iconUrl": "https://staging.uipath.com/elements_/scaleunit_/4a9b6040-645f-4006-a000-829794b794d4/v3/element/elements/uipath-uipath-airdk/image",
-      "id": "fe4bfb13-bb7a-483d-b472-ad3169bf7cb2",
+      "iconUrl": "https://cloud.uipath.com/elements_/scaleunit_/a6827719-5651-4da8-a093-6b3e05f247c7/v3/element/elements/uipath-uipath-airdk/image",
+      "id": "bc069619-6765-49b0-9b28-6fde733fea61",
       "isPreview": false,
       "isEnabled": true
     }

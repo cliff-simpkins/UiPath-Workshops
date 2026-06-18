@@ -1,55 +1,28 @@
 {
   "fileName": "evaluation-set-default.json",
-  "id": "8907420f-de51-466d-b044-8bd396ab1869",
+  "id": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
   "name": "VRA Eval Set",
   "batchSize": 10,
   "evaluatorRefs": [
-    "5653e1a6-af82-4476-bf92-bb768364bc4b",
-    "e55733c7-221b-40b3-b5dc-634a67fbf7f4"
+    "b4b4fcce-f6af-4187-837c-d9968ab31e2c",
+    "6675055e-9866-4268-ac8e-a88bd3782642"
   ],
   "evaluations": [
     {
-      "id": "75852dc4-7c24-4fde-8d34-db61da788152",
-      "name": "Debug Run 6/11/2026, 3:14:01 PM",
+      "id": "1c1e6e0f-6e52-4544-9427-a794ee5276f4",
+      "name": "Subsidiary - Alphabet Inc. / Google LLC",
       "inputs": {
-        "invoiceVendorName": "Meta",
-        "poVendorName": "Instagram"
+        "invoiceVendorName": "Google",
+        "poVendorName": "Alphabet"
       },
       "expectedOutput": {
         "relationship": "parent_subsidiary",
         "flag": "approve",
         "confidence": "high",
-        "reasoning": "Reuters reports that Facebook agreed to acquire Instagram in 2012; Facebook later became Meta Platforms, making Instagram part of Meta’s corporate group. Meta’s SEC Form 10-K states that trademarks appearing in the filing are property of Meta Platforms, Inc. or its affiliates, corroborating that Instagram is under Meta’s corporate control. Therefore, Meta is the parent entity and Instagram is the subsidiary.",
-        "sources": [
-          "https://www.reuters.com/article/technology/facebook-to-buy-instagram-for-1-billion-idUSBRE8380M9/",
-          "https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231.htm"
-        ]
-      },
-      "simulationInstructions": "",
-      "expectedAgentBehavior": "Agent must perform at least one web search to verify the corporate relationship between Meta and Instagram, confirming Instagram is a wholly-owned subsidiary of Meta Platforms, Inc.",
-      "simulateInput": false,
-      "inputGenerationInstructions": "",
-      "simulateTools": false,
-      "evalSetId": "8907420f-de51-466d-b044-8bd396ab1869",
-      "createdAt": "2026-06-11T22:14:01.687Z",
-      "updatedAt": "2026-06-11T22:14:01.687Z",
-      "source": "debugRun"
-    },
-    {
-      "id": "1f1d2892-c134-43e4-b7a2-21149592033d",
-      "name": "Alphabet Inc. / Google LLC",
-      "inputs": {
-        "invoiceVendorName": "Alphabet Inc.",
-        "poVendorName": "Google LLC"
-      },
-      "expectedOutput": {
-        "relationship": "parent_subsidiary",
-        "flag": "approve",
-        "confidence": "high",
-        "reasoning": "Alphabet Inc. was established in 2015 as the parent company of Google LLC through a corporate restructuring. SEC filings confirm Google LLC is a wholly-owned subsidiary of Alphabet Inc.",
+        "reasoning": "I found a documented parent-subsidiary relationship: Alphabet announced in its official investor materials that, upon the 2015 restructuring, Google would become a wholly-owned subsidiary of Alphabet. SEC filings from Alphabet also state that Google LLC is a wholly owned subsidiary of Alphabet. With two independent authoritative sources corroborating the hierarchy, this is a legitimate mismatch and should be approved.",
         "sources": [
           "https://abc.xyz/",
-          "https://investor.google.com/"
+          "https://www.sec.gov/Archives/edgar/data/1652044/000130817924000612/lgoog2024_def14a.htm"
         ]
       },
       "simulationInstructions": "",
@@ -57,14 +30,15 @@
       "simulateInput": false,
       "inputGenerationInstructions": "",
       "simulateTools": false,
-      "evalSetId": "8907420f-de51-466d-b044-8bd396ab1869",
-      "createdAt": "2026-06-12T23:48:12.466Z",
-      "updatedAt": "2026-06-12T23:48:12.467Z",
-      "source": "manual"
+      "evalSetId": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+      "createdAt": "2026-06-18T16:15:13.741Z",
+      "updatedAt": "2026-06-18T17:40:50.381Z",
+      "source": "firstSuccessfulRun",
+      "toolsToSimulate": []
     },
     {
-      "id": "3dc77ec5-7440-406c-a175-d2791f4d6355",
-      "name": "Meta Platforms Inc. / Facebook, Inc.",
+      "id": "f274b4dd-f892-4ece-97af-8d4c5994ca77",
+      "name": "Predecessor - Meta Platforms Inc. / Facebook, Inc.",
       "inputs": {
         "invoiceVendorName": "Meta Platforms Inc.",
         "poVendorName": "Facebook, Inc."
@@ -79,19 +53,20 @@
           "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801"
         ]
       },
-      "simulationInstructions": "",
       "expectedAgentBehavior": "Agent must perform at least one web search to verify the corporate relationship between Meta Platforms Inc. and Facebook, Inc., finding evidence of the October 2021 rebrand from Facebook to Meta Platforms.",
+      "simulationInstructions": "",
       "simulateInput": false,
       "inputGenerationInstructions": "",
       "simulateTools": false,
-      "evalSetId": "8907420f-de51-466d-b044-8bd396ab1869",
-      "createdAt": "2026-06-12T23:48:34.373Z",
-      "updatedAt": "2026-06-12T23:48:34.374Z",
+      "toolsToSimulate": [],
+      "evalSetId": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+      "createdAt": "2026-06-18T17:41:40.395Z",
+      "updatedAt": "2026-06-18T17:41:40.395Z",
       "source": "manual"
     },
     {
-      "id": "27faf4db-5787-4c19-9dbf-86ecdeb9822e",
-      "name": "Apex Global Solutions / United Supply Co.",
+      "id": "a8fd6f34-75d9-4074-93fa-4eef0739eb36",
+      "name": "Unrelated - Apex Global Solutions / United Supply Co.",
       "inputs": {
         "invoiceVendorName": "Apex Global Solutions",
         "poVendorName": "United Supply Co."
@@ -103,19 +78,20 @@
         "reasoning": "No documented corporate relationship was found between Apex Global Solutions and United Supply Co. Web searches found no acquisitions, mergers, affiliations, or common ownership linking these two entities. The names differ entirely and no credible source connects them.",
         "sources": []
       },
-      "simulationInstructions": "",
       "expectedAgentBehavior": "Agent must perform web searches to investigate the relationship between Apex Global Solutions and United Supply Co. Agent should conclude these are unrelated entities with no documented corporate connection.",
+      "simulationInstructions": "",
       "simulateInput": false,
       "inputGenerationInstructions": "",
       "simulateTools": false,
-      "evalSetId": "8907420f-de51-466d-b044-8bd396ab1869",
-      "createdAt": "2026-06-12T23:48:36.001Z",
-      "updatedAt": "2026-06-12T23:48:36.002Z",
+      "toolsToSimulate": [],
+      "evalSetId": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+      "createdAt": "2026-06-18T17:42:27.294Z",
+      "updatedAt": "2026-06-18T17:42:27.294Z",
       "source": "manual"
     },
     {
-      "id": "906b2376-048c-4d69-a052-90ea48c8b063",
-      "name": "Amaz0n Web Services / Amazon Web Services",
+      "id": "cf69b3cc-6d9b-4ad8-86ac-8171e1568cef",
+      "name": "Typosquat - Amaz0n",
       "inputs": {
         "invoiceVendorName": "Amaz0n Web Services",
         "poVendorName": "Amazon Web Services"
@@ -129,21 +105,27 @@
           "https://aws.amazon.com/"
         ]
       },
-      "simulationInstructions": "",
       "expectedAgentBehavior": "Agent must identify the character substitution (zero for the letter o) in Amaz0n Web Services and classify this as a fraudulent typosquat of Amazon Web Services. Agent should reject this vendor mismatch. ",
+      "simulationInstructions": "",
       "simulateInput": false,
       "inputGenerationInstructions": "",
       "simulateTools": false,
-      "evalSetId": "8907420f-de51-466d-b044-8bd396ab1869",
-      "createdAt": "2026-06-12T23:48:37.595Z",
-      "updatedAt": "2026-06-15T19:10:21.484Z",
-      "source": "manual",
-      "toolsToSimulate": []
+      "toolsToSimulate": [],
+      "evalSetId": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+      "createdAt": "2026-06-18T17:43:16.673Z",
+      "updatedAt": "2026-06-18T17:43:16.673Z",
+      "source": "manual"
     }
   ],
-  "modelSettings": [],
-  "createdAt": "2026-06-11T22:12:03.913Z",
-  "updatedAt": "2026-06-15T19:10:21.484Z",
+  "modelSettings": [
+    {
+      "id": "default",
+      "modelName": "same-as-agent",
+      "temperature": "same-as-agent"
+    }
+  ],
+  "createdAt": "2026-06-18T15:06:12.915Z",
+  "updatedAt": "2026-06-18T17:46:09.136Z",
   "agentMemoryEnabled": false,
   "agentMemorySettings": [],
   "lineByLineEvaluation": false

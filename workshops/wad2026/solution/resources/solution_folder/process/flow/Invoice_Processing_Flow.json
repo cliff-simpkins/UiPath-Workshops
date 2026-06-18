@@ -5,7 +5,7 @@
     "kind": "process",
     "type": "flow",
     "apiVersion": "orchestrator.uipath.com/v1",
-    "projectKey": "f8a0b720-f2b6-4233-a87a-3a5a17fb5fa4",
+    "projectKey": "08334af9-e3b3-4117-ac71-92accf205801",
     "isOverridable": true,
     "dependencies": [
       {
@@ -21,12 +21,18 @@
       }
     ],
     "spec": {
+      "entryPointUniqueId": null,
+      "inputArgumentsSchema": null,
+      "inputArgumentsSchemaV2": null,
       "type": "Flow",
       "name": "Invoice Processing Flow",
+      "description": null,
       "package": {
-        "key": "62060519-12b0-4879-af91-ae478f4c9aa7"
+        "key": "496fca36-4c97-4f5b-89f9-c664462b1d7a"
       },
       "packageName": "WAD2026.Workshop.flow.Invoice.Processing.Flow",
+      "packageVersion": null,
+      "entryPointName": null,
       "inputArguments": "{}",
       "hiddenForAttendedUser": false,
       "alwaysRunning": false,
@@ -34,11 +40,15 @@
       "targetFrameworkValue": "Portable",
       "retentionAction": "Delete",
       "retentionPeriod": 30,
+      "retentionBucketRef": null,
       "staleRetentionAction": "Delete",
       "staleRetentionPeriod": 180,
+      "staleRetentionBucketRef": null,
+      "entryPoints": null,
+      "connections": null,
       "tags": []
     },
     "locks": [],
-    "key": "2797bb29-c7b5-47c5-968e-9df78f5deca6"
+    "key": "cac70208-2611-4f94-abea-fcc3ff1cb846"
   }
 }

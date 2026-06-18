@@ -3,10 +3,10 @@
   "resources": [
     {
       "resource": "connection",
-      "key": "36696529-8630-4fa4-993e-93ec8656fa82",
+      "key": "7e8ed8d1-f77e-4f01-a8fa-c67d15885d30",
       "value": {
         "connectionId": {
-          "defaultValue": "36696529-8630-4fa4-993e-93ec8656fa82",
+          "defaultValue": "7e8ed8d1-f77e-4f01-a8fa-c67d15885d30",
           "isExpression": false,
           "displayName": "Connection ID"
         }

@@ -3,14 +3,9 @@
   "resource": {
     "name": "Vendor_Contracts",
     "kind": "index",
-    "apiVersion": "ecs.uipath.com/v2",
+    "apiVersion": "ecs.uipath.com/v1",
     "isOverridable": true,
-    "dependencies": [
-      {
-        "name": "Vendor_Contracts",
-        "kind": "Bucket"
-      }
-    ],
+    "dependencies": [],
     "runtimeDependencies": [],
     "files": [],
     "folders": [
@@ -21,18 +16,13 @@
     "spec": {
       "name": "Vendor_Contracts",
       "description": "",
-      "storageBucketReference": {
-        "name": "Vendor_Contracts",
-        "key": "fc5f4fdb-3a98-4e08-8f0d-1e8374ca4f69",
-        "folderKey": "38e61b75-2699-4b7e-bafb-e2656e4955c9"
-      },
+      "indexConfigurationJson": "{\u0022Version\u0022:3,\u0022Provider\u0022:3,\u0022DataSource\u0022:{\u0022Type\u0022:1,\u0022Properties\u0022:{\u0022folderName\u0022:\u0022Shared\u0022,\u0022directoryPath\u0022:\u0022/\u0022,\u0022storageBucketName\u0022:\u0022Vendor_Contracts\u0022,\u0022storageBucketId\u0022:\u002200000000-0000-0000-0000-000000000000\u0022,\u0022fileNameGlob\u0022:\u0022**/*\u0022}}}",
       "fileNameGlob": "All",
-      "dataSourceType": "StorageBucket",
       "includeSubfolders": true,
       "ingestionType": "Advanced",
       "encrypted": false
     },
     "locks": [],
-    "key": "f3a34ad2-a11a-43da-0b4b-08dec18059f1"
+    "key": "220700cd-c3bc-48c5-b492-08decca8f232"
   }
 }

@@ -4,8 +4,8 @@
     "operate.json": "content/operate.json",
     "entry-points.json": "content/entry-points.json",
     "bindings.json": "content/bindings_v2.json",
-    "invoice-processing.bpmn": "content/invoice-processing.bpmn",
-    "invoice-processing.flow": "flow_files/invoice-processing.flow",
-    "00292830-ccbd-4e88-9bea-bf513f23381c/agent.json": "content/00292830-ccbd-4e88-9bea-bf513f23381c/agent.json"
+    "invoice-intake.bpmn": "content/invoice-intake.bpmn",
+    "invoice-intake.flow": "flow_files/invoice-intake.flow",
+    "39d2c5db-e8b7-4e67-b311-9dd1724cdb32/agent.json": "content/39d2c5db-e8b7-4e67-b311-9dd1724cdb32/agent.json"
   }
 }

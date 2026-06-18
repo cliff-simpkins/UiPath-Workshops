@@ -1,6 +1,6 @@
 {
   "fileName": "evaluator-default-trajectory.json",
-  "id": "e55733c7-221b-40b3-b5dc-634a67fbf7f4",
+  "id": "6675055e-9866-4268-ac8e-a88bd3782642",
   "name": "Default Trajectory Evaluator",
   "description": "An evaluator that judges the agent based on it's run history and expected behavior",
   "type": 7,
@@ -9,6 +9,6 @@
   "model": "same-as-agent",
   "targetOutputKey": "*",
   "targetSubOutputKey": "",
-  "createdAt": "2026-06-11T22:12:03.615Z",
-  "updatedAt": "2026-06-11T22:12:03.615Z"
+  "createdAt": "2026-06-18T15:06:12.641Z",
+  "updatedAt": "2026-06-18T15:06:12.641Z"
 }

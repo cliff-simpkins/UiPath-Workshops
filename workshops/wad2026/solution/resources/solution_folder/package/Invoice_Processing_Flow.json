@@ -4,7 +4,7 @@
     "name": "Invoice Processing Flow",
     "kind": "package",
     "apiVersion": "orchestrator.uipath.com/v1",
-    "projectKey": "f8a0b720-f2b6-4233-a87a-3a5a17fb5fa4",
+    "projectKey": "08334af9-e3b3-4117-ac71-92accf205801",
     "isOverridable": true,
     "dependencies": [],
     "runtimeDependencies": [],
@@ -15,9 +15,12 @@
       }
     ],
     "spec": {
-      "name": "Invoice Processing Flow"
+      "fileName": null,
+      "fileReference": null,
+      "name": "Invoice Processing Flow",
+      "description": null
     },
     "locks": [],
-    "key": "62060519-12b0-4879-af91-ae478f4c9aa7"
+    "key": "496fca36-4c97-4f5b-89f9-c664462b1d7a"
   }
 }

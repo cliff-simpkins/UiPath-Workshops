@@ -15,6 +15,21 @@
         "bindingsVersion": "2.2",
         "solutionsSupport": "true"
       }
+    },
+    {
+      "resource": "app",
+      "key": "EscalationApp",
+      "value": {
+        "name": {
+          "defaultValue": "EscalationApp",
+          "isExpression": false,
+          "displayName": "App name"
+        }
+      },
+      "metadata": {
+        "bindingsVersion": "2.2",
+        "solutionsSupport": "true"
+      }
     }
   ]
 }

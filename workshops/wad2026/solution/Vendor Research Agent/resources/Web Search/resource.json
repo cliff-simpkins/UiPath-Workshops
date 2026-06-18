@@ -1,6 +1,6 @@
 {
   "$resourceType": "tool",
-  "id": "fe4bfb13-bb7a-483d-b472-ad3169bf7cb2",
+  "id": "bc069619-6765-49b0-9b28-6fde733fea61",
   "type": "integration",
   "location": "external",
   "name": "Web Search",
@@ -95,7 +95,7 @@
       }
     }
   },
-  "iconUrl": "https://staging.uipath.com/elements_/scaleunit_/4a9b6040-645f-4006-a000-829794b794d4/v3/element/elements/uipath-uipath-airdk/image",
+  "iconUrl": "https://cloud.uipath.com/elements_/scaleunit_/a6827719-5651-4da8-a093-6b3e05f247c7/v3/element/elements/uipath-uipath-airdk/image",
   "settings": {},
   "guardrail": {
     "policies": []
@@ -111,7 +111,7 @@
       "contentType": "json"
     },
     "connection": {
-      "id": "36696529-8630-4fa4-993e-93ec8656fa82",
+      "id": "7e8ed8d1-f77e-4f01-a8fa-c67d15885d30",
       "name": "UiPath GenAI Activities",
       "elementInstanceId": 0,
       "apiBaseUri": "",
@@ -120,16 +120,16 @@
       "connector": {
         "key": "uipath-uipath-airdk",
         "name": "UiPath GenAI Activities",
-        "image": "https://staging.uipath.com/elements_/scaleunit_/4a9b6040-645f-4006-a000-829794b794d4/v3/element/elements/uipath-uipath-airdk/image",
+        "image": "https://cloud.uipath.com/elements_/scaleunit_/a6827719-5651-4da8-a093-6b3e05f247c7/v3/element/elements/uipath-uipath-airdk/image",
         "enabled": true,
         "isPreview": false
       },
       "folder": {
-        "key": "38e61b75-2699-4b7e-bafb-e2656e4955c9",
-        "path": "38e61b75-2699-4b7e-bafb-e2656e4955c9"
+        "key": "b0581cc5-eda5-4ed5-bde0-90124169e078",
+        "path": "b0581cc5-eda5-4ed5-bde0-90124169e078"
       },
       "solutionProperties": {
-        "resourceKey": "36696529-8630-4fa4-993e-93ec8656fa82"
+        "resourceKey": "7e8ed8d1-f77e-4f01-a8fa-c67d15885d30"
       }
     },
     "parameters": [
