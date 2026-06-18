@@ -1,0 +1,52 @@
+﻿[
+    {
+        "Id":  "98fc47be-9f5f-f111-8fcb-6045bd93be1c",
+        "CreateTime":  "2026-06-03T22:58:33.1931425+00:00",
+        "CreatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "RecordOwner":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "UpdatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "VendorName":  "Google LLC",
+        "VendorAlias":  "",
+        "UpdateTime":  "2026-06-03T22:58:33.1931425+00:00"
+    },
+    {
+        "Id":  "99fc47be-9f5f-f111-8fcb-6045bd93be1c",
+        "CreateTime":  "2026-06-03T22:58:34.133185+00:00",
+        "CreatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "RecordOwner":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "UpdatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "VendorName":  "Apex Manufacturing",
+        "VendorAlias":  "",
+        "UpdateTime":  "2026-06-03T22:58:34.133185+00:00"
+    },
+    {
+        "Id":  "9afc47be-9f5f-f111-8fcb-6045bd93be1c",
+        "CreateTime":  "2026-06-03T22:58:35.3370515+00:00",
+        "CreatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "RecordOwner":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "UpdatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "VendorName":  "Stratton Office Supply Co.",
+        "VendorAlias":  "",
+        "UpdateTime":  "2026-06-03T22:58:35.3370515+00:00"
+    },
+    {
+        "Id":  "9bfc47be-9f5f-f111-8fcb-6045bd93be1c",
+        "CreateTime":  "2026-06-03T22:58:36.2918443+00:00",
+        "CreatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "RecordOwner":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "UpdatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "VendorName":  "Helix Marketing Group",
+        "VendorAlias":  "",
+        "UpdateTime":  "2026-06-03T22:58:36.2918443+00:00"
+    },
+    {
+        "Id":  "9cfc47be-9f5f-f111-8fcb-6045bd93be1c",
+        "CreateTime":  "2026-06-03T22:58:37.0988765+00:00",
+        "CreatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "RecordOwner":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "UpdatedBy":  "ddc92f26-1880-4703-89c5-902d81cdbe5f",
+        "VendorName":  "Northwind Industrial Supply",
+        "VendorAlias":  "",
+        "UpdateTime":  "2026-06-03T22:58:37.0988765+00:00"
+    }
+]
