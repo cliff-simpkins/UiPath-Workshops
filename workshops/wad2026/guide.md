@@ -22,12 +22,15 @@ You'll leave with a running agent, a reusable eval set, and a mental model of wh
 
 ## What you'll build
 
-An invoice arrives by email. A Maestro Flow extracts the attachment, looks up the matching purchase order from a Data Fabric entity, and routes it:
+An invoice arrives by email. A Maestro Flow extracts the attachment, looks up the matching purchase order from a Data Fabric entity, and routes for validation:
 
-- **Vendor matches PO** → the Discrepancy Investigator Agent compares the documents and produces a recommendation; an inline agent drafts an email reply
-- **Vendor doesn't match PO** → the Vendor Research Agent searches the web to determine if the relationship is legitimate, then continues to the DIA if valid
+- **Vendor validation** → the `Vendor Research Agent` validates that the invoice vendor and the PO vendor match, performing web research as needed
+- **Invoice matches the PO** → the `Discrepancy Investigator Agent` compares the invoice and PO documents and produces a recommendation
+- **Email reply**  → an inline agent drafts an email reply, which is sent to the vendor
 
-You'll start from a starter flow with the deterministic spine and the vendor-research branch pre-built. Your job is to add the Discrepancy Investigator Agent, wire the evaluations, fix a prompt bug you'll discover along the way, and ship it to Orchestrator.
+Along the way, Flow escalates instances where match thresholds are exceeded and routes invalid invoices.
+
+You'll start from a starter flow with the deterministic spine and the vendor-research branch pre-built. Your job is to add the `Discrepancy Investigator Agent`, wire the evaluations, fix a prompt bug you'll discover along the way, and then ship it to Orchestrator.
 
 ---
 
@@ -35,19 +38,19 @@ You'll start from a starter flow with the deterministic spine and the vendor-res
 
 *Facilitator-led. No attendee action required.*
 
-The scenario: invoice processing. Deliberately boring — that's the point. An invoice has to be processed correctly on document 74 of 100, at 2am, when nobody's watching. That's the production problem this workshop is about.
+The scenario: invoice processing. Yes, it's deliberately boring — that's the point. Each invoice still has to be processed correctly, even document 74 of 100 that was received at 2am, when nobody's watching. This is the production problem this workshop is about.
 
 **What you'll touch today:**
 
-- A pre-built **Discrepancy Investigator Agent** — you'll add evaluations, find a real prompt bug, and fix it
+- A pre-built **Discrepancy Investigator Agent** ('DIA') — you'll add agent evaluations, find a real prompt bug, and fix it
 - A pre-built **Vendor Research Agent** — you'll run it and inspect its execution trace
-- A **Maestro Flow** — you'll wire in the DIA, add the email reply, and publish it to Orchestrator
+- A **Maestro Flow** — you'll wire in the DIA, add the email reply, and then publish it to Orchestrator
 
 * * *
 
 ## Step 2 — Sign in and select the workshop tenant (5 min)
 
-This workshop uses shared data stores and connections — signing into the correct tenant matters.
+This workshop uses shared data stores and connections that have already been configured for you, so signing into the correct tenant matters.
 
 1. Open your browser and go to the URL provided by facilitator.
 2. Enter your name and you will be provided with a username and password to use
@@ -61,11 +64,12 @@ Confirm you're in the right place: the tenant name in the upper-right corner sho
 
 ## Step 3 — Download the sample invoices (2 min)
 
-Five test invoices are pre-loaded in a shared Storage Bucket. Download them now so they're ready when you need them.
+Five test invoices are pre-loaded in a shared Storage Bucket. Download them now so that they're ready when you need them.
 
 1. From Studio Web, open Orchestrator by clicking the grid icon in the upper-left corner and selecting **Orchestrator**. 
     - If `Orchestrator` isn't at the top of the menu, you may need to expand the `More` node.
-    ![Orchestrator Sample PDFs](images/ws-flow-step-03a.png)
+
+        ![Orchestrator Sample PDFs](images/ws-flow-step-03a.png)
 2. In the left navigation panel, select **Shared**
 3. In the top navigation bar, click **Storage Buckets**
 4. Open the **Sample_PDFs** bucket
@@ -114,36 +118,45 @@ A complete reference solution is pre-built and shared in the workspace. You'll d
 1. Navigate to Studio Web: `https://cloud.uipath.com/uipathlabstraining/studio_/projects`
 2. Find the solution named **`WAD2026 Workshop`** — **do not open it directly**
 3. Click the three-dot menu (⋮) on the right side of the row and select **Duplicate** 
-    ![Duplicate the project](images/ws-flow-step-05a.png)
 4. Open your new copy, which should have a number appended to it
-    ![Duplicate the project](images/ws-flow-step-05b.png)
+
+
+    ![Duplicate the project](images/ws-flow-step-05.gif)
 
 Your solution should contain five items:
 
 - **Discrepancy Investigator Agent**
 - **Vendor Research Agent**
 - **EscalationApp**
-- **Invoice Processing Flow - Complete** (reference — read only)
+- **Invoice Processing Flow - Complete** (reference — treat it as read only)
 - **Invoice Processing Flow - Start Here** (the one you'll build in)
 
 
 * * *
 
-## Step 6 — UiPath 101: Studio Web (2 min)
+## Step 6 — UiPath 101: Studio Web (5 min)
 
 *Facilitator-led overview.*
 
 Studio Web is UiPath's browser-based development environment — no install, no CLI, just a browser. It's where you design agents, flows, apps, and test automations, and it connects directly to Orchestrator for publishing.
 
 Three areas you'll use today:
-
-- **Agent Builder** — click any agent in your solution to open it; configure the system prompt, attach tools (like context grounding indexes or API connectors), define inputs and outputs, test with the Debug panel, and run evaluations from the Evaluations tab
-- **Maestro Flow** — click a flow project to open the canvas; drag nodes from the panel on the left, connect them to form branches, click a node to configure its properties on the right
+- **Agent Builder** — click either of the agents in your solution to open it; configure the system prompt, attach tools (like context grounding indexes or API connectors), define inputs and outputs, test with the Debug panel, and run evaluations from the Evaluations tab
+- **Maestro Flow** — click a flow project to open the design canvas; add nodes directly to the canvas, connect the nodes to form branches, and click a node to configure its properties on the right
 - **Solution explorer** — the left sidebar; shows every project inside your solution and lets you navigate between them without losing context
 
 Your solution has five projects. You'll work across all five today — starting with the agents, then building in the starter flow.
 
-![Opened Studio Project](images/ws-flow-step-06.png)
+![Opened Studio Project](images/ws-flow-step-06a.png)
+
+As we use Studio Web, there are a few areas worth noting - along the left-side of the UI are project/solution-level tools that you will use. There are four of note shown below:
+- **Explorer** is the folders icon, which you can use to explore the solution and the projects within. You can browse and select the files and components within the project.
+- **Data Manager** is the clipboard icon, which you use to manage inputs, outputs, and variables.
+- **Issues panel** is the bug icon, used to view and diagnose warnings and errors for your projects.
+- **Deployment Configuration** is the rocketship icon, used to manage the connections and dependencies that your projects use.
+- **Version Control** is the branch icon and is used to view and restore prior versions of your Studio projects; we won't be using this capability today.
+
+![Studio Web Project Tooling](images/ws-flow-step-06b.png)
 
 
 * * *
@@ -152,19 +165,20 @@ Your solution has five projects. You'll work across all five today — starting 
 
 When you duplicate a solution, the connections (email, Data Fabric, Storage Bucket, GenAI) point at the original's configuration. Rebind them to the shared workshop connections before running anything.
 
-1. Open the **Invoice Processing Flow — Starter** from your solution
+1. Open your copy of the **WAD2026 Workshop**
 2. Open the **Project Explorer** panel `[TBC - confirm panel name / location in Studio Web]`
 3. For each connection that shows a warning indicator, click it and re-select the matching workshop connection from the dropdown `[TBC - confirm exact rebind UX and list of connections that need rebinding]`
 
-Connections to rebind `[TBC - confirm full list based on final flow build]`:
-- Email (for the email trigger and email reply nodes)
-- Data Fabric (for the purchase order query)
-- Storage Bucket (for the PDF download)
-- GenAI / IXP (for the extraction model and agents)
+Connections to rebind:
+- `O365 - UiPathlabsdemo@uipath.com` email connection - used for the email trigger and email reply nodes
+- `UiPath GenAI Activities` connection - used for web research access
+- `Data Fabric` connection - supports the purchase order data query
+- `Indexes/Vendor_Contracts` - Storage Bucket that stores vendor contracts
 
-> **Why rebind?** A duplicated solution inherits stale references from the original. Binding errors cause silent failures mid-run that are hard to diagnose under time pressure.
+![Rebinding connections](images/ws-flow-step-07.gif)
 
-`[TBC - screenshot showing broken vs. rebound connection state]`
+> **Why rebind now?** A duplicated solution inherits stale references from the original, as well as references in the solution author's workspace. When a new solution is created from an existing one, stale errors cause failures mid-run that can be hard to diagnose under time pressure.
+
 
 * * *
 
@@ -183,9 +197,10 @@ The complete flow processes invoices end-to-end:
    - **True** → Discrepancy Investigator Agent → inline email drafting agent → Reply to Email → End
    - **False** → Vendor Research Agent → Decision (legitimate relationship?) → DIA or End → inline email drafting agent → Reply to Email → End
 
-**The starter flow already has the false branch pre-wired.** The Vendor Research Agent, its downstream decision, and the email reply on that path are all there — you don't need to build them. Your job is to wire the true branch: add the DIA, the HITL placeholder, and the email reply for the vendor-match path.
+![Opened Studio Project](images/ws-flow-step-06a.png)
 
-`[TBC - screenshot of starter flow showing the Decision node: false branch pre-wired, true branch empty]`
+
+**The starter flow already has the false branch pre-wired.** The Vendor Research Agent, its downstream decision, and the email reply on that path are all there — you don't need to build them. Your job is to wire the true branch: add the DIA and the email reply portion of the vendor-match path.
 
 * * *
 
@@ -259,11 +274,14 @@ Now let's test the agent with known inputs that will trigger the Human In the Lo
 
     ![Escalation required](images/ws-flow-step-11a.png)
 
-5. Open up the escalation in your UiPath Action Center Inbox
+5. Open the escalation in the UiPath Action Center, which should look something like the below:
+    1. If you see a `Open in Action App` button at the top, you can use it to jump directly into the UiPath Action Center Inbox
+    2. If you don't see the button, you can navigate to [your Action Center Inbox](https://cloud.uipath.com/uipathlabstraining/WeAreDevelopers_2026_20260616/actions_/tasks) directly by opening up **UiPath Actions** from the nine-block menu icon in the upper-left.
+6. Within the `Escalation Task`, click **Approve**
 
     ![Action Center UX](images/ws-flow-step-11b.png)
 
-6. Return to the Agent Builder UX and verify that execution completed
+7. Return to the Agent Builder UX and verify that execution completed by examining the Execution Trace. You should now see an **Agent Output** line with what the agent returns.
 
     ![Execution Trail post approval](images/ws-flow-step-11c.png)
 
