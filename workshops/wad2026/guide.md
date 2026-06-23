@@ -55,7 +55,7 @@ This workshop uses shared data stores and connections — signing into the corre
 
 Confirm you're in the right place: the tenant name in the upper-right corner should read **WeAreDevelopers_2026_20260616**.
 
-![Dashboard screenshot](images\ws-flow-step-02.png)
+![Dashboard screenshot](images/ws-flow-step-02.png)
 
 * * *
 
@@ -65,11 +65,11 @@ Five test invoices are pre-loaded in a shared Storage Bucket. Download them now 
 
 1. From Studio Web, open Orchestrator by clicking the grid icon in the upper-left corner and selecting **Orchestrator**. 
     - If `Orchestrator` isn't at the top of the menu, you may need to expand the `More` node.
-    ![Orchestrator Sample PDFs](images\ws-flow-step-03a.png)
+    ![Orchestrator Sample PDFs](images/ws-flow-step-03a.png)
 2. In the left navigation panel, select **Shared**
 3. In the top navigation bar, click **Storage Buckets**
 4. Open the **Sample_PDFs** bucket
-    ![Orchestrator Sample PDFs](images\ws-flow-step-03b.png)
+    ![Orchestrator Sample PDFs](images/ws-flow-step-03b.png)
 5. Download all five PDF files to your local machine
 
 
