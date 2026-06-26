@@ -6,7 +6,7 @@
   "dependencies": {
     "UiPath.DataService.Activities": "25.9.3",
     "UiPath.IntegrationService.Activities": "1.26.0",
-    "UiPath.System.Activities": "26.6.0",
+    "UiPath.System.Activities": "26.6.1",
     "UiPath.WebAPI.Activities": "2.4.0",
     "UiPath.WorkflowEvents.Activities": "3.39.0"
   },

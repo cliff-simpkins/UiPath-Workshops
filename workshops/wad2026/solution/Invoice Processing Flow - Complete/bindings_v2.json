@@ -1,0 +1,155 @@
+{
+  "version": "2.0",
+  "resources": [
+    {
+      "resource": "connection",
+      "key": "b99c337e-b1df-459c-a2ca-194717fc0bf4",
+      "id": "connectionb99c337e-b1df-459c-a2ca-194717fc0bf4",
+      "value": {
+        "ConnectionId": {
+          "defaultValue": "b99c337e-b1df-459c-a2ca-194717fc0bf4",
+          "isExpression": false,
+          "displayName": "uipath-microsoft-outlook365 connection"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Email Received",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "uipath-microsoft-outlook365 connection",
+        "UseConnectionService": "true",
+        "Connector": "uipath-microsoft-outlook365"
+      }
+    },
+    {
+      "resource": "process",
+      "key": "9a221f4c-0224-44f8-8a42-476dba855ddc",
+      "id": "process9a221f4c-0224-44f8-8a42-476dba855ddc",
+      "value": {
+        "folderPath": {
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "Vendor Research Agent",
+          "isExpression": false,
+          "displayName": "Process name"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Vendor Research Agent",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "name",
+        "SolutionsSupport": "true",
+        "subType": "Agent"
+      }
+    },
+    {
+      "resource": "process",
+      "key": "4b59c65b-d57e-46a6-be2c-463fbeb71ba6",
+      "id": "process4b59c65b-d57e-46a6-be2c-463fbeb71ba6",
+      "value": {
+        "folderPath": {
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "Discrepancy Investigator Agent",
+          "isExpression": false,
+          "displayName": "Process name"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Vendor Research Agent",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "name",
+        "SolutionsSupport": "true",
+        "subType": "Agent"
+      }
+    },
+    {
+      "resource": "connection",
+      "key": "30ed5f4c-c740-421a-8733-da458d5eff10",
+      "id": "connection30ed5f4c-c740-421a-8733-da458d5eff10",
+      "value": {
+        "ConnectionId": {
+          "defaultValue": "30ed5f4c-c740-421a-8733-da458d5eff10",
+          "isExpression": false,
+          "displayName": "uipath-uipath-dataservice connection"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Query - POs",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "uipath-uipath-dataservice connection",
+        "UseConnectionService": "true",
+        "Connector": "uipath-uipath-dataservice"
+      }
+    },
+    {
+      "resource": "ixpDeployment",
+      "key": "3277dbca-7e25-80ae-95c2-03801f9b7b5f",
+      "id": "ixpDeployment3277dbca-7e25-80ae-95c2-03801f9b7b5f",
+      "value": {
+        "folderPath": {
+          "defaultValue": "b0581cc5-eda5-4ed5-bde0-90124169e078",
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "IXP_Invoices",
+          "isExpression": false,
+          "displayName": "IXP model"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Vendor Research Agent",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "name",
+        "SolutionsSupport": "true"
+      }
+    },
+    {
+      "resource": "EventTrigger",
+      "key": "b99c337e-b1df-459c-a2ca-194717fc0bf4",
+      "id": "EventTriggerb99c337e-b1df-459c-a2ca-194717fc0bf4",
+      "value": {
+        "ConnectionId": {
+          "defaultValue": "b99c337e-b1df-459c-a2ca-194717fc0bf4",
+          "isExpression": false
+        },
+        "EntryPointUniqueId": {
+          "defaultValue": "82158464-c32d-4026-83a9-0dd7e5083b32",
+          "isExpression": false
+        }
+      },
+      "metadata": {
+        "UseConnectionService": "true",
+        "Connector": "uipath-microsoft-outlook365",
+        "ActivityName": "Email Received",
+        "BindingsVersion": "2.2",
+        "ObjectName": "Message",
+        "Operation": "EMAIL_RECEIVED",
+        "FilterExpression": "(parentFolderId == 'AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=') && ((contains(subject,'WAD-cliff'))&&(hasAttachments==`true`))"
+      }
+    },
+    {
+      "resource": "Property",
+      "key": "EMAIL_RECEIVED",
+      "id": "Property_emailReceived",
+      "value": {
+        "parentFolderId": {
+          "defaultValue": "AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=",
+          "isExpression": false
+        }
+      },
+      "metadata": {
+        "TriggerCreateParameters": "parentFolderId",
+        "DebugQueryParameters": "parentFolderId",
+        "ActivityName": "Email Received",
+        "BindingsVersion": "2.2",
+        "ObjectName": "Message",
+        "ParentResourceKey": "EventTrigger.b99c337e-b1df-459c-a2ca-194717fc0bf4"
+      }
+    }
+  ]
+}

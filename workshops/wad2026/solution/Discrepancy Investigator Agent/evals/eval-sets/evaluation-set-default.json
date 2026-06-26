@@ -18,7 +18,7 @@
       "expectedOutput": {
         "discrepancies": [
           {
-            "field": "freightAmount",
+            "field": "freight",
             "invoiceValue": 150,
             "poValue": 0,
             "deltaAmount": 150,
@@ -28,19 +28,23 @@
           }
         ],
         "escalated": true,
-        "reasoning": "The invoice total exceeds the PO total by $150.00, driven entirely by an added freight charge not present on the PO. All line items, quantities, unit prices, tax, vendor, currency, payment terms, and dates otherwise match. Contract search confirmed the negotiated SKU prices match the invoice and PO, but the freight charge requires human review because it is an extra monetary charge beyond the PO.",
-        "recommendation": "escalate",
+        "reasoning": "The invoice total is $150.00 higher than the PO, driven entirely by an added freight charge not present on the PO. Contract evidence from the Stratton reseller agreement says standard ground freight is included in unit pricing and separately billed freight requires pre-approval, so the charge is not supported by the retrieved terms. However, the required human escalation was triggered because the total delta exceeded $100, and the human reviewer approved processing despite the variance.",
+        "recommendation": "approve",
         "totalAmountDelta": 150
       },
-      "simulationInstructions": "",
-      "expectedAgentBehavior": "Agent must call the vendor_contracts tool after detecting the freight discrepancy, searching for any contract clause that authorizes the $150.00 freight charge before reaching a recommendation. Agent should escalate after finding no authorizing clause.",
+      "simulationInstructions": "Human approves the escalation.",
+      "expectedAgentBehavior": "Agent must escalate call the vendor_contracts tool after detecting the freight discrepancy, searching for any contract clause that authorizes the $150.00 freight charge before reaching a recommendation. Agent should escalate after finding no authorizing clause.",
       "simulateInput": false,
       "inputGenerationInstructions": "",
-      "simulateTools": false,
-      "toolsToSimulate": [],
+      "simulateTools": true,
+      "toolsToSimulate": [
+        {
+          "name": "escalate_large_discrepancy"
+        }
+      ],
       "evalSetId": "5adecdd8-0383-4bbc-a16c-75889599c9a8",
       "createdAt": "2026-06-18T15:12:29.661Z",
-      "updatedAt": "2026-06-18T17:35:32.409Z",
+      "updatedAt": "2026-06-22T20:59:52.661Z",
       "source": "firstSuccessfulRun"
     },
     {
@@ -99,19 +103,23 @@
           }
         ],
         "totalAmountDelta": 108,
-        "recommendation": "escalate",
+        "recommendation": "approve",
         "escalated": true,
         "reasoning": "Invoice unit price for SSD-1TB-NVME-G4 is $195.00 vs the PO price of $175.00, creating a $100.00 line-level variance and a total amount delta of $108.00. Vendor contracts search returned no contract clause for Meridian Tech Supplies authorizing this price increase. Escalation is required for human review."
       },
-      "simulationInstructions": "",
+      "simulationInstructions": "Human approves the escalation.",
       "expectedAgentBehavior": "Agent must call the vendor_contracts tool after detecting the unit price discrepancy on the SSD-1TB-NVME-G4 line item, searching for any contract clause that authorizes the higher price before reaching a recommendation.",
       "simulateInput": false,
       "inputGenerationInstructions": "",
-      "simulateTools": false,
-      "toolsToSimulate": [],
+      "simulateTools": true,
+      "toolsToSimulate": [
+        {
+          "name": "escalate_large_discrepancy"
+        }
+      ],
       "evalSetId": "5adecdd8-0383-4bbc-a16c-75889599c9a8",
       "createdAt": "2026-06-18T17:36:05.272Z",
-      "updatedAt": "2026-06-18T17:36:05.272Z",
+      "updatedAt": "2026-06-22T20:44:21.689Z",
       "source": "manual"
     }
   ],
@@ -123,7 +131,7 @@
     }
   ],
   "createdAt": "2026-06-18T15:05:37.563Z",
-  "updatedAt": "2026-06-18T17:49:31.559Z",
+  "updatedAt": "2026-06-22T20:59:52.661Z",
   "agentMemoryEnabled": false,
   "agentMemorySettings": [],
   "lineByLineEvaluation": false

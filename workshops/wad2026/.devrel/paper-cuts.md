@@ -7,6 +7,7 @@ Friction logged during build, eval setup, and smoke testing. Routes to product, 
 
 | When | Friction Observed | Category | Suggested Action |
 |---|---|---|---|
+| Skills install (2026-06-25) | `uip skills install --agent claude` fails on Windows machines without GitHub SSH keys — CLI hardcodes `git@github.com:UiPath/skills.git` and always re-registers the marketplace, so the SSH error is unavoidable via that command. Reported to CLI team. | product | CLI should use HTTPS; workaround: `claude plugin marketplace add https://github.com/UiPath/skills --sparse .claude-plugin skills` then `claude plugin install uipath@uipath-marketplace`. Note: `--sparse` is also required to avoid Windows MAX_PATH failures from deep test fixture paths in the repo. |
 | Eval setup (2026-06-13) | `uip agent eval run start --path <agent_dir>` fails with "SolutionStorage.json not found" when the agent is inside a solution directory — CLI does not walk up to find the file | product | CLI should traverse up from `--path` to locate `SolutionStorage.json`; workaround: pass `--solution-id 578864c4-dd92-415a-6a1e-08dec6ebd11a` explicitly on every eval command |
 | Eval setup (2026-06-13) | `uip agent validate` rejects `"source": "firstSuccessfulRun"` — value is written by Studio Web debug runs but is not in the CLI schema's allowed list (`debugRun\|manual\|runtimeRun\|simulatedRun\|autopilotUserInitiated`) | product | CLI schema and Studio Web should use the same source enum values; workaround: rewrite `firstSuccessfulRun` → `debugRun` in eval set JSON |
 

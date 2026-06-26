@@ -10,8 +10,13 @@
     },
     {
       "Type": "Flow",
-      "ProjectRelativePath": "Invoice Processing Flow/project.uiproj",
+      "ProjectRelativePath": "Invoice Processing Flow - Complete/project.uiproj",
       "Id": "08334af9-e3b3-4117-ac71-92accf205801"
+    },
+    {
+      "Type": "Flow",
+      "ProjectRelativePath": "Invoice Processing Flow - Start Here/project.uiproj",
+      "Id": "bfe56f91-245c-4bf2-8396-40a884a20931"
     },
     {
       "Type": "Agent",
