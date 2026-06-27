@@ -10,6 +10,8 @@ In this lab, you will use the UiPath CLI to build a low-code agent from scratch 
 6. Validate the agent and upload it to UiPath Studio Web
 7. Test the agent in Studio Web with a real scenario
 
+There are a few approaches to create UiPath agents. This uses the UiPath CLI; you can also create agents using the [low-code Agent Builder](../agents-lowcode/guide.md) and using the [LangGraph SDK](../agents-langgraph/guide.md).
+
 **Estimated time:** 30-45 minutes
 
 ## What you are building

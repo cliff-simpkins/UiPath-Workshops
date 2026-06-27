@@ -9,6 +9,8 @@ In this lab, you will install the UiPath CLI and coding agent skills, then use y
 
 By the end, you will have a working coded agent built through your coding agent — guided by UiPath skills — with evaluation traces flowing to Studio Web.
 
+There are a few approaches to create UiPath agents. This uses the LangGraph SDK; you can also create agents using the [low-code Agent Builder](../agents-lowcode/guide.md) and using the [UiPath CLI](../agents/guide.md).
+
 **Estimated time:** 45–60 minutes
 
 * * *
