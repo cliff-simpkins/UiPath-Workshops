@@ -401,7 +401,7 @@ For this lab, use **Option A** — it shows the connection model that underlies 
 
 1. Log in to [cloud.uipath.com](https://cloud.uipath.com) and select **Studio** from the side menu.
 
-2. Click **Create New** and select **Agent**. Choose **Coded** as the agent type, then click **Start Fresh**.
+2. Select **Create New** and select **Agent**. Choose **Coded** as the agent type, then select **Start Fresh**.
 
    <!-- screenshot: step-09a.png - Studio Web create new coded agent dialog -->
 

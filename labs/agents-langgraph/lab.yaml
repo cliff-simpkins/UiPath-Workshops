@@ -1,4 +1,5 @@
 id: agents-langgraph
 title: Getting Started with UiPath Agents using LangGraph
+description: Build, evaluate, and publish a coded LangGraph agent using the UiPath CLI and coding agent skills.
 target_time_min: 60
 audience: professional-developer

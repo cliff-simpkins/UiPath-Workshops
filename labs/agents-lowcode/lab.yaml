@@ -1,4 +1,5 @@
 id: agents-lowcode
 title: Building a Low-Code Agent in Studio Web
+description: Build a low-code agent in Studio Web using Autopilot, with no CLI, no code, and no IDE required.
 target_time_min: 30
 audience: professional-developer

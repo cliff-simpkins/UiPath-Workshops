@@ -53,7 +53,7 @@ uip --version
 
 No prior UiPath experience is required.
 
-> **What this lab does not need.** Unlike the coded agent lab, this lab does not require Python, `uv`, or a coding agent. Low-code agents are configured entirely with a system prompt and JSON schemas — no code.
+> **What this lab does not need.** Unlike the coded agent lab, this lab does not require Python, Python SDKs, or tooling like `uv`. And while not required, a coding agent can be a useful building partner. UiPath agents are configured entirely with a system prompt and JSON schemas — no code is required.
 
 * * *
 
@@ -359,7 +359,7 @@ A successful upload returns `"Status": "Uploaded successfully"` along with a `So
    - `questDescription` and `monsters` listed as inputs
    - `monsterIndex` listed as the output
 
-4. Click **Debug** in the top toolbar. In the input panel, paste the following JSON:
+4. Select **Debug** in the top toolbar. In the input panel, paste the following JSON:
 
    ```json
    {
@@ -374,15 +374,15 @@ A successful upload returns `"Status": "Uploaded successfully"` along with a `So
    }
    ```
 
-5. Click **Save & Debug** to run the agent.
+5. Select **Save & Debug** to run the agent.
 
    <!-- screenshot: step-08b.png - Studio Web debug panel with input JSON entered -->
-   ![Step 08a](images/CLI_Agents-Step-08a.png)
+   ![Debug panel with quest input JSON pasted](images/CLI_Agents-Step-08a.png)
 
 6. The agent runs and returns a result in the Output panel. The `monsterIndex` output should contain `"aboleth"` or `"kraken"` — both are defensible picks. An aboleth is the iconic tentacled, mind-controlling aquatic horror in D&D lore; a kraken is larger and less cerebral. If the agent returns `"giant-octopus"`, the prompt may need tightening.
 
    <!-- screenshot: step-08c.png - Studio Web output panel showing monsterIndex result -->
-   ![Step 08b](images/CLI_Agents-Step-08b.png)
+   ![Output panel showing the monsterIndex result after a debug run](images/CLI_Agents-Step-08b.png)
 
 > **Agents are non-deterministic.** Even with `temperature: 0`, the model can produce different outputs across runs. The goal is a defensible pick, not a specific string. Use the next two examples to develop a feel for how the agent reasons — consistent wrong answers are a signal to refine the prompt.
 

@@ -1,4 +1,5 @@
 id: agents
 title: Getting Started with UiPath Agents
+description: Build and deploy a low-code UiPath agent from the CLI, from scaffolding through Studio Web upload.
 target_time_min: 45
 audience: professional-developer

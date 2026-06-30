@@ -69,7 +69,7 @@ This step has several sub-steps; budget 10-15 minutes to complete it.
 
 ### Create a new API Workflow project
 
-In Studio Web, create a new project and select **API Workflow** as the project type.
+Select **Create New** from your Cloud Workspace and choose **API Workflow** as the project type.
 
 ![Studio Web new project dialog with API Workflow type selected](images/agents-tools-step-01a.png)
 
@@ -102,11 +102,12 @@ Add one output argument:
 
 ### Add the HTTP Request
 
-In the workflow canvas, click the **+** button between activities to open the activity menu. Select **HTTP Request**.
+In the workflow canvas, select the **+** button between activities to open the activity menu. Select **HTTP Request**.
 
 ![HTTP Request added to the workflow canvas](images/agents-tools-step-01e.png)
 
 **Configure the activity name and connection properties:**
+Open the **Properties** pane for the HTTP Request and set the following properties:
 
 - **Name:** `HTTP Request - Open5e Monster Query`
   Right-click on the activity and select **Rename** to change the name.
@@ -151,7 +152,7 @@ What each parameter does:
 
 ### Add the Response
 
-In the workflow canvas, click the **+** button after the HTTP Request and select **Set Response**.
+In the workflow canvas, select the **+** button after the HTTP Request and select **Set Response**.
 
 Set Response defines what the API Workflow returns to its caller - in this case, what the agent's tool receives when it invokes the workflow. Whatever you put in the response body here becomes the tool output the agent reasons over.
 
@@ -171,11 +172,9 @@ Set the response body to:
 
 ### Test the workflow
 
-Debug the workflow to confirm it returns results. Open the debug configuration and set `searchName` to `dragon` or `goblin`.
+Select **Debug** from the toolbar. In the input panel, set `searchName` to `dragon` or `goblin` and run the workflow.
 
-![Debug configuration with searchName set](images/agents-tools-step-01k.png)
-
-Click **Debug** and verify the response includes a `monsterResults` array with monster entries before continuing.
+Verify the response includes a `monsterResults` array with monster entries before continuing.
 
 A successful response contains up to 10 entries, each with fields like `name`, `type`, `cr`, and `slug`. If you see an empty array, try a different search term - not every creature name has an exact match in the SRD.
 
@@ -185,7 +184,9 @@ A successful response contains up to 10 entries, each with fields like `name`, `
 
 Publishing registers the workflow as a deployable process in Orchestrator. This is what makes it discoverable in the agent builder's **Available resources** list - the builder surfaces published workflows from your workspace, not drafts saved locally in Studio Web.
 
-Publish the workflow to your personal workspace feed.
+1. Select **Publish** from the toolbar.
+2. In the publish dialog, select **For me** to publish to your personal workspace feed.
+3. Select **Publish** to confirm.
 
 ![Publish dialog and confirmation](images/agents-tools-step-01m.png)
 
@@ -215,7 +216,7 @@ In this lab you will remove the `monsters` input and the requirement to pre-popu
 
 Make sure you are on the **Canvas** view - use the **Canvas / Form** toggle at the top of the agent builder. The **+** button under Tools is only visible in Canvas view.
 
-On the agent canvas, click **+** under **Tools**. From the **Toolbox** panel, select **API workflow**.
+On the agent canvas, select **+** under **Tools**. From the **Toolbox** panel, select **API workflow**.
 
 The **Available resources** panel lists API workflows published to your workspace. Select the workflow you created in Step 1.
 
@@ -242,11 +243,20 @@ With the tool connected, update the agent definition to reflect the new contract
 
 The three changes in this step work together: removing `monsters` ends the agent's dependency on the caller for data; the output schema declares what the agent commits to returning; the updated prompt tells the agent how to use its new capability. None of the three works without the others.
 
-To edit the agent definition, click the agent node on the canvas to open the definition panel on the right.
+To edit the agent definition, select the agent node on the canvas to open the definition panel on the right.
 
 ### Remove monsters from the input
 
-In the agent definition, remove the `monsters` property from the input schema. The updated input should have only `questDescription`:
+In the agent definition, remove the `monsters` property from the input schema. The updated input should have only `questDescription`.
+
+To remove the `monsters` property:
+
+1. Within the agent, open the **Data Manager** by selecting the **Open Data Manager** icon along the left navbar - it looks like a clipboard
+2. The **Data Manager** panel has three groupings: **Inputs**, **Outputs**, and **Variables** - `monsters` should be in the **Inputs** list
+3. Hover over `monsters` to surface two icons to the right of the label - a pencil icon (**edit**) and a trashcan icon (**delete**)
+4. Select the delete icon to remove `monsters`
+
+You should now only have one input: `questDescription`:
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -254,7 +264,9 @@ In the agent definition, remove the `monsters` property from the input schema. T
 
 ### Add the output schema
 
-Add an output schema with the five fields from the design table at [What you are building](#what-you-are-building):
+Add an output schema with the five fields from the design table at [What you are building](#what-you-are-building).
+
+Within the same **Data Manager** panel, hover over the **Outputs** header to surface an **Add property** (+ icon). Select **Add Property** to add each of the fields below:
 
 | Field | Type |
 | --- | --- |
@@ -270,7 +282,7 @@ Add an output schema with the five fields from the design table at [What you are
 
 ### Update the system prompt
 
-Replace the system prompt with one that instructs the agent to use the tool, select a monster, and explain its reasoning. Open the **Instructions** panel on the canvas and update the system message:
+To open the **Properties** panel, select the agent on the canvas or select the wrench icon in the upper-right corner. Replace the system message with:
 
 ```text
 You are a quest classifier for an adventurer's guild. Given a quest description, your job is to find the most thematically appropriate monster from the D&D 5e SRD and to return information about that monster.

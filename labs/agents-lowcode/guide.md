@@ -39,7 +39,7 @@ No CLI, SDKs, or local tooling is needed for this lab.
 ## Step 1 - Open Studio Web
 
 Log in to [cloud.uipath.com](https://cloud.uipath.com) and open **Studio** from the left navigation. You will land on your Cloud Workspace, which shows your existing solutions and a **Create New** button.
-1. Click **Create New**.
+1. Select **Create New**.
 2. Select the **Agent** project type from the available options.
 
 ![Studio new project selection GIF](images/LowCode_Agents-Step-01.gif)
@@ -61,7 +61,7 @@ Studio Web's Autopilot can configure an agent from a plain-language description.
 Build a Quest Advisor for a fantasy RPG Adventurer's Guild. Given a quest description (questDescription - string), classify the quest difficulty tier (tier - number) using four tiers from local village threats up to cosmic and planar threats, suggest up to five monsters likely to be encountered (monsters - string array), and include a brief reasoning for the classification (reasoning - string).
 ```
 
-3. Click **Generate Agent**, then review Autopilot's suggestions and accept them to create the agent.
+3. Select **Generate Agent**, then review Autopilot's suggestions and accept them to create the agent.
 
     ![Select Agent Type dialog](images/LowCode_Agents-Step-02.png)
 
@@ -116,7 +116,7 @@ Tier 4: Masters of the World (Levels 17-20) - scope: entire multiverse, cosmic p
 
 ## Step 4 - Test the Agent
 
-Click **Debug** in the top toolbar. This opens the debug panel where you can run the agent with sample input.
+Select **Debug** in the top toolbar. This opens the debug panel where you can run the agent with sample input.
 
 1. In the input panel, paste the following string:
 
@@ -124,7 +124,7 @@ Click **Debug** in the top toolbar. This opens the debug panel where you can run
 ```text
 Goblins have been raiding farms near the village of Millhaven and stealing livestock. The local mayor has posted a small bounty for anyone willing to clear out the nearby cave.
 ```
-2. Click **Save & Debug** to run the agent.
+2. Select **Save & Debug** to run the agent.
 
     ![Debug configuration dialog](images/LowCode_Agents-Step-04a.png)
 
