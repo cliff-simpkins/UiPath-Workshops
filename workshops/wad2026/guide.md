@@ -54,19 +54,15 @@ This workshop uses shared data stores and connections that have already been con
 
 1. Open your browser and go to the URL provided by facilitator.
 2. Enter your name and you will be provided with a username and password to use
-3. If prompted to select a tenant, choose **`WeAreDevelopers_2026_20260616`**
-
-Confirm you're in the right place: the tenant name in the upper-right corner should read **WeAreDevelopers_2026_20260616**.
-
-![Dashboard screenshot](images/ws-flow-step-02.png)
+3. *If prompted to select a tenant*, choose **`WeAreDevelopers_2026_20260616`**
 
 * * *
 
 ## Step 3 — Download the sample invoices (2 min)
 
-Five test invoices are pre-loaded in a shared Storage Bucket. Download them now so that they're ready when you need them.
+Five test invoices are pre-loaded in a shared Storage Bucket. Download them now so that they're ready when you need them. These are available for you in **UiPath Orchestrator**
 
-1. From Studio Web, open Orchestrator by clicking the grid icon in the upper-left corner and selecting **Orchestrator**. 
+1. If **Orchestrator** isn't already open, select the grid icon in the upper-left corner and select **Orchestrator**. 
     - If `Orchestrator` isn't at the top of the menu, you may need to expand the `More` node.
 
         ![Orchestrator Sample PDFs](images/ws-flow-step-03a.png)
@@ -85,8 +81,8 @@ Each PDF tests a different path through the flow:
 | `case-1-alphabet-google-invoice.pdf` | Vendor name mismatch (legitimate parent/subsidiary) |
 | `case-2-apex-fraud-invoice.pdf` | Fraudulent invoice |
 | `case-3-freight-discrepancy-invoice.pdf` | Matching vendor, freight charge discrepancy |
-| `case-5-partial-shipment-invoice.pdf` | Partial quantity shipped |
 | `case-4-perfect-match-invoice.pdf` | Everything lines up — your first successful run |
+| `case-5-partial-shipment-invoice.pdf` | Partial quantity shipped |
 
 Keep these files handy and labeled — each drives a different path through the flow.
 
@@ -101,7 +97,7 @@ Orchestrator is UiPath's governance and operations layer — where automations r
 In this workshop you'll use four of its capabilities:
 
 - **Storage Buckets** — cloud file storage shared across the tenant. The five sample invoices and the vendor contract PDFs (used for context grounding) both live here. The flow downloads invoice attachments from here at runtime.
-- **Connections** - managed credentials to connect to protected resources. In the shared tenant, you'll use connections to Data Fabric, Outlook 365, and web search.
+- **Connections** — managed credentials to connect to protected resources. In the shared tenant, you'll use connections to Data Fabric, Outlook 365, and web search.
 - **Data Fabric** — a structured entity store built into UiPath. The purchase order records are pre-loaded as a `purchase_orders` entity. The flow queries Data Fabric at runtime to find the PO that matches each invoice — no separate database required.
 - **Automations** — where you'll publish and schedule your finished flow. Once published, the flow appears here as a process that can be triggered on a schedule, by webhook, or by email.
 
@@ -143,7 +139,7 @@ Studio Web is UiPath's browser-based development environment — no install, no 
 Three areas you'll use today:
 - **Agent Builder** — click either of the agents in your solution to open it; configure the system prompt, attach tools (like context grounding indexes or API connectors), define inputs and outputs, test with the Debug panel, and run evaluations from the Evaluations tab
 - **Maestro Flow** — click a flow project to open the design canvas; add nodes directly to the canvas, connect the nodes to form branches, and click a node to configure its properties on the right
-- **Solution explorer** — the left sidebar; shows every project inside your solution and lets you navigate between them without losing context
+- **Project explorer** — the left sidebar; shows every project inside your solution and lets you navigate between them without losing context
 
 Your solution has five projects. You'll work across all five today — starting with the agents, then building in the starter flow.
 
@@ -177,6 +173,11 @@ Connections to rebind:
 
 ![Rebinding connections](images/ws-flow-step-07.gif)
 
+To rebind the `Indexes/Vendor_Contracts`, select the text box element that says `Will be deployed in Debug folder`, which will present a drop-down that you can select `Shared/Vendor_Contracts`.
+
+![Rebinding the vendor contracts](images/ws-flow-step-07b.png)
+
+
 > **Why rebind now?** A duplicated solution inherits stale references from the original, as well as references in the solution author's workspace. When a new solution is created from an existing one, stale errors cause failures mid-run that can be hard to diagnose under time pressure.
 
 
@@ -195,12 +196,15 @@ The complete flow processes invoices end-to-end:
 5. **Data Fabric query** — retrieves the matching purchase order by invoice number
 6. **Decision: vendor name match?**
    - **True** → Discrepancy Investigator Agent → inline email drafting agent → Reply to Email → End
-   - **False** → Vendor Research Agent → Decision (legitimate relationship?) → DIA or End → inline email drafting agent → Reply to Email → End
+   - **False** → Vendor Research Agent → Switch - Vendor Research Routing:
+     - **Valid** (approve, or review with high confidence) → Discrepancy Investigator Agent → email reply → End
+     - **Invalid** (reject, or low-confidence review) → End
+     - **Default** → End
 
-![Opened Studio Project](images/ws-flow-step-06a.png)
+![Opened Studio Project - Completed invoice-intake.flow](images/ws-flow-step-08.png)
 
 
-**The starter flow already has the false branch pre-wired.** The Vendor Research Agent, its downstream decision, and the email reply on that path are all there — you don't need to build them. Your job is to wire the true branch: add the DIA and the email reply portion of the vendor-match path.
+**The starter flow already has the false branch pre-wired** — the Vendor Research Agent and the Switch routing node are there. You don't need to build them. Your job is to add the DIA and the email reply, and wire them into both the true branch and the Switch's Valid path.
 
 * * *
 
@@ -224,7 +228,27 @@ The agent's job: compare the invoice to the purchase order line by line, search 
 
 * * *
 
-## Step 10 — Test the Discrepancy Investigator Agent - Golden Path (5 min)
+## Step 10 — Update the HITL escalation for 'Discrepancy Investigator Agent (2 min)
+
+Set the **Large Discrepancy** escalation path to go to yourself.
+
+1. Select the **Large Discrepancy** escalation tool. This should refresh the Properties panel with that tool's properties.
+2. Select **Recipient** to search for yourself.
+    
+![Updating the HITL Recipient](images/ws-flow-step-10a.png)
+
+
+Notes for selecting your name:
+    - You may need to delete the existing recipient by selecting the 'X' icon.
+    - You can find your username by clicking on your profile picture in the upper-right corner of the Studio Web UX
+    - Given this lab uses `User n` names that can share the same undername across labs, **using the email address is easier than username**.
+
+![Locating your username email](images/ws-flow-step-10b.png)
+
+
+* * *
+
+## Step 11 — Test the Discrepancy Investigator Agent - Golden Path (5 min)
 
 Test the agent with known inputs before connecting it to the flow. This confirms the baseline behavior and lets you read the reasoning directly.
 
@@ -245,13 +269,13 @@ Test the agent with known inputs before connecting it to the flow. This confirms
 
 Expected result: `recommendation: "approve"`, `escalated: false`, `totalAmountDelta: 0`. The invoice and PO match exactly — no discrepancies.
 
-![Successful run in Agent Builder](images/ws-flow-step-10.png)
+![Successful run in Agent Builder](images/ws-flow-step-11.png)
 
 > **What to notice:** The execution trace shows the agent's reasoning step by step. It compared totals, checked line items, found no discrepancies — and returned `approve` without calling the vendor contracts tool. That's correct: the tool call only happens when there's something to look up.
 
 * * *
 
-## Step 11 — Test the Discrepancy Investigator Agent - Calling the Escalation and Contract Tools (5 min)
+## Step 12 — Test the Discrepancy Investigator Agent - Calling the Escalation and Contract Tools (5 min)
 
 Now let's test the agent with known inputs that will trigger the Human In the Loop ('HITL') escalation. This uses the UiPath App capabilities that were built with a quick form.
 
@@ -272,59 +296,63 @@ Now let's test the agent with known inputs that will trigger the Human In the Lo
 
     This time, you should see that the agent has called a `Tool call - escalate_Tool_Discrepancy` and now has an `Action Required` from the `EscalationApp`.
 
-    ![Escalation required](images/ws-flow-step-11a.png)
+    ![Escalation required](images/ws-flow-step-12a.png)
 
 5. Open the escalation in the UiPath Action Center, which should look something like the below:
     1. If you see a `Open in Action App` button at the top, you can use it to jump directly into the UiPath Action Center Inbox
-    2. If you don't see the button, you can navigate to [your Action Center Inbox](https://cloud.uipath.com/uipathlabstraining/WeAreDevelopers_2026_20260616/actions_/tasks) directly by opening up **UiPath Actions** from the nine-block menu icon in the upper-left.
+    2. If you don't see the button, there are two additional ways to navigate:
+        - You can navigate to [your Action Center Inbox](https://cloud.uipath.com/uipathlabstraining/WeAreDevelopers_2026_20260616/actions_/tasks) directly by opening up **UiPath Actions** from the nine-block menu icon in the upper-left.
+        - You can select the `EscalationApp` step in the **Execution Trace**, and the link will be shown in the execution trace details pane
 6. Within the `Escalation Task`, click **Approve**
 
-    ![Action Center UX](images/ws-flow-step-11b.png)
+    ![Action Center UX](images/ws-flow-step-12b.png)
 
 7. Return to the Agent Builder UX and verify that execution completed by examining the Execution Trace. You should now see an **Agent Output** line with what the agent returns.
 
-    ![Execution Trail post approval](images/ws-flow-step-11c.png)
+    ![Execution Trail post approval](images/ws-flow-step-12c.png)
 
 > **What to notice:** This time, the execution trace shows a very different agent reasoning. It noticed discrepancies and used the tools available to it - first to validating with a human that the increased invoice cost is acceptable, and also validating the contract terms of the invoice against the full purchase order agreement stored in Vendor_Contracts.
 
 
 * * *
 
-## Step 12 — Run evaluations against the Discrepancy Investigator Agent (10 min)
+## Step 13 — Run evaluations against the Discrepancy Investigator Agent (10 min)
 
 The agent works on one test input. Now establish a regression net — a set of cases that confirm it keeps working across different invoices, after prompt changes, and when the model updates.
 
 1. In Agent Builder, select the **Evaluation Sets** node
 2. In the Evaluation Sets page, select **View Details** to view the evaluations
-    ![Opened Agent Builder](images/ws-flow-step-12a.png)
+    ![Opened Agent Builder](images/ws-flow-step-13a.png)
 3. The **DIA Eval Set** has 3 pre-loaded test cases:
    - **Freight Discrepancy — Stratton Office Supply** (expected result - recommendation: approve; escalated: true)
    - **Perfect Match — Stratton Office Supply** (expected result - recommendation: approve; escalated: false)
    - **Unit Price Discrepancy — Meridian Tech Supplies** (expected result - recommendation: approve; escalated: true)
 4. Click **Evaluate Set** to establish a baseline
 
-    ![Evals running](images/ws-flow-step-12b.png)
+    ![Evals running](images/ws-flow-step-13b.png)
 
 Eval runs take 60–90 seconds. While it runs: each test case passes pre-defined `invoiceData` and `poData` to the agent and compares the output against the expected result. Two evaluators run in parallel: an **output evaluator** (does the recommendation match?) and a **trajectory evaluator** (did the agent call the vendor contracts tool when it should have, and only when it should have?).
 
-   ![Evals running](images/ws-flow-step-12c.png)
+   ![Evals running](images/ws-flow-step-13c.png)
 
-Record the baseline scores. You'll rerun these in the next step after making a prompt change — the scores tell you whether your fix improved things without breaking anything else.
+Note the baseline scores - green marks solid performance, yellow noting areas that could be improved, and red calling out where the prompt could be adjusted. You can rerun these after making prompt changes, and the scores tell you whether your fix improved things without breaking anything else.
 
-> **Why evals?** A prompt change that fixes one invoice can silently break another. These three cases are your regression net. You should always run evals before shipping a prompt change.
+> **Why worry about evals?** A prompt change that fixes one invoice can silently break another - and model changes can also have an impact on your agent execution. These three cases are your regression net. You should always run evals before shipping a prompt change.
 
 * * *
 
-## Step 13 — Test the Vendor Research Agent (5 min)
+## Step 14 — Test the Vendor Research Agent (5 min)
 
 When an invoice vendor name doesn't match the PO vendor name, it's sometimes legitimate: a subsidiary placed the PO but the parent company pays the invoice. The Vendor Research Agent handles this case by searching the web rather than reflexively rejecting the invoice.
 
+
 1. Open the **Vendor Research Agent** from your solution
-2. Review the system prompt — notice the structure: role, investigation scenarios, evidence criteria, output format. Compare it to the DIA prompt you just looked at.
-3. Click the **Debug** tab and enter:
+2. ***If `Web Search` has a red exclamation mark on it***, select **Web Research** and Studio Web should repair the binding automatically
+3. Review the system prompt — notice the structure: role, investigation scenarios, evidence criteria, output format. Compare it to the DIA prompt you just looked at.
+4. Click the **Debug** tab and enter:
    - `invoiceVendorName`: `Alphabet`
    - `poVendorName`: `Google`
-4. Click **Save & Debug** and watch it run
+5. Click **Save & Debug** and watch it run
 
 As it runs, open the **Execution Trace** and observe the pattern:
 
@@ -332,7 +360,7 @@ As it runs, open the **Execution Trace** and observe the pattern:
 2. It works each task, makes web search calls, and synthesizes the evidence
 3. It produces a structured final output with cited sources
 
-![VRA Agent using web search tool](images/ws-flow-step-13.png)
+![VRA Agent using web search tool](images/ws-flow-step-14.png)
 
 Expected result: `flag: "approve"`, `relationship: "parent_subsidiary"`. Alphabet is Google's parent — the invoice is legitimate.
 
@@ -340,23 +368,27 @@ Expected result: `flag: "approve"`, `relationship: "parent_subsidiary"`. Alphabe
 
 * * *
 
-## Step 14 — Add evaluations to the Vendor Research Agent (10 min)
+## Step 15 — Add evaluations to the Vendor Research Agent (10 min)
+
+For this agent, we will access the evaluations using another click-path. But the click-path you used above for the prior agent works, as well.
 
 1. In the Vendor Research Agent, select the **Evaluations** tab below the designer
 2. Open the **VRA Eval Set** — you'll find pre-loaded test cases covering parent/subsidiary relationships and mismatch scenarios
 3. Click **Run All** to establish a baseline
 
-    ![VRA eval set run results](images/ws-flow-step-14a.png)
+    ![VRA eval set run results](images/ws-flow-step-15a.png)
 
 Note the scores. As with the DIA, evals are your regression net — any future prompt change to the VRA should be validated against this set before the agent goes back into the flow.
 
+If you have time at the end of this lab, improving your eval scores by adjusting the prompt and/or inputs is an excellent place to explore further.
+
 * * *
 
-## Step 15 — Open the starter and configure the email trigger (5 min)
+## Step 16 — Open the starter and configure the email trigger (5 min)
 
-Now that you've seen how the AI agents work, you'll build the flow. Open **Invoice Processing Flow — Starter** from your solution.
+Now that you've seen how the AI agents work, you'll build the flow. Open **Invoice Processing Flow - Start Here** from your solution.
 
-   ![Starter workflow screenshot](images/ws-flow-step-15.png)
+   ![Starter workflow screenshot](images/ws-flow-step-16.png)
 
 The starter has the full flow pre-built except for one gap. Read through it to orient:
 
@@ -366,29 +398,32 @@ The starter has the full flow pre-built except for one gap. Read through it to o
 - **Script: parse invoice JSON** — `Script - Extract Invoice Data` extracts the JSON string from the IXP output
 - **Data Fabric query** — `Query - POs` retrieves the matching purchase order by invoice number
 - **Decision - Vendor Match** matches the vendor name
-  - **False branch** — Calls `Vendor Research Agent` to validate mismatches and raises it to a human via `Human - Review Vendor Match`
+  - **False branch** — Calls `Vendor Research Agent` to research the mismatch. Its output routes through `Switch - Vendor Research Routing`: `Valid` (confirmed legitimate relationship) continues to the DIA; `Invalid` and `Default` route to End
   - **True branch** — empty
 
 And we will now finish wiring up the workflow!
 
 > **About the pre-wired false branch:** In a real build you'd wire this yourself. We've pre-built it so the 2-hour session can stay focused on the DIA, the evals, and the process orchestration — which is where the interesting decisions live.
 
+> **About the switch node:** We included a decision switch to fully automate task routing coming out of the **Vendor Research Agent**, but you would likely have a human in the loop ('HITL') approval here. We made this a switch to simplify the lab, but we have a HITL solution available if you want to explore that approach on your own.
+
+
 * * *
 
-## Step 16 — Set your email subject filter (2 min)
+## Step 17 — Configure your email trigger - email subject line (2 min)
 
 Adjust the **Email Received** trigger to trigger on ***your*** emails.
 1. Open the `Email Received` node by either double-clicking on it, or selecting it and selecting the properties (wrench icon) in Studio Web
 2. Click into the **Filter** option to open up the Filter Builder dialog
-    ![Exploring the starter workflow execution](images/ws-flow-step-16a.png)
+    ![Exploring the starter workflow execution](images/ws-flow-step-17a.png)
 3. In **Filter Builder**, update the `Subject`, replace the `yourname` portion with the name you want your Workflow to trigger from.
-    ![Exploring the starter workflow execution](images/ws-flow-step-16b.png)
+    ![Exploring the starter workflow execution](images/ws-flow-step-17b.png)
 
-When selecting the string you want to use, use something that is rather unique. All emails for this lab is going into this email inbox, and how you set your email subject filter is the best way to minimize the amount of false triggers across workshop participants.
+When selecting the string you want to use, use something that is rather unique. All emails for this lab are going into this email inbox, and how you set your email subject filter is the best way to minimize the amount of false triggers across workshop participants.
 
 * * *
 
-## Step 17 — Test: Send a test invoice through the flow (10 min)
+## Step 18 — Test: Send a test invoice through the flow (10 min)
 
 Before adding the Discrepancy Investigator Agent into the workflow, confirm the spine and the pre-wired false branch both work end-to-end.
 
@@ -401,7 +436,7 @@ Before adding the Discrepancy Investigator Agent into the workflow, confirm the 
 5. Watch the run - you'll see paths that were followed, and activity nodes that were activated, outlined in green
 6. You can inspect the execution trace and details of each step by using the `Execution` tab below the designer
 
-![Exploring the starter workflow execution](images/ws-flow-step-17a.png)
+![Exploring the starter workflow execution](images/ws-flow-step-18a.png)
 
 The flow runs through the spine and then ends at the empty true branch — no error, no reply. That's expected.
 
@@ -409,63 +444,63 @@ The flow runs through the spine and then ends at the empty true branch — no er
 
 Send another email with **`case-1-alphabet-google-invoice.pdf`** attached (same subject).
 
-This time the flow routes to the false branch. The Vendor Research Agent fires, classifies Alphabet/Google as `parent_subsidiary`, continues to the DIA, and presents you with a form for approval.
+This time the flow routes to the false branch. The Vendor Research Agent fires, classifies Alphabet/Google as `parent_subsidiary`, and returns `flag: approve` — which routes the Switch to the `Valid` path. The DIA isn't wired yet, so the flow ends here. That's expected.
 
-![Company name match confirmation](images/ws-flow-step-17b.png)
 
-Your decision on this window determines which path the invoice approval will take. Mark this as `Valid` and the invoice approval task will move on and terminate at the `End` node. Looking at the Maestro Flow canvas, you should see that the VRA and HITL step are outlined in green, noting that they were triggered by this instance.
-
-![VRA path in Flow](images/ws-flow-step-17c.png)
-
-> **What you're confirming:** The spine is solid. The false branch works end-to-end. Now you'll wire the true branch — the path for invoices where the vendor names match.
+> **What you're confirming:** The spine is solid. The VRA runs, the Switch routes correctly. In the next step you'll add the DIA and connect it to both the true branch and the Valid path from the Switch.
 
 * * *
 
-## Step 18 — Add the Discrepancy Investigator Agent (10 min)
+## Step 19 — Add the Discrepancy Investigator Agent (10 min)
 
 Add the Discrepancy Investigator Agent ('DIA') to the true path of the `Decision - Vendor Match` node. The complete flow is your reference — open it in a second tab if you want to compare wiring as you go.
 
 1. Click on the **True** path coming out of the Decision node
 2. Click the **+** button (or drag an **Agent** node from the node panel) and add it to the true branch
 3. In the agent selector, choose **Discrepancy Investigator Agent**
-4. Route the `Valid` path from the `Human - Review Vendor Match` to the new node
-    a. Click the **+** button at the `Valid` path and connect it to the DIA node
-    b. Delete the existing path from `Valid` to the `End` node, so there is only one path
+4. Connect the `Valid` path from `Switch - Vendor Research Routing` to the DIA node
+    - Delete the existing connection from `Valid` to the `End` node
+    - Click the **+** on the `Valid` path and connect it to the DIA node
 
-    ![Adding the DIA](images/ws-flow-step-18a.gif)
+    ![Adding the DIA](images/ws-flow-step-19a.gif)
 
 5. Open up the DIA node and update the following inputs:
    - `invoiceData` — open the variable picker and select the output of the JSON parse script node `$vars.scriptGetInvoice.output`
    - `poData` — select the output of the Data Fabric query node `$vars.queryPoData.output`
+   - Enclose each of the values in `JSON.stringify()`
 
-    ![DIA Variable Picker](images/ws-flow-step-18b.gif)
+    ![DIA Variable Picker](images/ws-flow-step-19b.gif)
 
 
-![DIA Properties](images/ws-flow-step-18c.png)
+Your final values should look like the following:
+   - **invoiceData**: `JSON.stringify($vars.scriptGetInvoice.output)`
+   - **poData**: `JSON.stringify($vars.queryPoData.output)`
+
+  ![DIA Properties](images/ws-flow-step-19c.png)
 
 
 > **Variable references:** The variable picker shows all variables available on the current execution path. If a variable doesn't appear, check the node's Properties panel → Output section to see what it exposes. The complete flow shows the exact wiring.
 
 * * *
 
-## Step 19 — Add the nodes to draft and send the email reply (15 min)
+## Step 20 — Add the nodes to draft and send the email reply (15 min)
 
 After the DIA node, add three more nodes: a script node, an inline email authoring agent, and the email reply node.
 
-![Email reply nodes](images/ws-flow-step-19a.gif)
+![Email reply nodes](images/ws-flow-step-20a.gif)
 
 Add the following nodes:
-- **Tool** -> **Script**
-- **Agent** -> **Autonomous Agent**
-- Type 'Reply to' -> select **Reply to Email** (Microsoft Office 365)
+    - **Tool** -> **Script**
+    - **Agent** -> **Autonomous Agent**
+    - Type 'Reply to' -> select **Reply to Email** (Microsoft Office 365)
 
 Verify that the connectors are wired up as follows:
-- **Discrepancy Investigator Agent** -> **Script**
-- **Script** -> **Autonomous Agent**
-- **Autonomous Agent** -> **Reply To Email**
-- **Reply To Email** -> `End`
+    - **Discrepancy Investigator Agent** -> **Script**
+    - **Script** -> **Autonomous Agent**
+    - **Autonomous Agent** -> **Reply To Email**
+    - **Reply To Email** -> `End`
 
-With the nodes, in place, let's configure them.
+With the nodes in place, let's configure them.
 
 
 ### Script - Email Brief
@@ -494,7 +529,7 @@ Configure the script that collects together the information that will be used by
     return { briefing };
     ```
 
-![Script Properties](images/ws-flow-step-19c.png)
+![Script Properties](images/ws-flow-step-20c.png)
 
 ### Configure the inline email drafting agent
 
@@ -520,12 +555,12 @@ Configure it with a system prompt that drafts a professional AP reply based on t
     - Brief:   {{ $vars.scriptPrepareBrief.output }}
     - Full discrepancy investigation (if needed):  {{ $vars.discrepancyInvestigatorAgent1.output }}
      ```
-    ![Autonomous Properties](images/ws-flow-step-19d.png)
+    ![Configuring the autonomous agent](images/ws-flow-step-20d.png)
 
 6. Outputs (scroll further down): 
     - Remove the `content` output variable
     - Add a new `body` output and make it required
-    ![Autonomous Properties](images/ws-flow-step-19e.png)
+    ![Adding the body output variable to the autonomous agent](images/ws-flow-step-20e.png)
 
 
 ### Configure the `Reply to Email` node:
@@ -539,20 +574,22 @@ Finally, let's configure the **Reply to Email** node:
 
 **NOTE:** You may find it easier to use the **Variables** tool, which is accessible by clicking on the **@** button or the control-panel icon next to the text boxes.
 
+![Configuring the reply to email node](images/ws-flow-step-20f.png)
+
 
 > **Variable scoping:** Output variable names are set by each node's ID, visible in the node's Properties panel. If you see "variable not resolved" errors, confirm the upstream node's exact ID and check it matches the reference in the downstream node. The complete flow shows the exact wiring.
 
 * * *
 
-## Step 20 — Test: Run the full flow end-to-end (5 min)
+## Step 21 — Test: Run the full flow end-to-end (5 min)
 
 1. From your email client, compose an email to **`UiPathlabsdemo@uipath.com`** with subject **`WAD-[YourName]`**
 2. Attach **`case-4-perfect-match-invoice.pdf`**
 3. Send it and watch the run
 
-The flow should successfully route through the true branch of the Vendor Match, — Discrepancy Investigator Agent runs the email reply is prepared and sent.
+The flow should successfully route through the true branch of the Vendor Match — the Discrepancy Investigator Agent runs, the email reply is prepared, and it's sent.
 
-`[TBC - screenshot of completed true-branch run in execution history]`
+![Completed true-branch run in Flow](images/ws-flow-step-21.png)
 
 Expected: the flow completes end-to-end, and an email reply arrives in the inbox you submitted the invoice from.
 
@@ -560,34 +597,66 @@ Expected: the flow completes end-to-end, and an email reply arrives in the inbox
 
 * * *
 
-## Step 21 — Publish to Orchestrator (5 min)
+## Step 22 — Publish to Orchestrator (5 min)
 
 Publishing moves your solution from Studio Web's development workspace to Orchestrator, where it can run on a schedule, be triggered by an event, monitored for failures, and automatically retried.
 
 1. In your solution, click the **Publish** button 
-    ![Publish-Start](images/ws-flow-step-21b.png)
+    ![Publish-Start](images/ws-flow-step-22b.png)
 2. In the `Publish Solution` dialog, confirm the following:
-    - Publish it into your personal space - **For me**
+    - Publish it into your personal space - select **For me**
     - Confirm the version (the default is fine; it will auto-increment)
     - Add any release notes that you may want to add 
-    ![Publish-Start](images/ws-flow-step-21c.png)
+    ![Dialog to publish the flow](images/ws-flow-step-22c.png)
+    - While the flow is being published, you will see a note denoting `Publish in progress` next to the **Publish** button
 3. Once published, you will get a confirmation box. Click the `Check automation` button to jump to the deployed solution in Orchestrator
-    ![Publish-Successful](images/ws-flow-step-21d.png)    
-4. Click into the process and select **Add trigger** to configure a schedule `[TBC - confirm trigger setup UX in Orchestrator Automations]`
+    ![Publish-Successful](images/ws-flow-step-22d.png)    
+4. Validate that the email trigger has been created.
+    1. Expand the **My workspace** folder node within the **My Folders** pane of Orchestrator
+    2. Select `WAD2026 Workshop` folder node (or whatever your Solution was named)
+    3. Select the **Automations** tab within Orchestrator to show the automations published into that folder.
+    4. Select the **Triggers** sub-tab within Automations to show your automation triggers
+    5. Finally, select the **Event Triggers** sub-sub-tab to show your event-based triggers. Because your workflow is waiting on an email received event, your workflow projects show up here.
 
-`[TBC - screenshot of Orchestrator Automations showing published process with trigger configured]`
+![The event triggers list in Orchestrator for your published projects](images/ws-flow-step-22e.png)
 
-> **The payoff:** Everything up to this point you could approximate with n8n or a Python script wired to a cron job. What you're looking at now — durable execution that survives infrastructure failures, an immutable audit log of every run, evals that block a bad deploy before it ships, and a HITL handoff built into the orchestration layer — these are the things you don't assemble yourself. That's the difference between a demo and a system that processes an invoice that arrives at 2am when nobody's watching.
+> **Why are there two event triggers?** The UiPath solution you published contained two workflow projects — `Invoice Processing Flow - Complete` and `Invoice Processing Flow - Start Here` — and each had an event trigger on email received. Thankfully, each one had a different email subject filter.
+
+***CONGRATULATIONS*** - you have successfully deployed a durable automation that...
+- can survive infrastructure failures
+- provides immutable audit log of every run, 
+- evaluations that can block a bad deploy before it ships
+- A human-in-the-loop handoff built into the orchestration layer
+
+These are all things you don't assemble or have to build around an open-source automation tool or cron job. And it's also the difference between a demo and a system that can process an invoice that arrives at 2am when nobody's watching.
+
+From here on out, we have optional tasks that you can continue to explore if you have time left today or if you want to return to this workshop later. Enjoy! 
 
 * * *
 
-## Step 22 — Run the remaining tests (10 min)
+## Step 23 — Run the remaining tests | Optional (10 min)
 
 If you have time, run the remaining invoice cases through your completed flow and optionally add them as eval cases.
 
+> **Timing Note:** The email trigger for your published projects checks for received emails every 5 minutes; so you may need to wait for your workflow to pick up the work.
+
+To watch your automation run, select the **Jobs** sub-tab under **Automations** and you'll see a list of jobs executed - this will show your agent runs and your flow runs.
+
+![Monitoring automation job execution](images/ws-flow-step-23a.png)
+
+> **Watching a job run:** When a process runs, you can click into the run and see the trace for a given job. For some folks during the public preview of Maestro Flow, it may not have instantiated the inline autonomous agent. You can fix this by republishing the workflow from Studio Web — we'll cover that next.
+ 
+![Monitoring automation job execution](images/ws-flow-step-23b.png)
+
+You can update the workflow that you are running in **Orchestrator** by returning to **Studio Web** (using the nine-dots menu button and selecting **Studio**) and clicking the **Publish** button again. You will notice that Studio auto-increments your version number for you.
+
+![Monitoring automation job execution](images/ws-flow-step-23c.png)
+
+You can also deploy a new instance of your automation by selecting the drop-down caret on the **Publish** button and selecting **Deploy**, which creates a second process deployment in Orchestrator.
+
 **Send and observe:**
 
-Send each to **`UiPathlabsdemo@uipath.com`** with subject **`WAD-[YourName]`** and the invoice PDF attached.
+With your flow running, send each to **`UiPathlabsdemo@uipath.com`** with subject **`WAD-[YourName]`** and the invoice PDF attached.
 
 | Invoice | Expected outcome |
 |---|---|
@@ -595,16 +664,47 @@ Send each to **`UiPathlabsdemo@uipath.com`** with subject **`WAD-[YourName]`** a
 | `case-5-partial-shipment-invoice.pdf` | Escalate — partial quantity shipped against a full-quantity PO |
 | `case-2-apex-fraud-invoice.pdf` | Reject — fraudulent invoice |
 
-**Optional: add cases to the DIA eval set:**
 
-For any case that produces a correct result you want to protect:
+* * *
 
-1. In Agent Builder → Evaluations → DIA Eval Set, click **Add Case** `[TBC - confirm add case UX]`
-2. Paste the `invoiceData` and `poData` from the flow's last run context
-3. Set the expected output fields
-4. Run the eval set to confirm the new case passes alongside the existing cases
+## Step 24 — View results in UiPath Maestro | Optional (5 min)
 
-> These cases travel with the agent — reuse this eval set on your own document workflows.
+If you have time and want to see how the invoices ran, you can open up Maestro:
+1. Open up **Maestro** by opening the menu (nine-dot icon) and selecting **Maestro**
+2. Select **Flow instances** from the available Maestro views
+3. Select your published flow from the **Flow name** list at the bottom of the view
+
+![Select your flow instance to view within Maestro](images/ws-flow-step-24b.png)
+
+Once you've selected your **Flow name**, you'll see all of the instances for that given flow. In this view, you can see which version of the flow that instance ran against, how long it took, and the result (success, pending, exception).
+
+![Select your flow instance to view within Maestro](images/ws-flow-step-24c.png)
+
+Selecting a flow instance enables you to see the traces and details about the run. And for a flow that is paused for further action (e.g., a Large Discrepancy escalation), you can click into the **EscalationApp** part of the execution trace to view the `TaskUrl` of the Action required to click into it and approve.
+
+Note that you could see this required action within the UiPath Action Center (as previously done), but this is another path to get there.
+
+![Select your flow instance to view within Maestro](images/ws-flow-step-24d.png)
+
+
+---
+
+
+## Go Further | Optional (30 mins)
+
+If you want to continue experimenting after the workshop, here are two directions for you to further explore:
+
+### Add Human-in-the-Loop review to the vendor research path
+
+The flow you built routes automatically based on the VRA's confidence score. A more conservative design adds a human review step between the VRA and the DIA — pausing the flow for an AP reviewer to confirm before the discrepancy check runs.
+
+A pre-built version of this flow is available as **`WAD2026 Workshop - with HITL`** in the shared workspace. Open it to see how the `Human - Review Vendor Match` node fits into the routing, and compare it to the Switch-based version you built today.
+
+> **When to use HITL:** The Switch sets a confidence threshold — automate when the agent is sure enough, stop when it isn't. HITL replaces the confidence gate with a human one. Neither is always right; the choice depends on the process risk and the volume of exceptions your team can absorb.
+
+### Swap the model and rerun your evals
+
+Switch the DIA to a different model (e.g., Claude Sonnet) and rerun the eval set from Step 13. The scores will likely change — sometimes dramatically — even on cases that "obviously" pass. That's the point: evals are model-sensitive, and swapping a model isn't free. You need to revalidate.
 
 ---
 
@@ -616,9 +716,9 @@ For any case that produces a correct result you want to protect:
 
 ---
 
-## Breaking Scenario 1 — Vendor mismatch reveal (~Step 17, Test 2)
+## Breaking Scenario 1 — Vendor mismatch reveal (~Step 18, Test 2)
 
-**Setup:** During Step 17 Test 2, attendees send `case-1-alphabet-google-invoice.pdf`. The false branch fires — the pre-wired Vendor Research Agent classifies Alphabet/Google as `parent_subsidiary` and routes to the DIA.
+**Setup:** During Step 18 Test 2, attendees send `case-1-alphabet-google-invoice.pdf`. The false branch fires — the pre-wired Vendor Research Agent classifies Alphabet/Google as `parent_subsidiary` and routes to the DIA.
 
 **Script:** *"The vendor names don't match. A rigid rule would stop here. The VRA looked it up — Alphabet is Google's parent. The flow kept moving."*
 
@@ -628,21 +728,21 @@ Point at the execution trace: two web search calls, two cited sources, correct d
 
 ---
 
-## Breaking Scenario 2 — Non-determinism (~Step 20)
+## Breaking Scenario 2 — Non-determinism (~Step 21)
 
-**Setup:** After the first successful full-flow run in Step 20, run `case-4-perfect-match-invoice.pdf` a second time. Show both outputs side by side.
+**Setup:** After the first successful full-flow run in Step 21, run `case-4-perfect-match-invoice.pdf` a second time. Show both outputs side by side.
 
 **What to show:** Recommendation field may be identical, but reasoning text differs.
 
-**Script:** *"It worked both times. But the reasoning is different. You can't tell by looking at it whether it's getting smarter or drifting. Scale this to 100 invoices a day and you have a quality problem you can't see. The evals you ran in Steps 11–12 are how you see it."*
+**Script:** *"It worked both times. But the reasoning is different. You can't tell by looking at it whether it's getting smarter or drifting. Scale this to 100 invoices a day and you have a quality problem you can't see. The evals you ran in Steps 12–13 are how you see it."*
 
 > **If outputs are identical on the day:** *"Sometimes it's consistent. The point is you have no guarantee — and no way to prove it without running it systematically."* Still lands.
 
 ---
 
-## Breaking Scenario 3 — Prompt bug and regression catch (Step 12)
+## Breaking Scenario 3 — Prompt bug and regression catch (Step 13)
 
-Step 12 is now a formal attendee step rather than a facilitator-driven break. Your role is narration and pacing, not revelation.
+Step 13 is now a formal attendee step rather than a facilitator-driven break. Your role is narration and pacing, not revelation.
 
 **While attendees run the bad Helix Marketing case:**
 *"The invoice is clean. Same line items, same amounts, no freight charge. But the agent escalated it. Let's find out why."*
@@ -659,19 +759,19 @@ Step 12 is now a formal attendee step rather than a facilitator-driven break. Yo
 
 ## Timing and cut order
 
-Total target: 120 min. Buffer: Step 22 (10 min).
+Total target: 120 min. Buffer: Step 23 (10 min).
 
 | Cut | What | When to apply |
 |---|---|---|
-| 1st | Shorten Step 17: skip Test 2 (false branch demo); describe the VRA path verbally | Running long in Steps 15–17 |
-| 2nd | Skip Step 22 eval-add: run the remaining invoices, skip adding them to the eval set | Running long after Step 20 |
-| Never cut | Step 12 (prompt fix + eval rescore) and Step 21 (publish) | These are the payoff |
+| 1st | Shorten Step 18: skip Test 2 (false branch demo); describe the VRA path verbally | Running long in Steps 16–18 |
+| 2nd | Skip Step 23 eval-add: run the remaining invoices, skip adding them to the eval set | Running long after Step 21 |
+| Never cut | Step 13 (prompt fix + eval rescore) and Step 22 (publish) | These are the payoff |
 
 **Known tight spots:**
 
-- **Step 12 (prompt fix)** — attendees need to find the right place in the system prompt to insert two rules. Pre-brief floaters on the prompt structure. If someone's fix doesn't work, the most common cause is inserting in the wrong section or syntax errors in the JSON output format rules.
-- **Steps 18–19 (wiring)** — variable configuration is where attendees get stuck. Known issue: `$vars.nodeName` reference must match the exact node ID; one character difference causes a silent failure. Floaters should be able to fix this in under 2 minutes.
-- **Steps 11/14 (eval runs)** — 60–90 second runtime each. Script the wait: *"while we wait, here's what the evaluator is actually doing — running each case through the agent, comparing the output field by field against the expected result, and checking the trajectory to see if the agent called the right tools."*
+- **Step 13 (prompt fix)** — attendees need to find the right place in the system prompt to insert two rules. Pre-brief floaters on the prompt structure. If someone's fix doesn't work, the most common cause is inserting in the wrong section or syntax errors in the JSON output format rules.
+- **Steps 19–20 (wiring)** — variable configuration is where attendees get stuck. Known issue: `$vars.nodeName` reference must match the exact node ID; one character difference causes a silent failure. Floaters should be able to fix this in under 2 minutes.
+- **Steps 12/15 (eval runs)** — 60–90 second runtime each. Script the wait: *"while we wait, here's what the evaluator is actually doing — running each case through the agent, comparing the output field by field against the expected result, and checking the trajectory to see if the agent called the right tools."*
 - **Step 7 (bindings)** — floaters should unblock binding errors in under 2 minutes and move on. Don't let one attendee's binding issue gate the room.
 
 **Checkpoint save-states** `[TBC - build during smoke test]`:
@@ -679,12 +779,12 @@ Total target: 120 min. Buffer: Step 22 (10 min).
 | Checkpoint | State | Import when |
 |---|---|---|
 | A | Duplicated solution, bindings fixed | Attendee can't duplicate or has persistent binding errors |
-| B | DIA tested, evals baselined, prompt fixed | Attendee stuck in Steps 10–12 |
-| C | Full flow wired, true branch complete | Attendee stuck in Steps 18–19 |
+| B | DIA tested, evals baselined, prompt fixed | Attendee stuck in Steps 11–13 |
+| C | Full flow wired, true branch complete | Attendee stuck in Steps 19–20 |
 
 ---
 
-## Model sensitivity aside *(optional, Step 22 buffer)*
+## Model sensitivity aside *(optional, Step 23 buffer)*
 
 After the eval set runs clean, invite attendees to switch the DIA to Claude Sonnet and re-run. Claude performs full contract validation even on the perfect-match invoice — checking every SKU against the vendor agreement — resulting in minor discrepancy entries (delta=0) and different trajectory behavior, despite correctly approving. Eval scores drop.
 

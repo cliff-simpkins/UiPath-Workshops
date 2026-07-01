@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "id": "eval-set-001",
+  "name": "Dataset",
+  "evaluatorRefs": [
+    "llm-judge-evaluator",
+    "exact-match-evaluator"
+  ],
+  "evaluations": [],
+  "selectedEntrypoint": "manualTrigger1",
+  "fileName": "evaluation-set.json",
+  "createdAt": "2026-06-18T15:05:06.164Z",
+  "updatedAt": "2026-06-18T15:05:06.164Z"
+}

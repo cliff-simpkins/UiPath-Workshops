@@ -1,0 +1,26 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "Invoice Processing Flow - Start Here",
+    "kind": "package",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "bfe56f91-245c-4bf2-8396-40a884a20931",
+    "isOverridable": true,
+    "dependencies": [],
+    "runtimeDependencies": [],
+    "files": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "fileName": null,
+      "fileReference": null,
+      "name": "Invoice Processing Flow - Start Here",
+      "description": null
+    },
+    "locks": [],
+    "key": "7a169826-560d-46c3-a443-9c6916242b86"
+  }
+}

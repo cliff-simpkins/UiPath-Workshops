@@ -45,6 +45,8 @@ The entity is queried at runtime by PO number to retrieve line items and totals 
 Create a Data Fabric entity named **`Vendor_Alias`** and import records from `02_data_fabric/vendor_alias/records.json`. Used by the Vendor Research Agent to resolve subsidiary and trade names back to their canonical vendor name (e.g. "Alphabet" → "Google LLC"). Required for the vendor name mismatch scenario.
 
 > **Note on system fields:** `records.json` files include instance-specific system fields (`Id`, `CreatedBy`, `RecordOwner`, etc.) from the source environment. These are stripped automatically by the import script — do not remove them manually.
+>
+> **Permissions:** After creating each entity, open it → **Manage Access** and assign the **`WeAreDevelopers_2026_20260616-Participants`** group the **Data Reader** role. Without this, lab accounts get a 403 when the flow runs the `Query Entity Records` node — the connection authenticates but the entity rejects the query. Apply to both `Purchase_Orders` and `Vendor_Alias`.
 
 ---
 

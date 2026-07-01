@@ -1,0 +1,138 @@
+{
+  "fileName": "evaluation-set-default.json",
+  "id": "5adecdd8-0383-4bbc-a16c-75889599c9a8",
+  "name": "DIA Eval Set",
+  "batchSize": 10,
+  "evaluatorRefs": [
+    "43d999f4-ca6b-4df5-b3f0-994bdcc2f6a0",
+    "87132728-a4b3-491f-92ea-f85c57d78b86"
+  ],
+  "evaluations": [
+    {
+      "id": "0b74eb8a-fc79-46a1-9e5e-e88841e7511a",
+      "name": "Freight Discrepancy - Stratton Office Supply",
+      "inputs": {
+        "invoiceData": "\"{   \"\"document_type\"\": \"\"invoice\"\",   \"\"vendor\"\": \"\"Stratton Office Supply Co.\"\",   \"\"invoice_number\"\": \"\"SOS-2026-3389\"\",   \"\"invoice_date\"\": \"\"2026-05-20\"\",   \"\"due_date\"\": \"\"2026-06-19\"\",   \"\"customer_po\"\": \"\"PO-2026-10872\"\",   \"\"payment_terms\"\": \"\"Net 30\"\",   \"\"currency\"\": \"\"USD\"\",   \"\"bill_to\"\": \"\"Customer Accounts Payable\"\",   \"\"remit_to\"\": \"\"445 Industrial Blvd, Austin, TX 78744\"\",   \"\"vendor_contact\"\": {     \"\"address\"\": \"\"445 Industrial Blvd, Austin, TX 78744\"\",     \"\"phone\"\": \"\"(512) 555-0148\"\",     \"\"email\"\": \"\"ar@strattonoffice.com\"\"   },   \"\"line_items\"\": [     {       \"\"description\"\": \"\"Dell Latitude 7440 - 14\\\"\" laptop, i7, 16GB RAM, 512GB SSD\"\",       \"\"sku\"\": \"\"LAPTOP-DELL-7440\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 1450.00,       \"\"amount\"\": 4350.00     },     {       \"\"description\"\": \"\"Dell UltraSharp U2723QE 27\\\"\" 4K monitor\"\",       \"\"sku\"\": \"\"MON-DELL-U2723\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 620.00,       \"\"amount\"\": 1860.00     },     {       \"\"description\"\": \"\"Dell Thunderbolt Dock WD22TB4\"\",       \"\"sku\"\": \"\"DOCK-WD22TB4\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 320.00,       \"\"amount\"\": 960.00     }   ],   \"\"subtotal\"\": 7170.00,   \"\"tax\"\": 573.60,   \"\"freight\"\": 150.00,   \"\"total\"\": 7893.60 }\"",
+        "poData": "\"{   \"\"document_type\"\": \"\"purchase_order\"\",   \"\"buyer\"\": \"\"Acme Procurement\"\",   \"\"po_number\"\": \"\"PO-2026-10872\"\",   \"\"po_date\"\": \"\"2026-04-30\"\",   \"\"payment_terms\"\": \"\"Net 30\"\",   \"\"currency\"\": \"\"USD\"\",   \"\"status\"\": \"\"Issued\"\",   \"\"vendor\"\": \"\"Stratton Office Supply Co.\"\",   \"\"ship_to\"\": \"\"Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606\"\",   \"\"instructions\"\": \"\"Reference PO number PO-2026-10872 on all shipping documents and invoices. Send invoices to ap@acmeprocurement.com.\"\",   \"\"line_items\"\": [     {       \"\"description\"\": \"\"Dell Latitude 7440 - 14\\\"\" laptop, i7, 16GB RAM, 512GB SSD\"\",       \"\"sku\"\": \"\"LAPTOP-DELL-7440\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 1450.00,       \"\"extended\"\": 4350.00     },     {       \"\"description\"\": \"\"Dell UltraSharp U2723QE 27\\\"\" 4K monitor\"\",       \"\"sku\"\": \"\"MON-DELL-U2723\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 620.00,       \"\"extended\"\": 1860.00     },     {       \"\"description\"\": \"\"Dell Thunderbolt Dock WD22TB4\"\",       \"\"sku\"\": \"\"DOCK-WD22TB4\"\",       \"\"qty\"\": 3,       \"\"unit_price\"\": 320.00,       \"\"extended\"\": 960.00     }   ],   \"\"subtotal\"\": 7170.00,   \"\"tax\"\": 573.60,   \"\"total\"\": 7743.60 }\""
+      },
+      "expectedOutput": {
+        "discrepancies": [
+          {
+            "field": "freight",
+            "invoiceValue": 150,
+            "poValue": 0,
+            "deltaAmount": 150,
+            "severity": "major",
+            "explanation": "The invoice includes a $150.00 freight charge, but the PO contains no freight amount. This creates the entire total mismatch and requires review because it is an additional monetary charge not present on the PO.",
+            "evidence": "Contract evidence: 03-stratton-office-supply-reseller-agreement.pdf, Section 3 SHIPPING AND FREIGHT states standard ground shipping for orders above the applicable threshold is included/F.O.B. destination and freight must be separately authorized if chargeable; invoice freight $150.00 vs PO freight treated as $0.00. Arithmetic: 150.00 - 0.00 = 150.00."
+          }
+        ],
+        "escalated": true,
+        "reasoning": "The invoice total is $150.00 higher than the PO, driven entirely by an added freight charge not present on the PO. Contract evidence from the Stratton reseller agreement says standard ground freight is included in unit pricing and separately billed freight requires pre-approval, so the charge is not supported by the retrieved terms. However, the required human escalation was triggered because the total delta exceeded $100, and the human reviewer approved processing despite the variance.",
+        "recommendation": "approve",
+        "totalAmountDelta": 150
+      },
+      "simulationInstructions": "Human approves the escalation.",
+      "expectedAgentBehavior": "Agent must escalate call the vendor_contracts tool after detecting the freight discrepancy, searching for any contract clause that authorizes the $150.00 freight charge before reaching a recommendation. Agent should escalate after finding no authorizing clause.",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": true,
+      "toolsToSimulate": [
+        {
+          "name": "escalate_large_discrepancy"
+        }
+      ],
+      "evalSetId": "5adecdd8-0383-4bbc-a16c-75889599c9a8",
+      "createdAt": "2026-06-18T15:12:29.661Z",
+      "updatedAt": "2026-06-22T20:59:52.661Z",
+      "source": "firstSuccessfulRun"
+    },
+    {
+      "id": "74f4d4d3-38a5-492e-ad4f-c994494addad",
+      "name": "Perfect Match - Stratton Office Supply",
+      "inputs": {
+        "invoiceData": "{\"document_type\": \"invoice\", \"vendor\": \"Stratton Office Supply Co.\", \"invoice_number\": \"SOS-2026-4412\", \"invoice_date\": \"2026-06-01\", \"due_date\": \"2026-07-01\", \"customer_po\": \"PO-2026-14880\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"bill_to\": \"Customer Accounts Payable\", \"remit_to\": \"445 Industrial Blvd, Austin, TX 78744\", \"line_items\": [{\"description\": \"HP Office Pro Ink Cartridge 4-pack\", \"sku\": \"INK-HP-8034E\", \"qty\": 10, \"unit_price\": 42.0, \"amount\": 420.0}, {\"description\": \"Hammermill Premium Copy Paper 500-sheet ream\", \"sku\": \"PAPER-HM-500\", \"qty\": 20, \"unit_price\": 12.5, \"amount\": 250.0}], \"subtotal\": 670.0, \"tax\": 53.6, \"freight\": 0.0, \"total\": 723.6}",
+        "poData": "{\"document_type\": \"purchase_order\", \"buyer\": \"Acme Procurement\", \"po_number\": \"PO-2026-14880\", \"po_date\": \"2026-05-15\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"status\": \"Issued\", \"vendor\": \"Stratton Office Supply Co.\", \"ship_to\": \"Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606\", \"line_items\": [{\"description\": \"HP Office Pro Ink Cartridge 4-pack\", \"sku\": \"INK-HP-8034E\", \"qty\": 10, \"unit_price\": 42.0, \"extended\": 420.0}, {\"description\": \"Hammermill Premium Copy Paper 500-sheet ream\", \"sku\": \"PAPER-HM-500\", \"qty\": 20, \"unit_price\": 12.5, \"extended\": 250.0}], \"subtotal\": 670.0, \"tax\": 53.6, \"total\": 723.6}"
+      },
+      "expectedOutput": {
+        "discrepancies": [
+          {}
+        ],
+        "escalated": false,
+        "reasoning": "Invoice and purchase order match exactly on all fields. Vendor name, all line items, quantities, unit prices, tax, freight, and totals are identical. No discrepancies found; payment may proceed.",
+        "recommendation": "approve",
+        "totalAmountDelta": 0
+      },
+      "simulationInstructions": "",
+      "expectedAgentBehavior": "If there is no discrepancies, there should be no agent run history because no tool calls were required and everything can be handled within the LLM. If a discrepancy is found, then Agent must call the vendor_contracts to validate findings.",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "5adecdd8-0383-4bbc-a16c-75889599c9a8",
+      "createdAt": "2026-06-18T17:34:27.119Z",
+      "updatedAt": "2026-06-18T17:35:27.678Z",
+      "source": "manual"
+    },
+    {
+      "id": "dd8f9807-3696-413a-980c-32e46ec8f824",
+      "name": "Unit Price Discrepancy - Meridian Tech Supplies",
+      "inputs": {
+        "invoiceData": "{\"document_type\": \"invoice\", \"vendor\": \"Meridian Tech Supplies\", \"invoice_number\": \"MTS-2026-0892\", \"invoice_date\": \"2026-06-03\", \"due_date\": \"2026-07-03\", \"customer_po\": \"PO-2026-12045\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"bill_to\": \"Customer Accounts Payable\", \"remit_to\": \"7200 Technology Park Dr, Austin, TX 78758\", \"line_items\": [{\"description\": \"1TB NVMe SSD, PCIe Gen4\", \"sku\": \"SSD-1TB-NVME-G4\", \"qty\": 5, \"unit_price\": 195.0, \"amount\": 975.0}, {\"description\": \"USB-C Cable 6ft\", \"sku\": \"USBC-6FT\", \"qty\": 10, \"unit_price\": 18.0, \"amount\": 180.0}], \"subtotal\": 1155.0, \"tax\": 92.4, \"freight\": 0.0, \"total\": 1247.4}",
+        "poData": "{\"document_type\": \"purchase_order\", \"buyer\": \"Acme Procurement\", \"po_number\": \"PO-2026-12045\", \"po_date\": \"2026-05-20\", \"payment_terms\": \"Net 30\", \"currency\": \"USD\", \"status\": \"Issued\", \"vendor\": \"Meridian Tech Supplies\", \"ship_to\": \"Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606\", \"line_items\": [{\"description\": \"1TB NVMe SSD, PCIe Gen4\", \"sku\": \"SSD-1TB-NVME-G4\", \"qty\": 5, \"unit_price\": 175.0, \"extended\": 875.0}, {\"description\": \"USB-C Cable 6ft\", \"sku\": \"USBC-6FT\", \"qty\": 10, \"unit_price\": 18.0, \"extended\": 180.0}], \"subtotal\": 1055.0, \"tax\": 84.4, \"total\": 1139.4}"
+      },
+      "expectedOutput": {
+        "discrepancies": [
+          {
+            "field": "lineItems[0].unitPrice",
+            "invoiceValue": 195,
+            "poValue": 175,
+            "deltaAmount": 100,
+            "severity": "major",
+            "explanation": "Invoice unit price for SSD-1TB-NVME-G4 is $195.00 vs PO price of $175.00, a $20.00 per-unit variance across 5 units totaling $100.00.",
+            "evidence": "Direct field comparison: invoice unit_price 195.00 vs PO unit_price 175.00. vendor_contracts search found no clause authorizing this price increase for Meridian Tech Supplies."
+          },
+          {
+            "field": "totalAmount",
+            "invoiceValue": 1247.4,
+            "poValue": 1139.4,
+            "deltaAmount": 108,
+            "severity": "major",
+            "explanation": "Invoice total exceeds PO total by $108.00, driven by the unit price variance on the SSD line item and its tax impact.",
+            "evidence": "Step-by-step arithmetic: |1247.40 - 1139.40| = 108.00."
+          }
+        ],
+        "totalAmountDelta": 108,
+        "recommendation": "approve",
+        "escalated": true,
+        "reasoning": "Invoice unit price for SSD-1TB-NVME-G4 is $195.00 vs the PO price of $175.00, creating a $100.00 line-level variance and a total amount delta of $108.00. Vendor contracts search returned no contract clause for Meridian Tech Supplies authorizing this price increase. Escalation is required for human review."
+      },
+      "simulationInstructions": "Human approves the escalation.",
+      "expectedAgentBehavior": "Agent must call the vendor_contracts tool after detecting the unit price discrepancy on the SSD-1TB-NVME-G4 line item, searching for any contract clause that authorizes the higher price before reaching a recommendation.",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": true,
+      "toolsToSimulate": [
+        {
+          "name": "escalate_large_discrepancy"
+        }
+      ],
+      "evalSetId": "5adecdd8-0383-4bbc-a16c-75889599c9a8",
+      "createdAt": "2026-06-18T17:36:05.272Z",
+      "updatedAt": "2026-06-22T20:44:21.689Z",
+      "source": "manual"
+    }
+  ],
+  "modelSettings": [
+    {
+      "id": "default",
+      "modelName": "same-as-agent",
+      "temperature": "same-as-agent"
+    }
+  ],
+  "createdAt": "2026-06-18T15:05:37.563Z",
+  "updatedAt": "2026-06-22T20:59:52.661Z",
+  "agentMemoryEnabled": false,
+  "agentMemorySettings": [],
+  "lineByLineEvaluation": false
+}

@@ -1,0 +1,45 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "EscalationApp",
+    "kind": "app",
+    "type": "workflow Action",
+    "apiVersion": "apps.uipath.com/v1",
+    "projectKey": "1332b929-cffc-464e-97ae-5b3a8f02d3b9",
+    "isOverridable": true,
+    "dependencies": [
+      {
+        "name": "EscalationApp",
+        "kind": "appVersion"
+      },
+      {
+        "name": "EscalationApp",
+        "kind": "process"
+      }
+    ],
+    "runtimeDependencies": [],
+    "files": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "name": "EscalationApp",
+      "description": null,
+      "type": "workflow Action",
+      "version": null,
+      "appSystemName": null,
+      "appVersionRef": {
+        "key": "823e2207-3467-40d8-84dc-9c8cc03b1ab9"
+      },
+      "codeBehindProcess": {
+        "key": "6dd45ddd-46f8-4dd2-bae9-90cc34d2e1e0"
+      },
+      "actionSchema": null,
+      "manualActivationActions": null
+    },
+    "locks": [],
+    "key": "7edc34c7-b683-4b18-bfb3-4d5d1d0e1098"
+  }
+}

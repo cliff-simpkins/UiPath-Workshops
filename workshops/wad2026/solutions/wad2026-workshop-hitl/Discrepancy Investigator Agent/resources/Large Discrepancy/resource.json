@@ -1,0 +1,91 @@
+{
+  "$resourceType": "escalation",
+  "id": "666e6701-f60a-4579-ac36-76968b15908a",
+  "name": "Large Discrepancy",
+  "description": "Trigger if the discrepancy is greater than $100",
+  "channels": [
+    {
+      "id": "392de924-5c54-48e4-b548-5da80838f8dc",
+      "name": "Channel",
+      "description": "Channel description",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "VendorName": {
+            "type": "string",
+            "description": "Name of the vendor associated with the invoice."
+          },
+          "InvoiceNumber": {
+            "type": "string",
+            "description": "Unique identifier for the invoice."
+          },
+          "TotalInvoiceAmount": {
+            "type": "number",
+            "description": "The total amount of the invoice."
+          },
+          "TotalDiscrepancy": {
+            "type": "number",
+            "description": "The calculated difference between the PO and invoice."
+          },
+          "DiscrepancyDescription": {
+            "type": "string",
+            "description": "Description of the discrepancy and recommendation by agent."
+          },
+          "TotalPoAmount": {
+            "type": "number",
+            "description": "The total amount of the purchase order (PO)"
+          }
+        },
+        "required": [
+          "VendorName",
+          "InvoiceNumber",
+          "TotalInvoiceAmount",
+          "TotalDiscrepancy",
+          "DiscrepancyDescription",
+          "TotalPoAmount"
+        ]
+      },
+      "inputSchemaDotnetTypeMapping": {
+        "VendorName": "System.String",
+        "InvoiceNumber": "System.String",
+        "TotalInvoiceAmount": "System.Decimal",
+        "TotalDiscrepancy": "System.Decimal",
+        "DiscrepancyDescription": "System.String",
+        "TotalPoAmount": "System.Decimal"
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "DecisionExplanation": {
+            "type": "string",
+            "description": "Further explanation or comments regarding the final decision made."
+          }
+        }
+      },
+      "outputSchemaDotnetTypeMapping": {
+        "DecisionExplanation": "System.String"
+      },
+      "outcomeMapping": {
+        "Approve": "continue",
+        "Reject": "continue"
+      },
+      "recipients": [],
+      "type": "actionCenter",
+      "properties": {
+        "appName": "EscalationApp",
+        "appVersion": 1,
+        "folderName": null,
+        "resourceKey": "7edc34c7-b683-4b18-bfb3-4d5d1d0e1098",
+        "isActionableMessageEnabled": false,
+        "actionableMessageMetaData": null
+      },
+      "argumentProperties": {}
+    }
+  ],
+  "isAgentMemoryEnabled": false,
+  "governanceProperties": {
+    "isEscalatedAtRuntime": false
+  },
+  "escalationType": 0,
+  "properties": {}
+}

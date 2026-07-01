@@ -1,0 +1,54 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "Invoice Processing Flow - Complete",
+    "kind": "process",
+    "type": "flow",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "08334af9-e3b3-4117-ac71-92accf205801",
+    "isOverridable": true,
+    "dependencies": [
+      {
+        "name": "Invoice Processing Flow - Complete",
+        "kind": "package"
+      }
+    ],
+    "runtimeDependencies": [],
+    "files": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "entryPointUniqueId": null,
+      "inputArgumentsSchema": null,
+      "inputArgumentsSchemaV2": null,
+      "type": "Flow",
+      "name": "Invoice Processing Flow - Complete",
+      "description": null,
+      "package": {
+        "key": "496fca36-4c97-4f5b-89f9-c664462b1d7a"
+      },
+      "packageName": "WAD2026.Workshop.with.HITL.flow.Invoice.Processing.Flow.Complete",
+      "packageVersion": null,
+      "entryPointName": null,
+      "inputArguments": "{}",
+      "hiddenForAttendedUser": false,
+      "alwaysRunning": false,
+      "autoStartProcess": false,
+      "targetFrameworkValue": "Portable",
+      "retentionAction": "Delete",
+      "retentionPeriod": 30,
+      "retentionBucketRef": null,
+      "staleRetentionAction": "Delete",
+      "staleRetentionPeriod": 180,
+      "staleRetentionBucketRef": null,
+      "entryPoints": null,
+      "connections": null,
+      "tags": []
+    },
+    "locks": [],
+    "key": "cac70208-2611-4f94-abea-fcc3ff1cb846"
+  }
+}
