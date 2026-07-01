@@ -443,123 +443,6 @@
       }
     },
     {
-      "id": "humanReviewVendorName",
-      "type": "uipath.human-in-the-loop.quick-form",
-      "typeVersion": "1.0",
-      "display": {
-        "label": "Human - Review Vendor Match",
-        "subLabel": "",
-        "shape": "rectangle",
-        "icon": "users",
-        "color": "#FFB40E"
-      },
-      "inputs": {
-        "schema": {
-          "type": "hitl-schema",
-          "schemaId": "2e3e5e5f-c98f-4c87-b971-9f8bf73c4f2e",
-          "title": "Invoice Form",
-          "fields": [
-            {
-              "id": "invoiceVendor",
-              "type": "string",
-              "label": "Invoice Vendor",
-              "direction": "input",
-              "required": false,
-              "binding": "=vars.vendorName_invoice"
-            },
-            {
-              "id": "poVendor",
-              "type": "string",
-              "label": "PO Vendor",
-              "direction": "input",
-              "required": false,
-              "binding": "=vars.vendorName_po"
-            },
-            {
-              "id": "findings",
-              "type": "string",
-              "label": "Findings",
-              "direction": "input",
-              "required": false,
-              "binding": "$vars.vendorResearchAgent1.output.reasoning"
-            }
-          ],
-          "outcomes": [
-            {
-              "id": "submit",
-              "name": "Valid",
-              "type": "string",
-              "action": "Continue",
-              "isPrimary": true
-            },
-            {
-              "id": "outcome-1780347884705",
-              "name": "Invalid",
-              "type": "string",
-              "action": "End",
-              "isPrimary": false
-            }
-          ]
-        },
-        "recipient": {
-          "channels": [
-            "Slack",
-            "teams",
-            "Email",
-            "ActionCenter"
-          ],
-          "connections": {
-            "Slack": {
-              "name": "Slack",
-              "key": "Slack",
-              "folderPath": null
-            },
-            "teams": {
-              "name": "Teams",
-              "key": "Teams",
-              "folderPath": null
-            }
-          },
-          "assignee": {
-            "type": "user",
-            "value": "clifford.simpkins@uipath.com",
-            "displayName": "Cliff Simpkins (UiPath)"
-          }
-        }
-      },
-      "outputs": {
-        "output": {
-          "type": "object",
-          "description": "Task result data",
-          "descriptionKey": "hitlOutputBuilder_taskResultData_description",
-          "source": "=result",
-          "var": "output",
-          "properties": {
-            "Action": {
-              "type": "string",
-              "enum": [
-                "Valid",
-                "Invalid"
-              ],
-              "default": "Valid"
-            }
-          }
-        },
-        "status": {
-          "type": "string",
-          "description": "Task completion status",
-          "descriptionKey": "hitlOutputBuilder_taskCompletionStatus_description",
-          "source": "=result.Action",
-          "var": "status",
-          "enum": [
-            "Valid",
-            "Invalid"
-          ],
-          "default": "Valid"
-        }
-      }
-    },
-    {
       "id": "end1",
       "type": "core.control.end",
       "typeVersion": "1.0",
@@ -1267,6 +1150,39 @@
           }
         }
       }
+    },
+    {
+      "id": "switchNameMatchOutcome",
+      "type": "core.logic.switch",
+      "typeVersion": "1.1",
+      "display": {
+        "label": "Switch - Vendor Research Routing",
+        "subLabel": "",
+        "icon": "between-horizontal-start",
+        "color": "#FFB40E"
+      },
+      "inputs": {
+        "cases": [
+          {
+            "id": "default-1",
+            "label": "Valid",
+            "expression": {
+              "type": "jsExpression",
+              "expression": "$vars.vendorResearchAgent1.output.flag === \"approve\" || ($vars.vendorResearchAgent1.output.flag === \"review\" && $vars.vendorResearchAgent1.output.confidence === \"high\")",
+              "fieldType": "boolean"
+            }
+          },
+          {
+            "id": "mqzug2zf-7tsck",
+            "label": "Invalid",
+            "expression": {
+              "type": "jsExpression",
+              "expression": "$vars.vendorResearchAgent1.output.flag === \"reject\" || $vars.vendorResearchAgent1.output.flag === \"review\"",
+              "fieldType": "boolean"
+            }
+          }
+        ]
+      }
     }
   ],
   "edges": [
@@ -1289,20 +1205,6 @@
       "sourceNodeId": "decisionVendorName",
       "sourcePort": "false",
       "targetNodeId": "vendorResearchAgent1",
-      "targetPort": "input"
-    },
-    {
-      "id": "edge_vendorResearchAgent1-output-uipath.human-in-the-loop-1781814016362-input",
-      "sourceNodeId": "vendorResearchAgent1",
-      "sourcePort": "output",
-      "targetNodeId": "humanReviewVendorName",
-      "targetPort": "input"
-    },
-    {
-      "id": "edge_humanReviewVendorName-outcome-outcome-1780347884705-core.control.end-1781814185720-input",
-      "sourceNodeId": "humanReviewVendorName",
-      "sourcePort": "outcome-outcome-1780347884705",
-      "targetNodeId": "end1",
       "targetPort": "input"
     },
     {
@@ -1334,9 +1236,30 @@
       "targetPort": "input"
     },
     {
-      "id": "humanReviewVendorName-outcome-submit-end1-input",
-      "sourceNodeId": "humanReviewVendorName",
-      "sourcePort": "outcome-submit",
+      "id": "xy-edge__vendorResearchAgent1output-switch1input",
+      "sourceNodeId": "vendorResearchAgent1",
+      "sourcePort": "output",
+      "targetNodeId": "switchNameMatchOutcome",
+      "targetPort": "input"
+    },
+    {
+      "id": "xy-edge__switch1case-default-1-end1input",
+      "sourceNodeId": "switchNameMatchOutcome",
+      "sourcePort": "case-default-1",
+      "targetNodeId": "end1",
+      "targetPort": "input"
+    },
+    {
+      "id": "xy-edge__switch1case-mqzug2zf-7tsck-end1input",
+      "sourceNodeId": "switchNameMatchOutcome",
+      "sourcePort": "case-mqzug2zf-7tsck",
+      "targetNodeId": "end1",
+      "targetPort": "input"
+    },
+    {
+      "id": "xy-edge__switch1default-end1input",
+      "sourceNodeId": "switchNameMatchOutcome",
+      "sourcePort": "default",
       "targetNodeId": "end1",
       "targetPort": "input"
     }
@@ -2458,176 +2381,6 @@
       }
     },
     {
-      "nodeType": "uipath.human-in-the-loop.quick-form",
-      "version": "1.0",
-      "category": "human-task",
-      "description": "Fast inline approvals with inline debug",
-      "tags": [
-        "human-task",
-        "hitl",
-        "human-in-the-loop",
-        "quick-form",
-        "approval"
-      ],
-      "sortOrder": 27,
-      "display": {
-        "label": "Quick Form",
-        "icon": "users",
-        "shape": "square"
-      },
-      "handleConfiguration": [
-        {
-          "position": "left",
-          "handles": [
-            {
-              "id": "input",
-              "type": "target",
-              "handleType": "input"
-            }
-          ],
-          "visible": true
-        },
-        {
-          "position": "right",
-          "handles": [
-            {
-              "id": "completed",
-              "type": "source",
-              "handleType": "output",
-              "showButton": true,
-              "constraints": {
-                "forbiddenTargetCategories": [
-                  "trigger"
-                ]
-              }
-            }
-          ],
-          "visible": true
-        }
-      ],
-      "model": {
-        "type": "bpmn:UserTask",
-        "serviceType": "Actions.HITL"
-      },
-      "inputDefaults": {
-        "schema": {
-          "fields": [],
-          "outcomes": [
-            {
-              "id": "submit",
-              "name": "Submit",
-              "type": "string",
-              "isPrimary": true,
-              "action": "Continue"
-            }
-          ]
-        },
-        "recipient": {
-          "channels": [
-            "Email",
-            "ActionCenter"
-          ],
-          "connections": {},
-          "assignee": {
-            "type": "group"
-          }
-        }
-      },
-      "outputDefinition": {
-        "output": {
-          "type": "object",
-          "description": "Task result data",
-          "source": "=result",
-          "var": "output"
-        },
-        "status": {
-          "type": "string",
-          "description": "Task completion status (completed, cancelled, timeout)",
-          "source": "=result.Action",
-          "var": "status"
-        }
-      },
-      "form": {
-        "id": "hitl-quick-form-properties",
-        "title": "Quick Form Task Configuration",
-        "sections": [
-          {
-            "id": "delivery",
-            "title": "Task Delivery",
-            "collapsible": true,
-            "defaultExpanded": true,
-            "fields": [
-              {
-                "name": "inputs.recipient",
-                "type": "custom",
-                "component": "hitl-channel-selector",
-                "label": "Delivery Channels",
-                "description": "Select where the task should be sent"
-              }
-            ]
-          },
-          {
-            "id": "schema",
-            "title": "Schema",
-            "collapsible": true,
-            "defaultExpanded": true,
-            "fields": [
-              {
-                "name": "inputs.schema",
-                "type": "custom",
-                "component": "hitl-schema-editor",
-                "label": "Task Schema",
-                "description": "Define the input and output parameters for this task"
-              }
-            ]
-          },
-          {
-            "id": "additional-properties",
-            "title": "Additional properties",
-            "collapsible": true,
-            "defaultExpanded": true,
-            "fields": [
-              {
-                "name": "inputs.title",
-                "type": "text",
-                "label": "Task title"
-              },
-              {
-                "name": "inputs.priority",
-                "type": "select",
-                "label": "Priority",
-                "options": [
-                  {
-                    "label": "Low",
-                    "value": "Low"
-                  },
-                  {
-                    "label": "Medium",
-                    "value": "Medium"
-                  },
-                  {
-                    "label": "High",
-                    "value": "High"
-                  }
-                ]
-              },
-              {
-                "name": "inputs.labels",
-                "type": "text",
-                "label": "Labels",
-                "placeholder": "Comma-separated (e.g. finance,approval)"
-              }
-            ]
-          }
-        ]
-      },
-      "runtimeConstraints": {
-        "exclude": [
-          "api-function"
-        ]
-      }
-    },
-    {
       "nodeType": "core.control.end",
       "version": "1.0",
       "category": "control-flow",
@@ -3539,6 +3292,157 @@
           }
         }
       }
+    },
+    {
+      "nodeType": "core.logic.switch",
+      "version": "1.1",
+      "category": "control-flow",
+      "description": "Route to one of many branches by condition",
+      "tags": [
+        "control-flow",
+        "switch",
+        "case",
+        "when"
+      ],
+      "sortOrder": 20,
+      "display": {
+        "label": "Switch",
+        "icon": "between-horizontal-start"
+      },
+      "handleConfiguration": [
+        {
+          "position": "left",
+          "handles": [
+            {
+              "id": "input",
+              "type": "target",
+              "handleType": "input"
+            }
+          ],
+          "visible": true
+        },
+        {
+          "position": "right",
+          "handles": [
+            {
+              "id": "case-{item.id}",
+              "type": "source",
+              "handleType": "output",
+              "label": "{item.label || 'Case ' + (index + 1)}",
+              "repeat": "inputs.cases"
+            },
+            {
+              "id": "default",
+              "type": "source",
+              "handleType": "output",
+              "label": "Default"
+            }
+          ],
+          "visible": true
+        }
+      ],
+      "debug": {
+        "runtime": "clientScript"
+      },
+      "model": {
+        "type": "bpmn:ExclusiveGateway"
+      },
+      "inputDefinition": {
+        "type": "object",
+        "properties": {
+          "cases": {
+            "type": "array",
+            "minItems": 1,
+            "errorMessage": "At least one case is required",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string",
+                  "minLength": 1,
+                  "errorMessage": "A condition expression is required"
+                }
+              },
+              "required": [
+                "expression"
+              ]
+            }
+          }
+        },
+        "required": [
+          "cases"
+        ]
+      },
+      "outputDefinition": {
+        "matchedCase": {
+          "type": "string",
+          "description": "The label of the matched case",
+          "var": "matchedCase"
+        },
+        "matchedCaseId": {
+          "type": "string",
+          "description": "The ID of the matched case (\"default\" for the default branch)",
+          "var": "matchedCaseId"
+        }
+      },
+      "inputDefaults": {
+        "cases": [
+          {
+            "id": "default-1",
+            "label": "Case 1",
+            "expression": ""
+          },
+          {
+            "id": "default-2",
+            "label": "Case 2",
+            "expression": ""
+          }
+        ]
+      },
+      "form": {
+        "id": "switch-properties",
+        "title": "Switch configuration",
+        "sections": [
+          {
+            "id": "cases",
+            "title": "Cases",
+            "description": "Each case is evaluated in order. The first condition that returns true is taken.",
+            "collapsible": true,
+            "defaultExpanded": true,
+            "fields": [
+              {
+                "name": "inputs.cases",
+                "type": "custom",
+                "label": "Switch cases",
+                "component": "case-list-editor",
+                "componentProps": {
+                  "minCases": 1,
+                  "maxCases": 10,
+                  "expressionPlaceholder": "e.g., $vars.value <= 30",
+                  "expressionValidationFields": [
+                    {
+                      "subPath": "expression",
+                      "validationMode": "expression",
+                      "expectedType": "boolean"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "runtimeConstraints": {
+        "exclude": [
+          "api-function"
+        ]
+      }
     }
   ],
   "variables": {
@@ -3927,42 +3831,6 @@
         "binding": {
           "nodeId": "decisionVendorName",
           "outputId": "matchedCaseId"
-        }
-      },
-      {
-        "id": "humanTaskQuickFormApp1.output",
-        "type": "object",
-        "description": "Task result data",
-        "binding": {
-          "nodeId": "humanReviewVendorName",
-          "outputId": "output"
-        }
-      },
-      {
-        "id": "humanTaskQuickFormApp1.status",
-        "type": "string",
-        "description": "Task completion status (completed, cancelled, timeout)",
-        "binding": {
-          "nodeId": "humanReviewVendorName",
-          "outputId": "status"
-        }
-      },
-      {
-        "id": "humanReviewVendorName.output",
-        "type": "object",
-        "description": "Task result data",
-        "binding": {
-          "nodeId": "humanReviewVendorName",
-          "outputId": "output"
-        }
-      },
-      {
-        "id": "humanReviewVendorName.status",
-        "type": "string",
-        "description": "Task completion status (completed, cancelled, timeout)",
-        "binding": {
-          "nodeId": "humanReviewVendorName",
-          "outputId": "status"
         }
       },
       {
@@ -5488,6 +5356,42 @@
           "nodeId": "ixpExtractInvoiceData",
           "outputId": "error"
         }
+      },
+      {
+        "id": "switch1.matchedCase",
+        "type": "string",
+        "description": "The label of the matched case",
+        "binding": {
+          "nodeId": "switchNameMatchOutcome",
+          "outputId": "matchedCase"
+        }
+      },
+      {
+        "id": "switch1.matchedCaseId",
+        "type": "string",
+        "description": "The ID of the matched case (\"default\" for the default branch)",
+        "binding": {
+          "nodeId": "switchNameMatchOutcome",
+          "outputId": "matchedCaseId"
+        }
+      },
+      {
+        "id": "switchNameMatchOutcome.matchedCase",
+        "type": "string",
+        "description": "The label of the matched case",
+        "binding": {
+          "nodeId": "switchNameMatchOutcome",
+          "outputId": "matchedCase"
+        }
+      },
+      {
+        "id": "switchNameMatchOutcome.matchedCaseId",
+        "type": "string",
+        "description": "The ID of the matched case (\"default\" for the default branch)",
+        "binding": {
+          "nodeId": "switchNameMatchOutcome",
+          "outputId": "matchedCaseId"
+        }
       }
     ],
     "variableUpdates": {
@@ -5658,17 +5562,6 @@
         },
         "collapsed": false
       },
-      "humanReviewVendorName": {
-        "position": {
-          "x": 592,
-          "y": 576
-        },
-        "size": {
-          "width": 96,
-          "height": 96
-        },
-        "collapsed": false
-      },
       "end1": {
         "position": {
           "x": 1664,
@@ -5721,6 +5614,17 @@
         "size": {
           "width": 96,
           "height": 96
+        },
+        "collapsed": false
+      },
+      "switchNameMatchOutcome": {
+        "position": {
+          "x": 592,
+          "y": 528
+        },
+        "size": {
+          "width": 96,
+          "height": 192
         },
         "collapsed": false
       }

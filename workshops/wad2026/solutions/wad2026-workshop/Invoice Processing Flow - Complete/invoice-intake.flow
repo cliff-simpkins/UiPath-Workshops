@@ -29,7 +29,7 @@
           "eventType": "EMAIL_RECEIVED",
           "eventMode": "polling",
           "filterExpression": "(parentFolderId == 'AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=') && ((contains(subject,'WADc-yourname'))&&(hasAttachments==`true`))",
-          "configuration": "=jsonString:{\"essentialConfiguration\":{\"connectorVersion\":\"1.38.8\",\"executionType\":null,\"customFieldsRequestDetails\":null,\"instanceParameters\":{\"connectorKey\":\"uipath-microsoft-outlook365\",\"objectName\":\"Message\",\"activityType\":\"CuratedTrigger\",\"version\":\"1.0.0\",\"eventOperation\":\"EMAIL_RECEIVED\",\"eventMode\":\"polling\",\"supportsStreaming\":false},\"objectName\":\"Message\",\"packageVersion\":\"1.0.0\",\"httpMethod\":null,\"path\":null,\"filter\":{\"groups\":[],\"groupOperator\":0,\"index\":0,\"filters\":[{\"id\":\"subject\",\"operator\":\"Contains\",\"value\":{\"rawString\":\"\\\"WADc-yourname\\\"\",\"isLiteral\":true,\"value\":\"WADc-yourname\"},\"uiId\":\"3d91be3f-0daa-4210-8370-ddd4b1b5d99c\"},{\"id\":\"hasAttachments\",\"operator\":\"Is\",\"value\":null,\"uiId\":\"20748d09-dc71-4c99-9d87-d387fceb9b75\"}],\"uuId\":\"6d667a9e-d3d2-4830-8213-532df734fac0\"}},\"optionalConfiguration\":{\"_textBlocks\":[],\"objectActions\":null,\"connectorName\":\"Microsoft Outlook 365\",\"maxPageSize\":null,\"jobArguments\":null,\"isAutopilotInvalidConfig\":false,\"additionalHeaders\":null,\"cachedLookupValues\":[[\"parentFolderId\",[{\"id\":\"AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=\",\"displayColumns\":[\"Inbox\"],\"stringFormatDisplayColumns\":\"\"}]]],\"cachedBrowserItems\":[[\"parentFolderId\",{\"mimeType\":null,\"iconUri\":null,\"fullName\":\"Inbox\",\"isFolder\":true,\"metadata\":[[\"isFolder\",\"true\"],[\"childFolderCount\",\"0\"],[\"sizeInBytes\",\"718248348\"],[\"parentFolderId\",\"AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEIAAA=\"],[\"displayName\",\"Inbox\"],[\"id\",\"AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=\"],[\"unreadItemCount\",\"1221\"],[\"isHidden\",\"false\"],[\"totalItemCount\",\"1409\"]],\"id\":\"AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=\"}]],\"cachedPropertyMappings\":[],\"primaryKeys\":[],\"objectDisplayName\":\"Messages\",\"baseObject\":null,\"eventMode\":[\"polling\"],\"eventOperation\":null,\"language\":\"b99c337e-b1df-459c-a2ca-194717fc0bf4\",\"hasBreakingChanges\":false,\"debugDisabled\":false,\"hasStaticLeftOperandFilterBuilder\":false,\"isV2TriggerBaseUrl\":false,\"fieldsContainer\":{\"outputTypeDefinition\":\"{\\\"bccRecipients\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}}[];\\\"body\\\":{\\\"content\\\":string;\\\"contentType\\\":string};\\\"bodyPreview\\\":string;\\\"categories\\\":string[];\\\"ccRecipients\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}}[];\\\"changeKey\\\":string;\\\"conversationId\\\":string;\\\"conversationIndex\\\":string;\\\"createdDateTime\\\":string;\\\"endDateTime\\\":{\\\"dateTime\\\":string;\\\"timeZone\\\":string};\\\"flag\\\":{\\\"flagStatus\\\":string};\\\"from\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}};\\\"hasAttachments\\\":boolean;\\\"id\\\":string;\\\"importance\\\":string;\\\"inferenceClassification\\\":string;\\\"internetMessageHeaders\\\":{\\\"name\\\":string;\\\"value\\\":string}[];\\\"internetMessageId\\\":string;\\\"isAllDay\\\":boolean;\\\"isDelegated\\\":boolean;\\\"isDeliveryReceiptRequested\\\":boolean;\\\"isDraft\\\":boolean;\\\"isOutOfDate\\\":boolean;\\\"isRead\\\":boolean;\\\"isReadReceiptRequested\\\":boolean;\\\"lastModifiedDateTime\\\":string;\\\"location\\\":{\\\"displayName\\\":string;\\\"locationType\\\":string;\\\"uniqueIdType\\\":string};\\\"meetingMessageType\\\":string;\\\"meetingRequestType\\\":string;\\\"odataContext\\\":string;\\\"odataEtag\\\":string;\\\"parentFolderId\\\":string;\\\"parentFolderName\\\":string;\\\"previousEndDateTime\\\":{\\\"dateTime\\\":string;\\\"timeZone\\\":string};\\\"previousLocation\\\":{\\\"displayName\\\":string;\\\"locationType\\\":string;\\\"uniqueIdType\\\":string};\\\"previousStartDateTime\\\":{\\\"dateTime\\\":string;\\\"timeZone\\\":string};\\\"receivedDateTime\\\":string;\\\"recurrence\\\":{\\\"pattern\\\":{\\\"dayOfMonth\\\":number;\\\"firstDayOfWeek\\\":string;\\\"index\\\":string;\\\"interval\\\":number;\\\"month\\\":number;\\\"type\\\":string};\\\"range\\\":{\\\"endDate\\\":string;\\\"numberOfOccurrences\\\":number;\\\"recurrenceTimeZone\\\":string;\\\"startDate\\\":string;\\\"type\\\":string}};\\\"replyTo\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}}[];\\\"responseRequested\\\":boolean;\\\"sender\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}};\\\"sentDateTime\\\":string;\\\"startDateTime\\\":{\\\"dateTime\\\":string;\\\"timeZone\\\":string};\\\"subject\\\":string;\\\"toRecipients\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}}[];\\\"type\\\":string;\\\"webLink\\\":string}\",\"outputJsonSchema\":{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"lastModifiedDateTime\":{\"title\":\"Last modified date time\",\"type\":\"string\"},\"recurrence\":{\"title\":\"Recurrence\",\"$ref\":\"#/definitions/recurrence\"},\"location\":{\"title\":\"Location\",\"$ref\":\"#/definitions/location\"},\"parentFolderId\":{\"title\":\"Email folder\",\"type\":\"string\"},\"odataEtag\":{\"title\":\"Odata etag\",\"type\":\"string\"},\"subject\":{\"title\":\"Subject\",\"type\":\"string\"},\"webLink\":{\"title\":\"Web link\",\"type\":\"string\"},\"isDraft\":{\"title\":\"Is draft\",\"type\":\"boolean\"},\"previousLocation\":{\"title\":\"Previous location\",\"$ref\":\"#/definitions/previousLocation\"},\"bodyPreview\":{\"title\":\"Body preview\",\"type\":\"string\"},\"createdDateTime\":{\"title\":\"Created date time\",\"type\":\"string\"},\"previousStartDateTime\":{\"title\":\"Previous start date time\",\"$ref\":\"#/definitions/previousStartDateTime\"},\"type\":{\"title\":\"Type\",\"type\":\"string\"},\"previousEndDateTime\":{\"title\":\"Previous end date time\",\"$ref\":\"#/definitions/previousEndDateTime\"},\"from\":{\"title\":\"From\",\"$ref\":\"#/definitions/from\"},\"meetingMessageType\":{\"title\":\"Meeting message type\",\"type\":\"string\"},\"internetMessageHeaders[*]\":{\"title\":\"Internet message headers\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/internetMessageHeaders[*]\"}},\"startDateTime\":{\"title\":\"Start date time\",\"$ref\":\"#/definitions/startDateTime\"},\"bccRecipients[*]\":{\"title\":\"Bcc recipients\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/bccRecipients[*]\"}},\"isReadReceiptRequested\":{\"title\":\"Is read receipt requested\",\"type\":\"boolean\"},\"id\":{\"title\":\"Email ID\",\"type\":\"string\"},\"sentDateTime\":{\"title\":\"Sent date time\",\"type\":\"string\"},\"odataContext\":{\"title\":\"Odata context\",\"type\":\"string\"},\"parentFolderName\":{\"title\":\"Email folder name\",\"type\":\"string\"},\"changeKey\":{\"title\":\"Change key\",\"type\":\"string\"},\"receivedDateTime\":{\"title\":\"Received date time\",\"type\":\"string\"},\"isDeliveryReceiptRequested\":{\"title\":\"Is delivery receipt requested\",\"type\":\"boolean\"},\"isOutOfDate\":{\"title\":\"Is out of date\",\"type\":\"boolean\"},\"flag\":{\"title\":\"Flag\",\"$ref\":\"#/definitions/flag\"},\"body\":{\"title\":\"Body\",\"$ref\":\"#/definitions/body\"},\"importance\":{\"title\":\"Importance\",\"type\":\"string\"},\"isRead\":{\"title\":\"Is read\",\"type\":\"boolean\"},\"sender\":{\"title\":\"Sender\",\"$ref\":\"#/definitions/sender\"},\"categories[*]\":{\"title\":\"Category\",\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"endDateTime\":{\"title\":\"End date time\",\"$ref\":\"#/definitions/endDateTime\"},\"ccRecipients[*]\":{\"title\":\"Cc recipients\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/ccRecipients[*]\"}},\"inferenceClassification\":{\"title\":\"Inference classification\",\"type\":\"string\"},\"internetMessageId\":{\"title\":\"Internet message ID\",\"type\":\"string\"},\"isAllDay\":{\"title\":\"Is all day\",\"type\":\"boolean\"},\"toRecipients[*]\":{\"title\":\"To recipients\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/toRecipients[*]\"}},\"isDelegated\":{\"title\":\"Is delegated\",\"type\":\"boolean\"},\"replyTo[*]\":{\"title\":\"Reply to\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/replyTo[*]\"}},\"hasAttachments\":{\"title\":\"Has attachments\",\"type\":\"boolean\"},\"responseRequested\":{\"title\":\"Response requested\",\"type\":\"boolean\"},\"conversationIndex\":{\"title\":\"Conversation index\",\"type\":\"string\"},\"meetingRequestType\":{\"title\":\"Meeting request type\",\"type\":\"string\"},\"conversationId\":{\"title\":\"Conversation ID\",\"type\":\"string\"}},\"definitions\":{\"recurrence\":{\"type\":\"object\",\"properties\":{\"range\":{\"title\":\"Range\",\"$ref\":\"#/definitions/recurrenceRange\"},\"pattern\":{\"title\":\"Pattern\",\"$ref\":\"#/definitions/recurrencePattern\"}}},\"recurrenceRange\":{\"type\":\"object\",\"properties\":{\"recurrenceTimeZone\":{\"title\":\"Recurrence range recurrence time zone\",\"type\":\"string\"},\"type\":{\"title\":\"Recurrence range type\",\"type\":\"string\"},\"numberOfOccurrences\":{\"title\":\"Recurrence range number of occurrences\",\"type\":\"integer\"},\"endDate\":{\"title\":\"Recurrence range end date\",\"type\":\"string\"},\"startDate\":{\"title\":\"Recurrence range start date\",\"type\":\"string\"}}},\"location\":{\"type\":\"object\",\"properties\":{\"locationType\":{\"title\":\"Location type\",\"type\":\"string\"},\"displayName\":{\"title\":\"Location display name\",\"type\":\"string\"},\"uniqueIdType\":{\"title\":\"Location unique id type\",\"type\":\"string\"}}},\"previousLocation\":{\"type\":\"object\",\"properties\":{\"locationType\":{\"title\":\"Previous location type\",\"type\":\"string\"},\"displayName\":{\"title\":\"Previous location display name\",\"type\":\"string\"},\"uniqueIdType\":{\"title\":\"Previous location unique id type\",\"type\":\"string\"}}},\"previousStartDateTime\":{\"type\":\"object\",\"properties\":{\"dateTime\":{\"title\":\"Previous start date time date time\",\"type\":\"string\"},\"timeZone\":{\"title\":\"Previous start date time zone\",\"type\":\"string\"}}},\"recurrencePattern\":{\"type\":\"object\",\"properties\":{\"type\":{\"title\":\"Recurrence pattern type\",\"type\":\"string\"},\"interval\":{\"title\":\"Recurrence pattern interval\",\"type\":\"integer\"},\"month\":{\"title\":\"Recurrence pattern month\",\"type\":\"integer\"},\"firstDayOfWeek\":{\"title\":\"Recurrence pattern first day of week\",\"type\":\"string\"},\"index\":{\"title\":\"Recurrence pattern index\",\"type\":\"string\"},\"dayOfMonth\":{\"title\":\"Recurrence pattern day of month\",\"type\":\"integer\"}}},\"previousEndDateTime\":{\"type\":\"object\",\"properties\":{\"dateTime\":{\"title\":\"Previous end date time date time\",\"type\":\"string\"},\"timeZone\":{\"title\":\"Previous end date time zone\",\"type\":\"string\"}}},\"from\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/fromEmailAddress\"}}},\"fromEmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"From email address name\",\"type\":\"string\"},\"address\":{\"title\":\"From (email)\",\"type\":\"string\"}}},\"internetMessageHeaders[*]\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Internet message headers name\",\"type\":\"string\"},\"value\":{\"title\":\"Internet message headers value\",\"type\":\"string\"}}},\"startDateTime\":{\"type\":\"object\",\"properties\":{\"dateTime\":{\"title\":\"Start date time date time\",\"type\":\"string\"},\"timeZone\":{\"title\":\"Start date time zone\",\"type\":\"string\"}}},\"bccRecipients[*]\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/bccRecipients[*]EmailAddress\"}}},\"bccRecipients[*]EmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Bcc recipients email address name\",\"type\":\"string\"},\"address\":{\"title\":\"Bcc (email)\",\"type\":\"string\"}}},\"flag\":{\"type\":\"object\",\"properties\":{\"flagStatus\":{\"title\":\"Flag status\",\"type\":\"string\"}}},\"body\":{\"type\":\"object\",\"properties\":{\"contentType\":{\"title\":\"Body content type\",\"type\":\"string\"},\"content\":{\"title\":\"Body content\",\"type\":\"string\"}}},\"sender\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/senderEmailAddress\"}}},\"senderEmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Sender email address name\",\"type\":\"string\"},\"address\":{\"title\":\"Sender email address\",\"type\":\"string\"}}},\"endDateTime\":{\"type\":\"object\",\"properties\":{\"dateTime\":{\"title\":\"End date time date time\",\"type\":\"string\"},\"timeZone\":{\"title\":\"End date time zone\",\"type\":\"string\"}}},\"ccRecipients[*]\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/ccRecipients[*]EmailAddress\"}}},\"ccRecipients[*]EmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Cc recipients email address name\",\"type\":\"string\"},\"address\":{\"title\":\"Cc (email)\",\"type\":\"string\"}}},\"toRecipients[*]\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/toRecipients[*]EmailAddress\"}}},\"toRecipients[*]EmailAddress\":{\"type\":\"object\",\"properties\":{\"address\":{\"title\":\"To\",\"type\":\"string\"},\"name\":{\"title\":\"To recipients email address name\",\"type\":\"string\"}}},\"replyTo[*]\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/replyTo[*]EmailAddress\"}}},\"replyTo[*]EmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Reply to email address name\",\"type\":\"string\"},\"address\":{\"title\":\"Reply to email address\",\"type\":\"string\"}}}}},\"hasFileOutput\":false,\"populateOutputFields\":true,\"inputFields\":[{\"typeScriptDefinition\":null,\"id\":\"parentFolderId\",\"name\":\"parentFolderId\",\"displayName\":\"Email folder\",\"description\":\"Email folder\",\"type\":\"string\",\"primaryKey\":false,\"lookup\":{\"objectName\":\"MailFolder\",\"lookupNames\":[\"displayName\"],\"lookupValue\":\"id\",\"path\":\"/MailFolders\",\"childPath\":\"/MailFolders?parentFolderId={id}\",\"hydration\":{\"url\":\"/MailFolders/{id}\",\"method\":\"GETBYID\"}},\"design\":{\"displayName\":\"Email folder\",\"description\":\"Email folder\",\"component\":\"FolderPicker\",\"textBlocks\":null,\"dictionaryWidget\":null,\"selection\":null,\"solutionResourceKind\":null,\"solutionResourceSubTypes\":null,\"exposeAsSubBinding\":true},\"fieldActions\":[],\"searchable\":false,\"searchableJoins\":null,\"required\":true,\"request\":true,\"response\":false,\"responseCurated\":false,\"fieldLocation\":\"none\",\"onCanvas\":null,\"isJitField\":false,\"isFieldActionParent\":false,\"isMainResponseField\":false,\"isMethodParameter\":false,\"isBackgroundField\":false,\"filterTree\":null,\"filterNeedsRefresh\":null,\"arrayInputPaths\":null,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true},\"forceExpressionEditor\":false,\"requiredGroups\":null,\"disableExpressions\":true,\"backingField\":null,\"searchableDisplayName\":null,\"selectedResourceId\":null,\"sampleValue\":null},{\"typeScriptDefinition\":null,\"id\":\"sharedMailboxAddress\",\"name\":\"sharedMailboxAddress\",\"displayName\":\"Shared mailbox\",\"description\":\"Email address of the shared mailbox\",\"type\":\"string\",\"primaryKey\":false,\"design\":{\"isHidden\":true},\"fieldActions\":null,\"searchable\":false,\"searchableOperators\":null,\"searchableNames\":null,\"searchableJoins\":null,\"required\":false,\"request\":true,\"response\":false,\"responseCurated\":false,\"fieldLocation\":\"query\",\"onCanvas\":null,\"isJitField\":false,\"isFieldActionParent\":false,\"isMainResponseField\":false,\"isMethodParameter\":true,\"isBackgroundField\":false,\"filterTree\":null,\"filterNeedsRefresh\":null,\"arrayInputPaths\":null,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true},\"forceExpressionEditor\":false,\"requiredGroups\":null,\"disableExpressions\":true,\"backingField\":null,\"searchableDisplayName\":null,\"selectedResourceId\":null}],\"outputFields\":[{\"typeScriptDefinition\":null,\"id\":\"Messages\",\"name\":\"Messages\",\"displayName\":\"Messages\",\"description\":\"\",\"type\":\"GeneratedMessage_Trigger\",\"sortOrder\":null,\"format\":null,\"mask\":null,\"defaultValue\":null,\"primaryKey\":false,\"lookup\":null,\"enum\":null,\"design\":null,\"fieldActions\":null,\"searchable\":false,\"searchableOperators\":null,\"searchableNames\":null,\"searchableJoins\":null,\"required\":false,\"request\":false,\"response\":false,\"responseCurated\":false,\"fieldLocation\":\"output\",\"onCanvas\":null,\"isJitField\":true,\"isFieldActionParent\":false,\"isMainResponseField\":true,\"isMethodParameter\":false,\"isBackgroundField\":false,\"filterTree\":null,\"filterNeedsRefresh\":null,\"arrayInputPaths\":null,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Object\",\"assemblyQualifiedName\":\"Object\",\"isValueType\":false},\"forceExpressionEditor\":false,\"requiredGroups\":null,\"disableExpressions\":false,\"backingField\":null,\"searchableDisplayName\":null,\"selectedResourceId\":null}],\"jitTypeNeedsRefresh\":false,\"eventFields\":[{\"name\":\"bccRecipients[*].emailAddress.address\",\"displayName\":\"BCC (email)\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":true,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String[*]\",\"isValueType\":true}},{\"name\":\"body.content\",\"displayName\":\"Body content\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"ccRecipients[*].emailAddress.address\",\"displayName\":\"CC (email)\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":true,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String[*]\",\"isValueType\":true}},{\"name\":\"categories[*]\",\"displayName\":\"Category\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":true,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String[*]\",\"isValueType\":true}},{\"name\":\"conversationId\",\"displayName\":\"Conversation ID\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"parentFolderName\",\"displayName\":\"Email folder name\",\"type\":\"string\",\"reference\":{\"objectName\":\"MailFolder\",\"lookupNames\":[\"displayName\"],\"lookupValue\":\"displayName\",\"path\":\"/MailFolders\",\"childPath\":\"/MailFolders?parentFolderId={id}\"},\"design\":{\"component\":\"FolderPicker\"},\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"from.emailAddress.address\",\"displayName\":\"From (email)\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"hasAttachments\",\"displayName\":\"Has attachments\",\"type\":\"boolean\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"boolean\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Boolean\",\"assemblyQualifiedName\":\"Boolean\",\"isValueType\":true}},{\"name\":\"importance\",\"displayName\":\"Importance\",\"type\":\"string\",\"enum\":[{\"value\":\"low\"},{\"value\":\"normal\"},{\"value\":\"high\"}],\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Enum\",\"assemblyQualifiedName\":\"Enum\",\"isValueType\":false}},{\"name\":\"inferenceClassification\",\"displayName\":\"Inference classification\",\"type\":\"string\",\"enum\":[{\"value\":\"focused\"},{\"value\":\"other\"}],\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Enum\",\"assemblyQualifiedName\":\"Enum\",\"isValueType\":false}},{\"name\":\"isRead\",\"displayName\":\"Is read\",\"type\":\"boolean\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"boolean\",\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Boolean\",\"assemblyQualifiedName\":\"Boolean\",\"isValueType\":true}},{\"name\":\"sender.emailAddress.address\",\"displayName\":\"Sender email address\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"subject\",\"displayName\":\"Subject\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"toRecipients[*].emailAddress.address\",\"displayName\":\"To\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":true,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String[*]\",\"isValueType\":true}}]},\"filterNeedsRefresh\":false,\"filterExpression\":\"((contains(subject,'WADc-yourname'))&&(hasAttachments==`true`))\",\"obsoleteEventFields\":false,\"filterWidget\":null}}",
+          "configuration": "=jsonString:{\"essentialConfiguration\":{\"connectorVersion\":\"1.38.8\",\"executionType\":null,\"customFieldsRequestDetails\":null,\"instanceParameters\":{\"connectorKey\":\"uipath-microsoft-outlook365\",\"objectName\":\"Message\",\"activityType\":\"CuratedTrigger\",\"version\":\"1.0.0\",\"eventOperation\":\"EMAIL_RECEIVED\",\"eventMode\":\"polling\",\"supportsStreaming\":false},\"objectName\":\"Message\",\"packageVersion\":\"1.0.0\",\"httpMethod\":null,\"path\":null,\"filter\":{\"groups\":[],\"groupOperator\":0,\"index\":0,\"filters\":[{\"id\":\"subject\",\"operator\":\"Contains\",\"value\":{\"rawString\":\"\\\"WADc-yourname\\\"\",\"isLiteral\":true,\"value\":\"WADc-yourname\"},\"uiId\":\"3d91be3f-0daa-4210-8370-ddd4b1b5d99c\"},{\"id\":\"hasAttachments\",\"operator\":\"Is\",\"value\":null,\"uiId\":\"20748d09-dc71-4c99-9d87-d387fceb9b75\"}],\"uuId\":\"c57be887-049a-4156-abad-87bd3ec1a177\"}},\"optionalConfiguration\":{\"_textBlocks\":[],\"objectActions\":null,\"connectorName\":\"Microsoft Outlook 365\",\"maxPageSize\":null,\"jobArguments\":null,\"isAutopilotInvalidConfig\":false,\"additionalHeaders\":null,\"cachedLookupValues\":[[\"parentFolderId\",[{\"id\":\"AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=\",\"displayColumns\":[\"Inbox\"],\"stringFormatDisplayColumns\":\"\"}]]],\"cachedBrowserItems\":[[\"parentFolderId\",{\"mimeType\":null,\"iconUri\":null,\"fullName\":\"Inbox\",\"isFolder\":true,\"metadata\":[[\"isFolder\",\"true\"],[\"childFolderCount\",\"0\"],[\"sizeInBytes\",\"718248348\"],[\"parentFolderId\",\"AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEIAAA=\"],[\"displayName\",\"Inbox\"],[\"id\",\"AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=\"],[\"unreadItemCount\",\"1221\"],[\"isHidden\",\"false\"],[\"totalItemCount\",\"1409\"]],\"id\":\"AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=\"}]],\"cachedPropertyMappings\":[],\"primaryKeys\":[],\"objectDisplayName\":\"Messages\",\"baseObject\":null,\"eventMode\":[\"polling\"],\"eventOperation\":null,\"language\":\"b99c337e-b1df-459c-a2ca-194717fc0bf4\",\"hasBreakingChanges\":false,\"debugDisabled\":false,\"hasStaticLeftOperandFilterBuilder\":false,\"isV2TriggerBaseUrl\":false,\"fieldsContainer\":{\"outputTypeDefinition\":\"{\\\"bccRecipients\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}}[];\\\"body\\\":{\\\"content\\\":string;\\\"contentType\\\":string};\\\"bodyPreview\\\":string;\\\"categories\\\":string[];\\\"ccRecipients\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}}[];\\\"changeKey\\\":string;\\\"conversationId\\\":string;\\\"conversationIndex\\\":string;\\\"createdDateTime\\\":string;\\\"endDateTime\\\":{\\\"dateTime\\\":string;\\\"timeZone\\\":string};\\\"flag\\\":{\\\"flagStatus\\\":string};\\\"from\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}};\\\"hasAttachments\\\":boolean;\\\"id\\\":string;\\\"importance\\\":string;\\\"inferenceClassification\\\":string;\\\"internetMessageHeaders\\\":{\\\"name\\\":string;\\\"value\\\":string}[];\\\"internetMessageId\\\":string;\\\"isAllDay\\\":boolean;\\\"isDelegated\\\":boolean;\\\"isDeliveryReceiptRequested\\\":boolean;\\\"isDraft\\\":boolean;\\\"isOutOfDate\\\":boolean;\\\"isRead\\\":boolean;\\\"isReadReceiptRequested\\\":boolean;\\\"lastModifiedDateTime\\\":string;\\\"location\\\":{\\\"displayName\\\":string;\\\"locationType\\\":string;\\\"uniqueIdType\\\":string};\\\"meetingMessageType\\\":string;\\\"meetingRequestType\\\":string;\\\"odataContext\\\":string;\\\"odataEtag\\\":string;\\\"parentFolderId\\\":string;\\\"parentFolderName\\\":string;\\\"previousEndDateTime\\\":{\\\"dateTime\\\":string;\\\"timeZone\\\":string};\\\"previousLocation\\\":{\\\"displayName\\\":string;\\\"locationType\\\":string;\\\"uniqueIdType\\\":string};\\\"previousStartDateTime\\\":{\\\"dateTime\\\":string;\\\"timeZone\\\":string};\\\"receivedDateTime\\\":string;\\\"recurrence\\\":{\\\"pattern\\\":{\\\"dayOfMonth\\\":number;\\\"firstDayOfWeek\\\":string;\\\"index\\\":string;\\\"interval\\\":number;\\\"month\\\":number;\\\"type\\\":string};\\\"range\\\":{\\\"endDate\\\":string;\\\"numberOfOccurrences\\\":number;\\\"recurrenceTimeZone\\\":string;\\\"startDate\\\":string;\\\"type\\\":string}};\\\"replyTo\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}}[];\\\"responseRequested\\\":boolean;\\\"sender\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}};\\\"sentDateTime\\\":string;\\\"startDateTime\\\":{\\\"dateTime\\\":string;\\\"timeZone\\\":string};\\\"subject\\\":string;\\\"toRecipients\\\":{\\\"emailAddress\\\":{\\\"address\\\":string;\\\"name\\\":string}}[];\\\"type\\\":string;\\\"webLink\\\":string}\",\"outputJsonSchema\":{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"object\",\"properties\":{\"lastModifiedDateTime\":{\"title\":\"Last modified date time\",\"type\":\"string\"},\"recurrence\":{\"title\":\"Recurrence\",\"$ref\":\"#/definitions/recurrence\"},\"location\":{\"title\":\"Location\",\"$ref\":\"#/definitions/location\"},\"parentFolderId\":{\"title\":\"Email folder\",\"type\":\"string\"},\"odataEtag\":{\"title\":\"Odata etag\",\"type\":\"string\"},\"subject\":{\"title\":\"Subject\",\"type\":\"string\"},\"webLink\":{\"title\":\"Web link\",\"type\":\"string\"},\"isDraft\":{\"title\":\"Is draft\",\"type\":\"boolean\"},\"previousLocation\":{\"title\":\"Previous location\",\"$ref\":\"#/definitions/previousLocation\"},\"bodyPreview\":{\"title\":\"Body preview\",\"type\":\"string\"},\"createdDateTime\":{\"title\":\"Created date time\",\"type\":\"string\"},\"previousStartDateTime\":{\"title\":\"Previous start date time\",\"$ref\":\"#/definitions/previousStartDateTime\"},\"type\":{\"title\":\"Type\",\"type\":\"string\"},\"previousEndDateTime\":{\"title\":\"Previous end date time\",\"$ref\":\"#/definitions/previousEndDateTime\"},\"from\":{\"title\":\"From\",\"$ref\":\"#/definitions/from\"},\"meetingMessageType\":{\"title\":\"Meeting message type\",\"type\":\"string\"},\"internetMessageHeaders[*]\":{\"title\":\"Internet message headers\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/internetMessageHeaders[*]\"}},\"startDateTime\":{\"title\":\"Start date time\",\"$ref\":\"#/definitions/startDateTime\"},\"bccRecipients[*]\":{\"title\":\"Bcc recipients\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/bccRecipients[*]\"}},\"isReadReceiptRequested\":{\"title\":\"Is read receipt requested\",\"type\":\"boolean\"},\"id\":{\"title\":\"Email ID\",\"type\":\"string\"},\"sentDateTime\":{\"title\":\"Sent date time\",\"type\":\"string\"},\"odataContext\":{\"title\":\"Odata context\",\"type\":\"string\"},\"parentFolderName\":{\"title\":\"Email folder name\",\"type\":\"string\"},\"changeKey\":{\"title\":\"Change key\",\"type\":\"string\"},\"receivedDateTime\":{\"title\":\"Received date time\",\"type\":\"string\"},\"isDeliveryReceiptRequested\":{\"title\":\"Is delivery receipt requested\",\"type\":\"boolean\"},\"isOutOfDate\":{\"title\":\"Is out of date\",\"type\":\"boolean\"},\"flag\":{\"title\":\"Flag\",\"$ref\":\"#/definitions/flag\"},\"body\":{\"title\":\"Body\",\"$ref\":\"#/definitions/body\"},\"importance\":{\"title\":\"Importance\",\"type\":\"string\"},\"isRead\":{\"title\":\"Is read\",\"type\":\"boolean\"},\"sender\":{\"title\":\"Sender\",\"$ref\":\"#/definitions/sender\"},\"categories[*]\":{\"title\":\"Category\",\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"endDateTime\":{\"title\":\"End date time\",\"$ref\":\"#/definitions/endDateTime\"},\"ccRecipients[*]\":{\"title\":\"Cc recipients\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/ccRecipients[*]\"}},\"inferenceClassification\":{\"title\":\"Inference classification\",\"type\":\"string\"},\"internetMessageId\":{\"title\":\"Internet message ID\",\"type\":\"string\"},\"isAllDay\":{\"title\":\"Is all day\",\"type\":\"boolean\"},\"toRecipients[*]\":{\"title\":\"To recipients\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/toRecipients[*]\"}},\"isDelegated\":{\"title\":\"Is delegated\",\"type\":\"boolean\"},\"replyTo[*]\":{\"title\":\"Reply to\",\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/replyTo[*]\"}},\"hasAttachments\":{\"title\":\"Has attachments\",\"type\":\"boolean\"},\"responseRequested\":{\"title\":\"Response requested\",\"type\":\"boolean\"},\"conversationIndex\":{\"title\":\"Conversation index\",\"type\":\"string\"},\"meetingRequestType\":{\"title\":\"Meeting request type\",\"type\":\"string\"},\"conversationId\":{\"title\":\"Conversation ID\",\"type\":\"string\"}},\"definitions\":{\"recurrence\":{\"type\":\"object\",\"properties\":{\"range\":{\"title\":\"Range\",\"$ref\":\"#/definitions/recurrenceRange\"},\"pattern\":{\"title\":\"Pattern\",\"$ref\":\"#/definitions/recurrencePattern\"}}},\"recurrenceRange\":{\"type\":\"object\",\"properties\":{\"recurrenceTimeZone\":{\"title\":\"Recurrence range recurrence time zone\",\"type\":\"string\"},\"type\":{\"title\":\"Recurrence range type\",\"type\":\"string\"},\"numberOfOccurrences\":{\"title\":\"Recurrence range number of occurrences\",\"type\":\"integer\"},\"endDate\":{\"title\":\"Recurrence range end date\",\"type\":\"string\"},\"startDate\":{\"title\":\"Recurrence range start date\",\"type\":\"string\"}}},\"location\":{\"type\":\"object\",\"properties\":{\"locationType\":{\"title\":\"Location type\",\"type\":\"string\"},\"displayName\":{\"title\":\"Location display name\",\"type\":\"string\"},\"uniqueIdType\":{\"title\":\"Location unique id type\",\"type\":\"string\"}}},\"previousLocation\":{\"type\":\"object\",\"properties\":{\"locationType\":{\"title\":\"Previous location type\",\"type\":\"string\"},\"displayName\":{\"title\":\"Previous location display name\",\"type\":\"string\"},\"uniqueIdType\":{\"title\":\"Previous location unique id type\",\"type\":\"string\"}}},\"previousStartDateTime\":{\"type\":\"object\",\"properties\":{\"dateTime\":{\"title\":\"Previous start date time date time\",\"type\":\"string\"},\"timeZone\":{\"title\":\"Previous start date time zone\",\"type\":\"string\"}}},\"recurrencePattern\":{\"type\":\"object\",\"properties\":{\"type\":{\"title\":\"Recurrence pattern type\",\"type\":\"string\"},\"interval\":{\"title\":\"Recurrence pattern interval\",\"type\":\"integer\"},\"month\":{\"title\":\"Recurrence pattern month\",\"type\":\"integer\"},\"firstDayOfWeek\":{\"title\":\"Recurrence pattern first day of week\",\"type\":\"string\"},\"index\":{\"title\":\"Recurrence pattern index\",\"type\":\"string\"},\"dayOfMonth\":{\"title\":\"Recurrence pattern day of month\",\"type\":\"integer\"}}},\"previousEndDateTime\":{\"type\":\"object\",\"properties\":{\"dateTime\":{\"title\":\"Previous end date time date time\",\"type\":\"string\"},\"timeZone\":{\"title\":\"Previous end date time zone\",\"type\":\"string\"}}},\"from\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/fromEmailAddress\"}}},\"fromEmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"From email address name\",\"type\":\"string\"},\"address\":{\"title\":\"From (email)\",\"type\":\"string\"}}},\"internetMessageHeaders[*]\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Internet message headers name\",\"type\":\"string\"},\"value\":{\"title\":\"Internet message headers value\",\"type\":\"string\"}}},\"startDateTime\":{\"type\":\"object\",\"properties\":{\"dateTime\":{\"title\":\"Start date time date time\",\"type\":\"string\"},\"timeZone\":{\"title\":\"Start date time zone\",\"type\":\"string\"}}},\"bccRecipients[*]\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/bccRecipients[*]EmailAddress\"}}},\"bccRecipients[*]EmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Bcc recipients email address name\",\"type\":\"string\"},\"address\":{\"title\":\"Bcc (email)\",\"type\":\"string\"}}},\"flag\":{\"type\":\"object\",\"properties\":{\"flagStatus\":{\"title\":\"Flag status\",\"type\":\"string\"}}},\"body\":{\"type\":\"object\",\"properties\":{\"contentType\":{\"title\":\"Body content type\",\"type\":\"string\"},\"content\":{\"title\":\"Body content\",\"type\":\"string\"}}},\"sender\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/senderEmailAddress\"}}},\"senderEmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Sender email address name\",\"type\":\"string\"},\"address\":{\"title\":\"Sender email address\",\"type\":\"string\"}}},\"endDateTime\":{\"type\":\"object\",\"properties\":{\"dateTime\":{\"title\":\"End date time date time\",\"type\":\"string\"},\"timeZone\":{\"title\":\"End date time zone\",\"type\":\"string\"}}},\"ccRecipients[*]\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/ccRecipients[*]EmailAddress\"}}},\"ccRecipients[*]EmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Cc recipients email address name\",\"type\":\"string\"},\"address\":{\"title\":\"Cc (email)\",\"type\":\"string\"}}},\"toRecipients[*]\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/toRecipients[*]EmailAddress\"}}},\"toRecipients[*]EmailAddress\":{\"type\":\"object\",\"properties\":{\"address\":{\"title\":\"To\",\"type\":\"string\"},\"name\":{\"title\":\"To recipients email address name\",\"type\":\"string\"}}},\"replyTo[*]\":{\"type\":\"object\",\"properties\":{\"emailAddress\":{\"title\":\"Email address\",\"$ref\":\"#/definitions/replyTo[*]EmailAddress\"}}},\"replyTo[*]EmailAddress\":{\"type\":\"object\",\"properties\":{\"name\":{\"title\":\"Reply to email address name\",\"type\":\"string\"},\"address\":{\"title\":\"Reply to email address\",\"type\":\"string\"}}}}},\"hasFileOutput\":false,\"populateOutputFields\":true,\"inputFields\":[{\"typeScriptDefinition\":null,\"id\":\"parentFolderId\",\"name\":\"parentFolderId\",\"displayName\":\"Email folder\",\"description\":\"Email folder\",\"type\":\"string\",\"primaryKey\":false,\"lookup\":{\"objectName\":\"MailFolder\",\"lookupNames\":[\"displayName\"],\"lookupValue\":\"id\",\"path\":\"/MailFolders\",\"childPath\":\"/MailFolders?parentFolderId={id}\",\"hydration\":{\"url\":\"/MailFolders/{id}\",\"method\":\"GETBYID\"}},\"design\":{\"displayName\":\"Email folder\",\"description\":\"Email folder\",\"component\":\"FolderPicker\",\"textBlocks\":null,\"dictionaryWidget\":null,\"selection\":null,\"solutionResourceKind\":null,\"solutionResourceSubTypes\":null,\"exposeAsSubBinding\":true},\"fieldActions\":[],\"searchable\":false,\"searchableJoins\":null,\"required\":true,\"request\":true,\"response\":false,\"responseCurated\":false,\"fieldLocation\":\"none\",\"onCanvas\":null,\"isJitField\":false,\"isFieldActionParent\":false,\"isMainResponseField\":false,\"isMethodParameter\":false,\"isBackgroundField\":false,\"filterTree\":null,\"filterNeedsRefresh\":null,\"arrayInputPaths\":null,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true},\"forceExpressionEditor\":false,\"requiredGroups\":null,\"disableExpressions\":true,\"backingField\":null,\"searchableDisplayName\":null,\"selectedResourceId\":null,\"sampleValue\":null},{\"typeScriptDefinition\":null,\"id\":\"sharedMailboxAddress\",\"name\":\"sharedMailboxAddress\",\"displayName\":\"Shared mailbox\",\"description\":\"Email address of the shared mailbox\",\"type\":\"string\",\"primaryKey\":false,\"design\":{\"isHidden\":true},\"fieldActions\":null,\"searchable\":false,\"searchableOperators\":null,\"searchableNames\":null,\"searchableJoins\":null,\"required\":false,\"request\":true,\"response\":false,\"responseCurated\":false,\"fieldLocation\":\"query\",\"onCanvas\":null,\"isJitField\":false,\"isFieldActionParent\":false,\"isMainResponseField\":false,\"isMethodParameter\":true,\"isBackgroundField\":false,\"filterTree\":null,\"filterNeedsRefresh\":null,\"arrayInputPaths\":null,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true},\"forceExpressionEditor\":false,\"requiredGroups\":null,\"disableExpressions\":true,\"backingField\":null,\"searchableDisplayName\":null,\"selectedResourceId\":null}],\"outputFields\":[{\"typeScriptDefinition\":null,\"id\":\"Messages\",\"name\":\"Messages\",\"displayName\":\"Messages\",\"description\":\"\",\"type\":\"GeneratedMessage_Trigger\",\"sortOrder\":null,\"format\":null,\"mask\":null,\"defaultValue\":null,\"primaryKey\":false,\"lookup\":null,\"enum\":null,\"design\":null,\"fieldActions\":null,\"searchable\":false,\"searchableOperators\":null,\"searchableNames\":null,\"searchableJoins\":null,\"required\":false,\"request\":false,\"response\":false,\"responseCurated\":false,\"fieldLocation\":\"output\",\"onCanvas\":null,\"isJitField\":true,\"isFieldActionParent\":false,\"isMainResponseField\":true,\"isMethodParameter\":false,\"isBackgroundField\":false,\"filterTree\":null,\"filterNeedsRefresh\":null,\"arrayInputPaths\":null,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Object\",\"assemblyQualifiedName\":\"Object\",\"isValueType\":false},\"forceExpressionEditor\":false,\"requiredGroups\":null,\"disableExpressions\":false,\"backingField\":null,\"searchableDisplayName\":null,\"selectedResourceId\":null}],\"jitTypeNeedsRefresh\":false,\"eventFields\":[{\"name\":\"bccRecipients[*].emailAddress.address\",\"displayName\":\"BCC (email)\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":true,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String[*]\",\"isValueType\":true}},{\"name\":\"body.content\",\"displayName\":\"Body content\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"ccRecipients[*].emailAddress.address\",\"displayName\":\"CC (email)\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":true,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String[*]\",\"isValueType\":true}},{\"name\":\"categories[*]\",\"displayName\":\"Category\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":true,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String[*]\",\"isValueType\":true}},{\"name\":\"conversationId\",\"displayName\":\"Conversation ID\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"parentFolderName\",\"displayName\":\"Email folder name\",\"type\":\"string\",\"reference\":{\"objectName\":\"MailFolder\",\"lookupNames\":[\"displayName\"],\"lookupValue\":\"displayName\",\"path\":\"/MailFolders\",\"childPath\":\"/MailFolders?parentFolderId={id}\"},\"design\":{\"component\":\"FolderPicker\"},\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"from.emailAddress.address\",\"displayName\":\"From (email)\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"hasAttachments\",\"displayName\":\"Has attachments\",\"type\":\"boolean\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"boolean\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Boolean\",\"assemblyQualifiedName\":\"Boolean\",\"isValueType\":true}},{\"name\":\"importance\",\"displayName\":\"Importance\",\"type\":\"string\",\"enum\":[{\"value\":\"low\"},{\"value\":\"normal\"},{\"value\":\"high\"}],\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Enum\",\"assemblyQualifiedName\":\"Enum\",\"isValueType\":false}},{\"name\":\"inferenceClassification\",\"displayName\":\"Inference classification\",\"type\":\"string\",\"enum\":[{\"value\":\"focused\"},{\"value\":\"other\"}],\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Enum\",\"assemblyQualifiedName\":\"Enum\",\"isValueType\":false}},{\"name\":\"isRead\",\"displayName\":\"Is read\",\"type\":\"boolean\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"boolean\",\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"Boolean\",\"assemblyQualifiedName\":\"Boolean\",\"isValueType\":true}},{\"name\":\"sender.emailAddress.address\",\"displayName\":\"Sender email address\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"subject\",\"displayName\":\"Subject\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":false,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String\",\"isValueType\":true}},{\"name\":\"toRecipients[*].emailAddress.address\",\"displayName\":\"To\",\"type\":\"string\",\"sampleValue\":null,\"isCuratedEventField\":true,\"nativeType\":\"string\",\"order\":1,\"clrType\":{\"_elementType\":null,\"_isNullable\":false,\"isArray\":true,\"genericTypeArguments\":[],\"fullName\":null,\"name\":\"String\",\"assemblyQualifiedName\":\"String[*]\",\"isValueType\":true}}]},\"filterNeedsRefresh\":false,\"filterExpression\":\"((contains(subject,'WADc-yourname'))&&(hasAttachments==`true`))\",\"obsoleteEventFields\":false,\"filterWidget\":null}}",
           "uiPathActivityTypeId": "d76ca053-6e7e-3472-b98c-3094b802d83c",
           "errorState": {
             "issues": []
@@ -581,123 +581,6 @@
           "type": "jsExpression",
           "expression": "$vars.scriptGetInvoice.output.vendor.vendor_name === $vars.queryPoData.output[0].vendorName",
           "fieldType": "boolean"
-        }
-      }
-    },
-    {
-      "id": "humanReviewVendorName",
-      "type": "uipath.human-in-the-loop.quick-form",
-      "typeVersion": "1.0",
-      "display": {
-        "label": "Human - Review Vendor Match",
-        "subLabel": "",
-        "shape": "rectangle",
-        "icon": "users",
-        "color": "#FFB40E"
-      },
-      "inputs": {
-        "schema": {
-          "type": "hitl-schema",
-          "schemaId": "2e3e5e5f-c98f-4c87-b971-9f8bf73c4f2e",
-          "title": "Invoice Form",
-          "fields": [
-            {
-              "id": "invoiceVendor",
-              "type": "string",
-              "label": "Invoice Vendor",
-              "direction": "input",
-              "required": false,
-              "binding": "=vars.vendorName_invoice"
-            },
-            {
-              "id": "poVendor",
-              "type": "string",
-              "label": "PO Vendor",
-              "direction": "input",
-              "required": false,
-              "binding": "=vars.vendorName_po"
-            },
-            {
-              "id": "findings",
-              "type": "string",
-              "label": "Findings",
-              "direction": "input",
-              "required": false,
-              "binding": "$vars.vendorResearchAgent1.output.reasoning"
-            }
-          ],
-          "outcomes": [
-            {
-              "id": "submit",
-              "name": "Valid",
-              "type": "string",
-              "action": "Continue",
-              "isPrimary": true
-            },
-            {
-              "id": "outcome-1780347884705",
-              "name": "Invalid",
-              "type": "string",
-              "action": "End",
-              "isPrimary": false
-            }
-          ]
-        },
-        "recipient": {
-          "channels": [
-            "Slack",
-            "teams",
-            "Email",
-            "ActionCenter"
-          ],
-          "connections": {
-            "Slack": {
-              "name": "Slack",
-              "key": "Slack",
-              "folderPath": null
-            },
-            "teams": {
-              "name": "Teams",
-              "key": "Teams",
-              "folderPath": null
-            }
-          },
-          "assignee": {
-            "type": "user",
-            "value": "clifford.simpkins@uipath.com",
-            "displayName": "Cliff Simpkins (UiPath)"
-          }
-        }
-      },
-      "outputs": {
-        "output": {
-          "type": "object",
-          "description": "Task result data",
-          "descriptionKey": "hitlOutputBuilder_taskResultData_description",
-          "source": "=result",
-          "var": "output",
-          "properties": {
-            "Action": {
-              "type": "string",
-              "enum": [
-                "Valid",
-                "Invalid"
-              ],
-              "default": "Valid"
-            }
-          }
-        },
-        "status": {
-          "type": "string",
-          "description": "Task completion status (completed, cancelled, timeout)",
-          "descriptionKey": "hitlOutputBuilder_taskCompletionStatus_description",
-          "source": "=result.Action",
-          "var": "status",
-          "enum": [
-            "Valid",
-            "Invalid"
-          ],
-          "default": "Valid"
         }
       }
     },
@@ -1723,6 +1606,39 @@
         "color": "white",
         "content": "Mock Data while building IXP"
       }
+    },
+    {
+      "id": "switchNameMatchOutcome",
+      "type": "core.logic.switch",
+      "typeVersion": "1.1",
+      "display": {
+        "label": "Switch - Vendor Research Routing",
+        "subLabel": "",
+        "icon": "between-horizontal-start",
+        "color": "#FFB40E"
+      },
+      "inputs": {
+        "cases": [
+          {
+            "id": "default-1",
+            "label": "Valid",
+            "expression": {
+              "type": "jsExpression",
+              "expression": "$vars.vendorResearchAgent1.output.flag === \"approve\" || ($vars.vendorResearchAgent1.output.flag === \"review\" && $vars.vendorResearchAgent1.output.confidence === \"high\")",
+              "fieldType": "boolean"
+            }
+          },
+          {
+            "id": "mqzug2zf-7tsck",
+            "label": "Invalid",
+            "expression": {
+              "type": "jsExpression",
+              "expression": "$vars.vendorResearchAgent1.output.flag === \"reject\" || $vars.vendorResearchAgent1.output.flag === \"review\"",
+              "fieldType": "boolean"
+            }
+          }
+        ]
+      }
     }
   ],
   "edges": [
@@ -1752,27 +1668,6 @@
       "sourceNodeId": "decisionVendorName",
       "sourcePort": "false",
       "targetNodeId": "vendorResearchAgent1",
-      "targetPort": "input"
-    },
-    {
-      "id": "edge_vendorResearchAgent1-output-uipath.human-in-the-loop-1781814016362-input",
-      "sourceNodeId": "vendorResearchAgent1",
-      "sourcePort": "output",
-      "targetNodeId": "humanReviewVendorName",
-      "targetPort": "input"
-    },
-    {
-      "id": "xy-edge__humanReviewVendorNameoutcome-submit-discrepancyInvestigatorAgent1input",
-      "sourceNodeId": "humanReviewVendorName",
-      "sourcePort": "outcome-submit",
-      "targetNodeId": "discrepancyInvestigatorAgent",
-      "targetPort": "input"
-    },
-    {
-      "id": "edge_humanReviewVendorName-outcome-outcome-1780347884705-core.control.end-1781814185720-input",
-      "sourceNodeId": "humanReviewVendorName",
-      "sourcePort": "outcome-outcome-1780347884705",
-      "targetNodeId": "end1",
       "targetPort": "input"
     },
     {
@@ -1822,6 +1717,34 @@
       "sourceNodeId": "scriptGetInvoice",
       "sourcePort": "success",
       "targetNodeId": "queryPoData",
+      "targetPort": "input"
+    },
+    {
+      "id": "edge_vendorResearchAgent1-output-core.logic.switch-1782775354565-input",
+      "sourceNodeId": "vendorResearchAgent1",
+      "sourcePort": "output",
+      "targetNodeId": "switchNameMatchOutcome",
+      "targetPort": "input"
+    },
+    {
+      "id": "xy-edge__switchNameMatchOutcomecase-default-1-discrepancyInvestigatorAgentinput",
+      "sourceNodeId": "switchNameMatchOutcome",
+      "sourcePort": "case-default-1",
+      "targetNodeId": "discrepancyInvestigatorAgent",
+      "targetPort": "input"
+    },
+    {
+      "id": "xy-edge__switchNameMatchOutcomecase-mqzug2zf-7tsck-end1input",
+      "sourceNodeId": "switchNameMatchOutcome",
+      "sourcePort": "case-mqzug2zf-7tsck",
+      "targetNodeId": "end1",
+      "targetPort": "input"
+    },
+    {
+      "id": "xy-edge__switchNameMatchOutcomedefault-end1input",
+      "sourceNodeId": "switchNameMatchOutcome",
+      "sourcePort": "default",
+      "targetNodeId": "end1",
       "targetPort": "input"
     }
   ],
@@ -2136,7 +2059,7 @@
                     "packageId": "113595",
                     "svgIconUrl": "icons/160499b52f7cea190b530fe6f40da7ee03455a8d3fb72dd7f4f68d61e7865a3a.svg",
                     "displayName": "Download Email Attachment",
-                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.26.0.0, Culture=neutral, PublicKeyToken=null",
+                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.27.0.0, Culture=neutral, PublicKeyToken=null",
                     "description": "Downloads an attachment from an email message",
                     "category": "",
                     "activityColor": "#E56D5C",
@@ -2856,7 +2779,7 @@
                     "packageId": "68444",
                     "svgIconUrl": "icons/98381fa079bbcf73264f551006d6ef7580fb53992f3d9f94361eb5d9e06040cb.svg",
                     "displayName": "Query Entity Records",
-                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.26.0.0, Culture=neutral, PublicKeyToken=null",
+                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.27.0.0, Culture=neutral, PublicKeyToken=null",
                     "description": "Retrieves a list of records for the selected Entity from Data Fabric, according to specified filters.",
                     "category": "",
                     "activityColor": "#E56D5C",
@@ -3211,176 +3134,6 @@
       }
     },
     {
-      "nodeType": "uipath.human-in-the-loop.quick-form",
-      "version": "1.0",
-      "category": "human-task",
-      "description": "Fast inline approvals with inline debug",
-      "tags": [
-        "human-task",
-        "hitl",
-        "human-in-the-loop",
-        "quick-form",
-        "approval"
-      ],
-      "sortOrder": 27,
-      "display": {
-        "label": "Quick Form",
-        "icon": "users",
-        "shape": "square"
-      },
-      "handleConfiguration": [
-        {
-          "position": "left",
-          "handles": [
-            {
-              "id": "input",
-              "type": "target",
-              "handleType": "input"
-            }
-          ],
-          "visible": true
-        },
-        {
-          "position": "right",
-          "handles": [
-            {
-              "id": "completed",
-              "type": "source",
-              "handleType": "output",
-              "showButton": true,
-              "constraints": {
-                "forbiddenTargetCategories": [
-                  "trigger"
-                ]
-              }
-            }
-          ],
-          "visible": true
-        }
-      ],
-      "model": {
-        "type": "bpmn:UserTask",
-        "serviceType": "Actions.HITL"
-      },
-      "inputDefaults": {
-        "schema": {
-          "fields": [],
-          "outcomes": [
-            {
-              "id": "submit",
-              "name": "Submit",
-              "type": "string",
-              "isPrimary": true,
-              "action": "Continue"
-            }
-          ]
-        },
-        "recipient": {
-          "channels": [
-            "Email",
-            "ActionCenter"
-          ],
-          "connections": {},
-          "assignee": {
-            "type": "group"
-          }
-        }
-      },
-      "outputDefinition": {
-        "output": {
-          "type": "object",
-          "description": "Task result data",
-          "source": "=result",
-          "var": "output"
-        },
-        "status": {
-          "type": "string",
-          "description": "Task completion status (completed, cancelled, timeout)",
-          "source": "=result.Action",
-          "var": "status"
-        }
-      },
-      "form": {
-        "id": "hitl-quick-form-properties",
-        "title": "Quick Form Task Configuration",
-        "sections": [
-          {
-            "id": "delivery",
-            "title": "Task Delivery",
-            "collapsible": true,
-            "defaultExpanded": true,
-            "fields": [
-              {
-                "name": "inputs.recipient",
-                "type": "custom",
-                "component": "hitl-channel-selector",
-                "label": "Delivery Channels",
-                "description": "Select where the task should be sent"
-              }
-            ]
-          },
-          {
-            "id": "schema",
-            "title": "Schema",
-            "collapsible": true,
-            "defaultExpanded": true,
-            "fields": [
-              {
-                "name": "inputs.schema",
-                "type": "custom",
-                "component": "hitl-schema-editor",
-                "label": "Task Schema",
-                "description": "Define the input and output parameters for this task"
-              }
-            ]
-          },
-          {
-            "id": "additional-properties",
-            "title": "Additional properties",
-            "collapsible": true,
-            "defaultExpanded": true,
-            "fields": [
-              {
-                "name": "inputs.title",
-                "type": "text",
-                "label": "Task title"
-              },
-              {
-                "name": "inputs.priority",
-                "type": "select",
-                "label": "Priority",
-                "options": [
-                  {
-                    "label": "Low",
-                    "value": "Low"
-                  },
-                  {
-                    "label": "Medium",
-                    "value": "Medium"
-                  },
-                  {
-                    "label": "High",
-                    "value": "High"
-                  }
-                ]
-              },
-              {
-                "name": "inputs.labels",
-                "type": "text",
-                "label": "Labels",
-                "placeholder": "Comma-separated (e.g. finance,approval)"
-              }
-            ]
-          }
-        ]
-      },
-      "runtimeConstraints": {
-        "exclude": [
-          "api-function"
-        ]
-      }
-    },
-    {
       "nodeType": "core.control.end",
       "version": "1.0",
       "category": "control-flow",
@@ -3558,7 +3311,7 @@
                     "packageId": "113595",
                     "svgIconUrl": "icons/160499b52f7cea190b530fe6f40da7ee03455a8d3fb72dd7f4f68d61e7865a3a.svg",
                     "displayName": "Reply To Email",
-                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.26.0.0, Culture=neutral, PublicKeyToken=null",
+                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.27.0.0, Culture=neutral, PublicKeyToken=null",
                     "description": "Reply to specified email with provided information",
                     "category": "",
                     "activityColor": "#E56D5C",
@@ -4903,6 +4656,157 @@
           }
         }
       }
+    },
+    {
+      "nodeType": "core.logic.switch",
+      "version": "1.1",
+      "category": "control-flow",
+      "description": "Route to one of many branches by condition",
+      "tags": [
+        "control-flow",
+        "switch",
+        "case",
+        "when"
+      ],
+      "sortOrder": 20,
+      "display": {
+        "label": "Switch",
+        "icon": "between-horizontal-start"
+      },
+      "handleConfiguration": [
+        {
+          "position": "left",
+          "handles": [
+            {
+              "id": "input",
+              "type": "target",
+              "handleType": "input"
+            }
+          ],
+          "visible": true
+        },
+        {
+          "position": "right",
+          "handles": [
+            {
+              "id": "case-{item.id}",
+              "type": "source",
+              "handleType": "output",
+              "label": "{item.label || 'Case ' + (index + 1)}",
+              "repeat": "inputs.cases"
+            },
+            {
+              "id": "default",
+              "type": "source",
+              "handleType": "output",
+              "label": "Default"
+            }
+          ],
+          "visible": true
+        }
+      ],
+      "debug": {
+        "runtime": "clientScript"
+      },
+      "model": {
+        "type": "bpmn:ExclusiveGateway"
+      },
+      "inputDefinition": {
+        "type": "object",
+        "properties": {
+          "cases": {
+            "type": "array",
+            "minItems": 1,
+            "errorMessage": "At least one case is required",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string",
+                  "minLength": 1,
+                  "errorMessage": "A condition expression is required"
+                }
+              },
+              "required": [
+                "expression"
+              ]
+            }
+          }
+        },
+        "required": [
+          "cases"
+        ]
+      },
+      "outputDefinition": {
+        "matchedCase": {
+          "type": "string",
+          "description": "The label of the matched case",
+          "var": "matchedCase"
+        },
+        "matchedCaseId": {
+          "type": "string",
+          "description": "The ID of the matched case (\"default\" for the default branch)",
+          "var": "matchedCaseId"
+        }
+      },
+      "inputDefaults": {
+        "cases": [
+          {
+            "id": "default-1",
+            "label": "Case 1",
+            "expression": ""
+          },
+          {
+            "id": "default-2",
+            "label": "Case 2",
+            "expression": ""
+          }
+        ]
+      },
+      "form": {
+        "id": "switch-properties",
+        "title": "Switch configuration",
+        "sections": [
+          {
+            "id": "cases",
+            "title": "Cases",
+            "description": "Each case is evaluated in order. The first condition that returns true is taken.",
+            "collapsible": true,
+            "defaultExpanded": true,
+            "fields": [
+              {
+                "name": "inputs.cases",
+                "type": "custom",
+                "label": "Switch cases",
+                "component": "case-list-editor",
+                "componentProps": {
+                  "minCases": 1,
+                  "maxCases": 10,
+                  "expressionPlaceholder": "e.g., $vars.value <= 30",
+                  "expressionValidationFields": [
+                    {
+                      "subPath": "expression",
+                      "validationMode": "expression",
+                      "expectedType": "boolean"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "runtimeConstraints": {
+        "exclude": [
+          "api-function"
+        ]
+      }
     }
   ],
   "variables": {
@@ -5414,42 +5318,6 @@
         "binding": {
           "nodeId": "decisionVendorName",
           "outputId": "matchedCaseId"
-        }
-      },
-      {
-        "id": "humanTaskQuickFormApp1.output",
-        "type": "object",
-        "description": "Task result data",
-        "binding": {
-          "nodeId": "humanReviewVendorName",
-          "outputId": "output"
-        }
-      },
-      {
-        "id": "humanTaskQuickFormApp1.status",
-        "type": "string",
-        "description": "Task completion status (completed, cancelled, timeout)",
-        "binding": {
-          "nodeId": "humanReviewVendorName",
-          "outputId": "status"
-        }
-      },
-      {
-        "id": "humanReviewVendorName.output",
-        "type": "object",
-        "description": "Task result data",
-        "binding": {
-          "nodeId": "humanReviewVendorName",
-          "outputId": "output"
-        }
-      },
-      {
-        "id": "humanReviewVendorName.status",
-        "type": "string",
-        "description": "Task completion status (completed, cancelled, timeout)",
-        "binding": {
-          "nodeId": "humanReviewVendorName",
-          "outputId": "status"
         }
       },
       {
@@ -7462,6 +7330,42 @@
           "nodeId": "mockFileData",
           "outputId": "error"
         }
+      },
+      {
+        "id": "switch1.matchedCase",
+        "type": "string",
+        "description": "The label of the matched case",
+        "binding": {
+          "nodeId": "switchNameMatchOutcome",
+          "outputId": "matchedCase"
+        }
+      },
+      {
+        "id": "switch1.matchedCaseId",
+        "type": "string",
+        "description": "The ID of the matched case (\"default\" for the default branch)",
+        "binding": {
+          "nodeId": "switchNameMatchOutcome",
+          "outputId": "matchedCaseId"
+        }
+      },
+      {
+        "id": "switchNameMatchOutcome.matchedCase",
+        "type": "string",
+        "description": "The label of the matched case",
+        "binding": {
+          "nodeId": "switchNameMatchOutcome",
+          "outputId": "matchedCase"
+        }
+      },
+      {
+        "id": "switchNameMatchOutcome.matchedCaseId",
+        "type": "string",
+        "description": "The ID of the matched case (\"default\" for the default branch)",
+        "binding": {
+          "nodeId": "switchNameMatchOutcome",
+          "outputId": "matchedCaseId"
+        }
       }
     ],
     "variableUpdates": {
@@ -7672,17 +7576,6 @@
         },
         "collapsed": false
       },
-      "humanReviewVendorName": {
-        "position": {
-          "x": 592,
-          "y": 576
-        },
-        "size": {
-          "width": 96,
-          "height": 96
-        },
-        "collapsed": false
-      },
       "end1": {
         "position": {
           "x": 1664,
@@ -7696,7 +7589,7 @@
       },
       "replyToEmail": {
         "position": {
-          "x": 1472,
+          "x": 1488,
           "y": 400
         },
         "size": {
@@ -7718,7 +7611,7 @@
       },
       "scriptPrepareBrief": {
         "position": {
-          "x": 976,
+          "x": 960,
           "y": 400
         },
         "size": {
@@ -7790,6 +7683,17 @@
         "size": {
           "width": 288,
           "height": 240
+        },
+        "collapsed": false
+      },
+      "switchNameMatchOutcome": {
+        "position": {
+          "x": 592,
+          "y": 528
+        },
+        "size": {
+          "width": 96,
+          "height": 192
         },
         "collapsed": false
       }

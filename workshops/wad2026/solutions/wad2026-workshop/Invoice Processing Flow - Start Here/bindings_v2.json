@@ -106,7 +106,7 @@
         "BindingsVersion": "2.2",
         "ObjectName": "Message",
         "Operation": "EMAIL_RECEIVED",
-        "FilterExpression": "(parentFolderId == 'AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=') && ((contains(subject,'WAD-cliff'))&&(hasAttachments==`true`))"
+        "FilterExpression": "(parentFolderId == 'AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=') && ((contains(subject,'WAD-yourname'))&&(hasAttachments==`true`))"
       }
     },
     {

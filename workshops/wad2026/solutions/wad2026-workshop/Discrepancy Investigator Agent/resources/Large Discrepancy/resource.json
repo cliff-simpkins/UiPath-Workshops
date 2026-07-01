@@ -69,13 +69,7 @@
         "Approve": "continue",
         "Reject": "continue"
       },
-      "recipients": [
-        {
-          "type": 1,
-          "value": "21812d01-f003-4ba2-9103-9b2502e1df33",
-          "displayName": "Cliff Simpkins (UiPath)"
-        }
-      ],
+      "recipients": [],
       "type": "actionCenter",
       "properties": {
         "appName": "EscalationApp",
@@ -84,7 +78,8 @@
         "resourceKey": "7edc34c7-b683-4b18-bfb3-4d5d1d0e1098",
         "isActionableMessageEnabled": false,
         "actionableMessageMetaData": null
-      }
+      },
+      "argumentProperties": {}
     }
   ],
   "isAgentMemoryEnabled": false,
