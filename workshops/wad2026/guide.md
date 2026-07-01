@@ -157,7 +157,7 @@ As we use Studio Web, there are a few areas worth noting - along the left-side o
 
 * * *
 
-## Step 7 — Fix your solution bindings (2 min)
+## Step 7 — Fix your solution bindings (3 min)
 
 When you duplicate a solution, the connections (email, Data Fabric, Storage Bucket, GenAI) point at the original's configuration. Rebind them to the shared workshop connections before running anything.
 
@@ -275,7 +275,7 @@ Expected result: `recommendation: "approve"`, `escalated: false`, `totalAmountDe
 
 * * *
 
-## Step 12 — Test the Discrepancy Investigator Agent - Calling the Escalation and Contract Tools (5 min)
+## Step 12 — Test the Discrepancy Investigator Agent - Calling the Escalation and Contract Tools (7 min)
 
 Now let's test the agent with known inputs that will trigger the Human In the Loop ('HITL') escalation. This uses the UiPath App capabilities that were built with a quick form.
 
@@ -740,20 +740,17 @@ Point at the execution trace: two web search calls, two cited sources, correct d
 
 ---
 
-## Breaking Scenario 3 — Prompt bug and regression catch (Step 13)
+## Breaking Scenario 3 — Eval baseline and what scores mean (Step 13)
 
-Step 13 is now a formal attendee step rather than a facilitator-driven break. Your role is narration and pacing, not revelation.
+Attendees run the three pre-loaded cases and note the scores. Your role is narrating what the output means while the eval set runs (60–90 sec).
 
-**While attendees run the bad Helix Marketing case:**
-*"The invoice is clean. Same line items, same amounts, no freight charge. But the agent escalated it. Let's find out why."*
+**While it runs:**
+*"Each case passes pre-defined invoice and PO data to the agent and compares the output against expected results. Two evaluators run in parallel: one checks whether the recommendation matches, the other checks whether the agent called the vendor contracts tool when it should have — and only then."*
 
-**While they read the reasoning:**
-*"The agent has the date comparison backwards, and it doesn't know that null means no charge was made. It's not hallucinating — it's following the prompt. The prompt is wrong."*
+**After results appear:**
+*"Green is solid. Yellow means the agent got the right answer but took a path you didn't expect — worth watching. Red means the output didn't match. Note the scores now. Any prompt change you make later should be validated against this set before it ships — that's how you catch a fix that breaks something else."*
 
-**After the prompt fix and eval rerun:**
-*"Two sentences. That's the difference between an agent that works and one that's sending false escalations to your AP team at 2am. And the eval set told you immediately that nothing else broke."*
-
-**Pacing:** The 10-minute allocation is tight if attendees struggle to find where in the system prompt to insert the rules. Have floaters pre-briefed on the prompt structure so they can point people to the right section without giving away the solution.
+**Pacing:** The 10-minute allocation includes reading and discussing the results. This is intentionally a pause — attendees have been heads-down since Step 9; let the scores land before moving on.
 
 ---
 
@@ -765,11 +762,11 @@ Total target: 120 min. Buffer: Step 23 (10 min).
 |---|---|---|
 | 1st | Shorten Step 18: skip Test 2 (false branch demo); describe the VRA path verbally | Running long in Steps 16–18 |
 | 2nd | Skip Step 23 eval-add: run the remaining invoices, skip adding them to the eval set | Running long after Step 21 |
-| Never cut | Step 13 (prompt fix + eval rescore) and Step 22 (publish) | These are the payoff |
+| Never cut | Step 13 (eval baseline) and Step 22 (publish) | These are the payoff |
 
 **Known tight spots:**
 
-- **Step 13 (prompt fix)** — attendees need to find the right place in the system prompt to insert two rules. Pre-brief floaters on the prompt structure. If someone's fix doesn't work, the most common cause is inserting in the wrong section or syntax errors in the JSON output format rules.
+- **Step 13 (eval run)** — scripted wait while evals run (60–90 sec). Use the time to narrate what the evaluators are checking. No attendee action needed; floaters should just keep the room moving.
 - **Steps 19–20 (wiring)** — variable configuration is where attendees get stuck. Known issue: `$vars.nodeName` reference must match the exact node ID; one character difference causes a silent failure. Floaters should be able to fix this in under 2 minutes.
 - **Steps 12/15 (eval runs)** — 60–90 second runtime each. Script the wait: *"while we wait, here's what the evaluator is actually doing — running each case through the agent, comparing the output field by field against the expected result, and checking the trajectory to see if the agent called the right tools."*
 - **Step 7 (bindings)** — floaters should unblock binding errors in under 2 minutes and move on. Don't let one attendee's binding issue gate the room.
@@ -779,7 +776,7 @@ Total target: 120 min. Buffer: Step 23 (10 min).
 | Checkpoint | State | Import when |
 |---|---|---|
 | A | Duplicated solution, bindings fixed | Attendee can't duplicate or has persistent binding errors |
-| B | DIA tested, evals baselined, prompt fixed | Attendee stuck in Steps 11–13 |
+| B | DIA tested, evals baselined | Attendee stuck in Steps 11–13 |
 | C | Full flow wired, true branch complete | Attendee stuck in Steps 19–20 |
 
 ---
