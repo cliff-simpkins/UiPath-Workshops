@@ -1,11 +1,11 @@
 # Building a Low-Code Agent in Studio Web
 
-In this lab, you will build a low-code agent entirely in the UiPath Studio Web browser interface - no CLI, no code, no IDE. You will:
+In this lab, you will build a low-code agent entirely in the UiPath Studio Web browser interface: no CLI, no code, no IDE required. You will:
 
-1. Create a new agent project in Studio Web
-2. Generate the agent configuration using Autopilot
-3. Review and refine the system prompt, inputs, and output
-4. Test the agent live in the debug panel
+1. Create a new agent project in Studio Web.
+2. Generate the agent configuration using Autopilot.
+3. Review and refine the system prompt, inputs, and output.
+4. Test the agent live in the debug panel.
 
 There are a few approaches to create UiPath agents. This lab explores the Agent Builder project within Studio Web; you can also create agents using the [UiPath CLI](../agents/guide.md) and using the [LangGraph SDK](../agents-langgraph/guide.md).
 
@@ -13,32 +13,30 @@ There are a few approaches to create UiPath agents. This lab explores the Agent 
 
 ## What you are building
 
-This lab builds a **Quest Advisor** - a low-code agent for a fictional Adventurer's Guild in a fantasy RPG world. Given a quest description, the agent classifies the quest difficulty and suggests monsters the adventurers are likely to encounter.
+This lab builds a **Quest Advisor**, a low-code agent for a fictional Adventurer's Guild in a fantasy RPG world. Given a quest description, the agent classifies the quest difficulty and suggests monsters the adventurers are likely to encounter.
 
 | Component | Details |
 | --- | --- |
 | **System prompt** | RPG game master that classifies quest difficulty and identifies likely monsters based on the description |
-| **Input: `questDescription`** | `string` - the quest description |
-| **Output: `tier`** | `number` - difficulty tier (1-4, where 1 = Local Heroes and 4 = Masters of the World) |
-| **Output: `monsters`** | `array` - up to five monsters likely to be encountered |
-| **Output: `reasoning`** | `string` - brief explanation of the tier classification and monster choices |
+| **Input: `questDescription`** | `string`; the quest description |
+| **Output: `tier`** | `number`; difficulty tier (1-4, where 1 = Local Heroes and 4 = Masters of the World) |
+| **Output: `monsters`** | `array`; up to five monsters likely to be encountered |
+| **Output: `reasoning`** | `string`; brief explanation of the tier classification and monster choices |
 
 * * *
 
 ## Prerequisites
 
-- **UiPath account** - sign up or log in at [cloud.uipath.com](https://cloud.uipath.com) before starting.
-- A modern web browser.
+- **UiPath account** - sign up or log in to [UiPath Automation Cloud](https://cloud.uipath.com) before starting.
+- A modern web browser. For supported browsers, see [Software requirements](https://docs.uipath.com/automation-cloud/automation-cloud/latest/admin-guide/software-requirements).
 
 No CLI, SDKs, or local tooling is needed for this lab.
 
-* * *
-
-# Workshop: Building a Low-Code Agent in Studio Web
+# Build the agent
 
 ## Step 1 - Open Studio Web
 
-Log in to [cloud.uipath.com](https://cloud.uipath.com) and open **Studio** from the left navigation. You will land on your Cloud Workspace, which shows your existing solutions and a **Create New** button.
+Log in to [UiPath Automation Cloud](https://cloud.uipath.com) and open **Studio Web** from the left navigation. You land on your Cloud Workspace, which shows your existing solutions and a **Create New** button.
 1. Select **Create New**.
 2. Select the **Agent** project type from the available options.
 
@@ -47,7 +45,7 @@ Log in to [cloud.uipath.com](https://cloud.uipath.com) and open **Studio** from 
 
 * * *
 
-## Step 2 - Generate the Agent with Autopilot
+## Step 2 - Generate the agent with Autopilot
 
 Studio Web's Autopilot can configure an agent from a plain-language description. You describe what you want, and Autopilot proposes the system prompt, input schema, and output schema.
 
@@ -70,13 +68,13 @@ Build a Quest Advisor for a fantasy RPG Adventurer's Guild. Given a quest descri
 
 * * *
 
-## Step 3 - Review the Agent Canvas
+## Step 3 - Review the agent canvas
 
-Autopilot will analyze the prompt you gave it and walk you through building and configuring it. Use the **Autopilot** window to review the suggestions and agree on the final agent design.
+Autopilot analyzes the prompt you gave it and walks you through building and configuring it. Use the **Autopilot** window to review the suggestions and agree on the final agent design.
 
 ![Autopilot dialog window](images/LowCode_Agents-Step-03a.png)
 
-Once the agent is created, the **Agent Canvas** opens. Click the agent node to open its **Properties** panel on the right side of the screen. You can also open properties using the wrench icon in the upper-right corner of the canvas.
+Once the agent is created, the **Agent Canvas** opens. Select the agent node to open its **Properties** panel on the right side of the screen. You can also open properties using the wrench icon in the upper-right corner of the canvas.
 
 Confirm that Autopilot configured the following correctly:
 
@@ -112,9 +110,9 @@ Tier 3: Masters of the Realm (Levels 11-16) - scope: whole continents, other pla
 Tier 4: Masters of the World (Levels 17-20) - scope: entire multiverse, cosmic planes. Threats: ancient dragons, demon lords, archdevils, god-like entities.
 ```
 
-* * *
+# Test the agent
 
-## Step 4 - Test the Agent
+## Step 4 - Test the agent
 
 Select **Debug** in the top toolbar. This opens the debug panel where you can run the agent with sample input.
 
@@ -128,11 +126,11 @@ Goblins have been raiding farms near the village of Millhaven and stealing lives
 
     ![Debug configuration dialog](images/LowCode_Agents-Step-04a.png)
 
-The agent should return a `tier` of `1` and a `monsters` list containing goblins and similar low-level threats. If the tier comes back higher, check the system prompt in Step 3 - the tier boundaries may not have been captured correctly.
+The agent should return a `tier` of `1` and a `monsters` list containing goblins and similar low-level threats. If the tier comes back higher, check the system prompt in Step 3: the tier boundaries may not have been captured correctly.
 
 To access the return results:
 
-1. Select **Execution Trail** along the bottom of the Studio canvas.
+1. Select **Execution Trail** along the bottom of the Studio Web canvas.
 2. Within the **Execution Trace** panel, select `Agent Output`, which updates the **Agent output** panel.
 3. Review the `tier`, `monsters`, and `reasoning` returned by the agent.
 4. Expand the `reasoning` text to view the string in its entirety.
@@ -164,18 +162,18 @@ Expected: tier `4` with demon lords, archdevils, and other planar threats.
 
 * * *
 
-## Congratulations!
+## What you built
 
 You built and tested a low-code agent in Studio Web:
 
-- Created a new agent project using Autopilot from a plain-language description
-- Reviewed and confirmed the system prompt, input schema, and output schema in the Agent Canvas
-- Ran three live test cases across all difficulty tiers and interpreted the results
+- Created a new agent project using Autopilot from a plain-language description.
+- Reviewed and confirmed the system prompt, input schema, and output schema in the Agent Canvas.
+- Ran three live test cases across all difficulty tiers and interpreted the results.
 
-## What's Next
+## What's next
 
-- [Getting Started with UiPath Agents](../agents/guide.md) - build and configure a low-code agent from the CLI using `uip agent init`, without opening Studio Web, then upload and test it there
-- [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) - extend an agent with tools that call external APIs
-- [Getting Started with Agent Evals](../../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) - build evaluation sets, run cloud evaluations, and interpret scores
-- [UiPath Agents documentation](https://docs.uipath.com) - full reference for low-code and coded agent capabilities
-- [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion
+- [Getting Started with UiPath Agents](../agents/guide.md) - build and configure a low-code agent from the CLI using `uip agent init`, without opening Studio Web, then upload and test it there.
+- [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) - extend an agent with tools that call external APIs.
+- [Getting Started with Agent Evals](../../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) - build evaluation sets, run cloud evaluations, and interpret scores.
+- [UiPath Agents documentation](https://docs.uipath.com) - full reference for low-code and coded agent capabilities.
+- [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion.

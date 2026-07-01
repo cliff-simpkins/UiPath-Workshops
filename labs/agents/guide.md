@@ -35,12 +35,12 @@ Here is the full design of what you are building:
 
 ## Prerequisites
 
-<!-- test:prereq name="Node.js" version=">=18" -->
+<!-- test:prereq name="Node.js" version=">=18" ignore-for-docs="true" -->
 ```bash
 node --version
 ```
 
-<!-- test:prereq name="uip" version=">=1.1" -->
+<!-- test:prereq name="uip" version=">=1.1" ignore-for-docs="true" -->
 ```bash
 uip --version
 ```
@@ -99,7 +99,7 @@ The UiPath CLI (`uip`) is a cross-platform tool for UiPath authentication, proje
 
 ## Step 2 - Install UiPath skills for your coding agent *(optional)*
 
-If you are using a coding agent (Claude Code, Cursor, Copilot, etc.) alongside the CLI, installing the UiPath skills gives it knowledge of agent project structure, CLI commands, and best practices. Every command in this lab is spelled out explicitly; skipping this step does not affect the walkthrough, but skills make it faster to troubleshoot or extend the agent afterward.
+If you are using a coding agent (Claude Code, Cursor, Copilot, Gemini, or Codex) alongside the CLI, installing the UiPath skills gives it knowledge of agent project structure, CLI commands, and best practices. Every command in this lab is spelled out explicitly; skipping this step does not affect the walkthrough, but skills make it faster to troubleshoot or extend the agent afterward.
 
 <!-- test:manual reason="optional; replace 'claude' with your coding agent if different" -->
 ```bash
@@ -108,7 +108,7 @@ uip skills install --agent claude
 
 Replace `claude` with your agent if you are using a different one: `cursor`, `copilot`, `gemini`, or `codex`.
 
-Skills install globally to your home directory (e.g., `~/.claude/skills/` for Claude Code) and are available in every project from this point forward.
+Skills install globally to your home directory (for example, `~/.claude/skills/` for Claude Code) and are available in every project from this point forward.
 
 * * *
 
@@ -301,12 +301,13 @@ The JSON below defines a single `agent` entry point, which you call in the steps
 }
 ```
 
-> **What these JSON files do.**
->    - `agent.json` is the agent definition: the model settings, the system prompt, and the input and output schemas.
->    - `entry-points.json` exposes those schemas to the solution runtime.
->    - Important: The `inputSchema` and `outputSchema` blocks must be identical in both files. A mismatch causes validation to fail.
->
-> **Adapting to your use case.** To build a different agent, replace the `content` strings in `messages[0]` with your system prompt and update the `properties` blocks in `inputSchema` and `outputSchema` to match the fields your prompt refers to. Mirror those same changes in `entry-points.json`. The `settings`, `metadata`, `type`, and message structure stay the same.
+### Understanding agent.json and entry-points.json
+
+- `agent.json` is the agent definition: the model settings, the system prompt, and the input and output schemas.
+- `entry-points.json` exposes those schemas to the solution runtime.
+- Important: The `inputSchema` and `outputSchema` blocks must be identical in both files. A mismatch causes validation to fail.
+
+**Adapting to your use case.** To build a different agent, replace the `content` strings in `messages[0]` with your system prompt and update the `properties` blocks in `inputSchema` and `outputSchema` to match the fields your prompt refers to. Mirror those same changes in `entry-points.json`. The `settings`, `metadata`, `type`, and message structure stay the same.
 
 <!-- screenshot: step-05.png - editor showing agent.json with the system prompt and input/output schemas -->
 
@@ -323,7 +324,7 @@ uip agent validate MonsterSelector
 
 You should see `"Status": "Valid"` with `"StorageVersion": "50.0.0"` and a `"Validated"` summary showing `agent: true`. Validation also generates the `.agent-builder/` files used by Studio Web; you do not need to touch these.
 
-If validation fails, confirm that `inputSchema` and `outputSchema` are identical in both `agent.json` and `entry-points.json`, and that every variable reference in `messages[1].content` uses the `input.` prefix (e.g., `{{input.questDescription}}`).
+If validation fails, confirm that `inputSchema` and `outputSchema` are identical in both `agent.json` and `entry-points.json`, and that every variable reference in `messages[1].content` uses the `input.` prefix (for example, `{{input.questDescription}}`).
 
 <!-- screenshot: step-06.png - terminal showing valid validation output -->
 
@@ -350,7 +351,7 @@ A successful upload returns `"Status": "Uploaded successfully"` along with a `So
 
 1. Log in to [UiPath Automation Cloud](https://cloud.uipath.com) and open **Studio Web** from the side navigation.
 
-2. Find your **MonsterSelector** project in the project list and click to open it.
+2. Find your **MonsterSelector** project in the project list and select it to open it.
 
    <!-- screenshot: step-08a.png - Studio Web project list showing MonsterSelector -->
 
