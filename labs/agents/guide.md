@@ -134,6 +134,8 @@ Skills install globally to your home directory (for example, `~/.claude/skills/`
 
 <!-- screenshot: step-03.png - terminal showing login status output -->
 
+With the CLI installed and your UiPath account connected, you're ready to scaffold the agent in the next section.
+
 # Build the agent
 
 ## Step 4 - Scaffold the solution and agent
@@ -328,6 +330,8 @@ If validation fails, confirm that `inputSchema` and `outputSchema` are identical
 
 <!-- screenshot: step-06.png - terminal showing valid validation output -->
 
+With the agent validated locally, you're ready to upload it to Studio Web and run a live test in the next section.
+
 # Test the agent
 
 ## Step 7 - Upload to Studio Web
@@ -380,7 +384,7 @@ A successful upload returns `"Status": "Uploaded successfully"` along with a `So
    <!-- screenshot: step-08b.png - Studio Web debug panel with input JSON entered -->
    ![Debug panel with quest input JSON pasted](images/CLI_Agents-Step-08a.png)
 
-6. The agent runs and returns a result in the Output panel. The `monsterIndex` output should contain `"aboleth"` or `"kraken"`, both defensible picks. An aboleth is the iconic tentacled, mind-controlling aquatic horror in D&D lore; a kraken is larger and less cerebral. If the agent returns `"giant-octopus"`, the prompt may need tightening.
+6. Review the result in the **Output** panel. Verify that `monsterIndex` contains `"aboleth"` or `"kraken"` — both are defensible picks for a tentacled, mind-controlling aquatic horror. If you see `"giant-octopus"`, the prompt may need tightening.
 
    <!-- screenshot: step-08c.png - Studio Web output panel showing monsterIndex result -->
    ![Output panel showing the monsterIndex result after a debug run](images/CLI_Agents-Step-08b.png)

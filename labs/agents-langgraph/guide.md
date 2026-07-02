@@ -161,9 +161,13 @@ The skills are installed globally to your home directory (for example, `~/.claud
    uip login status
    ```
 
+   You should see `"Status": "Logged in"` along with your organization and tenant name.
+
 > **One auth, one CLI.** A single `uip login` covers everything in this lab: agent runs, evaluations, and publishing all flow through the same credential store. No separate Python SDK auth step needed.
 
 <!-- screenshot: step-03.png - terminal showing login status output -->
+
+With the CLI installed, skills in place, and your account authenticated, you're ready to scaffold the local project in the next section.
 
 # Build the agent
 
@@ -273,8 +277,8 @@ Create a langgraph.json and an input.json with a sample D&D quest for testing.
 ```
 
 > **Coding agents are non-deterministic.** Your generated code will differ from any examples shown here; that is expected. What matters is that `main.py` runs without errors and returns a classification.
->
-> **If your coding agent asks how you want to deploy the agent** (a "Delivery" question with options like Studio Web, local dev server, or skip), select **Skip - I'm done** for now. This lab covers local run and evals first. Connect to Studio Web in Step 9.
+
+> **Delivery question:** If your coding agent presents a 'Delivery' question (Studio Web, local dev server, or skip), select **Skip - I'm done** for now. Connect to Studio Web in Step 9.
 
 After the coding agent finishes, re-run init to pick up the updated entry points from the new Pydantic schemas:
 
@@ -296,6 +300,8 @@ authors = [{ name = "Your Name" }]
 ```
 
 <!-- screenshot: step-05.png - terminal showing init output with entrypoint detected -->
+
+With the agent running locally and the entry points registered, you're ready to run it and build an evaluation set in the next section.
 
 # Evaluate the agent
 
@@ -375,15 +381,17 @@ The evaluation framework runs each test case through your agent and scores the r
 | **Semantic similarity** | How closely the agent's output matches the expected output |
 | **Agent trajectory** | Whether the agent took the expected reasoning path |
 
-> **Expect trajectory scores of 0.0 on this agent.** Trajectory evaluators judge the agent's *reasoning path*: which tools it called, in what order, and how it routed between nodes. This classifier makes no tool calls and has a single node: it receives input, calls the LLM once, and returns the result. There is no multi-step path to evaluate, so every test case scores 0.0. Trajectory evaluation is designed for agents that call external tools or route through branching logic; the next lab uses one of those. For this single-node classifier, lean on semantic similarity scores.
+> **Expect trajectory scores of 0.0 on this agent.** Trajectory evaluators judge the agent's *reasoning path*: which tools it called, in what order, and how it routed between nodes. This classifier makes no tool calls and has a single node, so every test case scores 0.0. For this single-node classifier, lean on semantic similarity scores.
 
 For semantic similarity, scores above 0.8 are generally solid. Review `eval-results.json` to see how your agent performed.
 
 After you connect to Studio Web in the next step, running `uip codedagent eval run` from the CLI uploads results to Studio Web automatically; they appear in the **Evaluation Sets** tab under Runs.
 
-> **The Studio Web Run Evals button is not the same thing.** That button triggers a cloud execution of the agent, which requires a deployed robot with Python runtime support, a more involved setup outside the scope of this lab. For the development loop covered here, `uip codedagent eval run` from the CLI is the correct tool. The results appear in Studio Web either way.
+> **The Studio Web Run Evals button is not the same thing.** That button triggers a cloud robot execution requiring Python runtime support — a more involved setup outside the scope of this lab. Use `uip codedagent eval run` from the CLI instead; results appear in Studio Web either way.
 
 <!-- screenshot: step-08.png - terminal showing eval results -->
+
+With local evaluation results confirmed, you're ready to connect the project to Studio Web in the next section.
 
 # Connect to Studio Web
 

@@ -125,14 +125,15 @@ What each parameter does:
 
 ![Query Parameters configured with all four fields](images/agents-tools-step-01h.png)
 
-> **About the [HTTP Request activity](https://docs.uipath.com/studio-web/automation-cloud/latest/user-guide/http) settings:**
-> The activity exposes the standard HTTP building blocks. Most you will configure for every API you call; some you will skip for public APIs like this one:
->
-> - **Authentication**: pre-built options for OAuth 2.0, API key, and Basic auth. Set to "Manual authentication" here because Open5e requires none. For authenticated APIs, choose the appropriate option and supply credentials.
-> - **Headers**: key/value pairs sent with every request. Common uses: `Authorization: Bearer <token>` for token-based APIs, `Accept: application/json` to control response format, and API versioning headers.
-> - **Body**: used with POST, PUT, and PATCH requests to send JSON, form data, or raw content. Not applicable for GET requests, which carry parameters in the URL via query parameters.
-> - **Query Parameters**: key/value pairs appended to the URL. The `@variableName` syntax references workflow arguments by name; `@searchName` pulls in the `searchName` input argument defined in the Data Manager. See [configuring activities](https://docs.uipath.com/studio-web/automation-cloud/latest/user-guide/configuring-activities) for more on variables and expressions in Studio Web.
-> - **Output (renamed to `searchResults`)**: receives the full HTTP response including status code, headers, and body. Renaming from the default keeps the Set Response expression readable.
+### HTTP Request property reference
+
+The activity exposes the standard HTTP building blocks. Most you will configure for every API you call; some you will skip for public APIs like this one:
+
+- **Authentication**: pre-built options for OAuth 2.0, API key, and Basic auth. Set to "Manual authentication" here because Open5e requires none. For authenticated APIs, choose the appropriate option and supply credentials.
+- **Headers**: key/value pairs sent with every request. Common uses: `Authorization: Bearer <token>` for token-based APIs, `Accept: application/json` to control response format, and API versioning headers.
+- **Body**: used with POST, PUT, and PATCH requests to send JSON, form data, or raw content. Not applicable for GET requests, which carry parameters in the URL via query parameters.
+- **Query Parameters**: key/value pairs appended to the URL. The `@variableName` syntax references workflow arguments by name; `@searchName` pulls in the `searchName` input argument defined in the Data Manager. See [configuring activities](https://docs.uipath.com/studio-web/automation-cloud/latest/user-guide/configuring-activities) for more on variables and expressions in Studio Web.
+- **Output (renamed to `searchResults`)**: receives the full HTTP response including status code, headers, and body. Renaming from the default keeps the Set Response expression readable.
 
 ### Add the response
 
@@ -172,6 +173,8 @@ Publishing registers the workflow as a deployable process in Orchestrator. This 
 
 > **Workflow not appearing in Available resources in Step 3?** The workflow must be published (not just saved) before it is visible as a tool. If it does not appear, return here and confirm the publish completed successfully, then refresh the agent builder.
 
+With the workflow published, it's available in the agent builder as a connectable tool in the next section.
+
 # Connect to your agent
 
 ## Step 2 - Open the Monster Selector agent
@@ -209,7 +212,7 @@ Give the tool a name and description. The description is what the agent reads at
 - **Name:** `Monster Query`
 - **Description:** `Searches the D&D 5e SRD for monsters matching a name or creature type. Returns up to 10 candidates with name, type, CR, size, alignment, and description. Call this tool when you need to find monster candidates for a quest.`
 
-> **The description drives tool selection.** The agent uses this text (not the tool name) to decide when and how to call it. A vague description produces vague tool use. Be specific about what the tool returns and when to use it.
+> **The description drives tool selection.** The agent reads this description — not the tool name — to decide when and how to call the tool. A vague description produces vague tool use. Be specific about what the tool returns and when to use it.
 
 * * *
 
@@ -255,7 +258,7 @@ Within the same **Data Manager** panel:
 | `monsterCr` | string |
 | `monsterReasoning` | string |
 
-> **`monsterReasoning` is agent-generated, not from the API.** The agent writes this field itself: it is the agent's explanation of why the selected monster fits the quest. Unlike the other four fields, which come from the tool's results, `monsterReasoning` reflects the agent's own judgment. This makes it the most interesting field to evaluate in the next lab.
+> **`monsterReasoning` is agent-generated, not from the API.** The agent writes this field itself: it is the agent's explanation of why the selected monster fits the quest. Unlike the other four fields (which come from the tool's results), `monsterReasoning` reflects the agent's own judgment.
 
 ![Input schema with only questDescription and output schema with five fields configured](images/agents-tools-step-04a.png)
 
@@ -276,6 +279,8 @@ Always call the Monster Query tool before selecting a monster. Do not guess mons
 ```
 
 > **Coding agents are non-deterministic.** Your prompt will produce different results than the example above; that is expected. What matters is that the agent calls the tool, reasons over the candidates, and returns all five required output fields.
+
+With the tool connected and the agent contract updated, you're ready to test the full pipeline in the next section.
 
 # Test end-to-end
 

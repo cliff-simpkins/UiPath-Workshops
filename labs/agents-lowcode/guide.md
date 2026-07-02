@@ -61,7 +61,7 @@ Build a Quest Advisor for a fantasy RPG Adventurer's Guild. Given a quest descri
 
 3. Select **Generate Agent**, then review Autopilot's suggestions and accept them to create the agent.
 
-    ![Select Agent Type dialog](images/LowCode_Agents-Step-02.png)
+    ![Studio Web new project dialog with Agent type selected](images/LowCode_Agents-Step-02.png)
 
 
 > **Autopilot is non-deterministic.** Your generated configuration may differ from the screenshots - that is expected. What matters is that the agent canvas loads. If the canvas shows an error or fails to load, refresh the page and repeat this step.
@@ -110,6 +110,8 @@ Tier 3: Masters of the Realm (Levels 11-16) - scope: whole continents, other pla
 Tier 4: Masters of the World (Levels 17-20) - scope: entire multiverse, cosmic planes. Threats: ancient dragons, demon lords, archdevils, god-like entities.
 ```
 
+With the agent configured, you're ready to test it against real quest descriptions in the next section.
+
 # Test the agent
 
 ## Step 4 - Test the agent
@@ -124,7 +126,7 @@ Goblins have been raiding farms near the village of Millhaven and stealing lives
 ```
 2. Select **Save & Debug** to run the agent.
 
-    ![Debug configuration dialog](images/LowCode_Agents-Step-04a.png)
+    ![Debug panel with quest description pasted in the input field](images/LowCode_Agents-Step-04a.png)
 
 The agent should return a `tier` of `1` and a `monsters` list containing goblins and similar low-level threats. If the tier comes back higher, check the system prompt in Step 3: the tier boundaries may not have been captured correctly.
 
@@ -135,7 +137,7 @@ To access the return results:
 3. Review the `tier`, `monsters`, and `reasoning` returned by the agent.
 4. Expand the `reasoning` text to view the string in its entirety.
 
-  ![Execution trail dialog for the debug run](images/LowCode_Agents-Step-04b.png)
+  ![Execution Trace panel showing Agent Output selected with tier, monsters, and reasoning values returned](images/LowCode_Agents-Step-04b.png)
 
 
 > **Agents are non-deterministic.** Even with temperature set to 0, the model can return slightly different monster lists across runs. The goal is a reasonable tier classification and a thematically appropriate list, not specific exact values.
