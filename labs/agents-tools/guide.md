@@ -63,7 +63,7 @@ Open [Studio Web](https://cloud.uipath.com) and confirm **MonsterSelector** appe
 
 An API Workflow is a lightweight workflow published as an API endpoint. You build one that wraps the [Open5e](https://open5e.com/) D&D 5e SRD monster search: one input, one HTTP request, one output. Once published, it appears in the agent builder as a tool your agent can call.
 
-This step has several sub-steps; budget 10-15 minutes to complete it.
+This step has six sub-steps; budget 10–15 minutes to complete it.
 
 ### Create a new API workflow project
 
