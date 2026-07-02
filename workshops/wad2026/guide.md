@@ -92,7 +92,7 @@ Keep these files handy and labeled - each drives a different path through the fl
 
 *Facilitator-led overview.*
 
-Orchestrator is UiPath's governance and operations layer - where automations run, get monitored, and get managed in production. 
+Orchestrator is UiPath's governance and operations layer. It's where automations run, get monitored, and get managed in production. 
 
 In this workshop you'll use four of its capabilities:
 
@@ -124,7 +124,7 @@ Your solution should contain five items:
 - **Discrepancy Investigator Agent**
 - **Vendor Research Agent**
 - **EscalationApp**
-- **Invoice Processing Flow - Complete** (reference - treat it as read only)
+- **Invoice Processing Flow - Complete** (reference; treat it as read only)
 - **Invoice Processing Flow - Start Here** (the one you'll build in)
 
 
