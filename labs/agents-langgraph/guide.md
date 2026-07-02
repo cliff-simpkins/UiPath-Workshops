@@ -167,7 +167,9 @@ The skills are installed globally to your home directory (for example, `~/.claud
 
 <!-- screenshot: step-03.png - terminal showing login status output -->
 
-With the CLI installed, skills in place, and your account authenticated, you're ready to scaffold the local project in the next section.
+* * *
+
+With the CLI installed, skills in place, and your account authenticated, you are ready to scaffold the local project in the next section.
 
 # Build the agent
 
@@ -301,7 +303,9 @@ authors = [{ name = "Your Name" }]
 
 <!-- screenshot: step-05.png - terminal showing init output with entrypoint detected -->
 
-With the agent running locally and the entry points registered, you're ready to run it and build an evaluation set in the next section.
+* * *
+
+With the agent running locally and the entry points registered, you are ready to run it and build an evaluation set in the next section.
 
 # Evaluate the agent
 
@@ -391,7 +395,9 @@ After you connect to Studio Web in the next step, running `uip codedagent eval r
 
 <!-- screenshot: step-08.png - terminal showing eval results -->
 
-With local evaluation results confirmed, you're ready to connect the project to Studio Web in the next section.
+* * *
+
+With local evaluation results confirmed, you are ready to connect the project to Studio Web in the next section.
 
 # Connect to Studio Web
 

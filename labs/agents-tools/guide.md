@@ -173,7 +173,9 @@ Publishing registers the workflow as a deployable process in Orchestrator. This 
 
 > **Workflow not appearing in Available resources in Step 3?** The workflow must be published (not just saved) before it is visible as a tool. If it does not appear, return here and confirm the publish completed successfully, then refresh the agent builder.
 
-With the workflow published, it's available in the agent builder as a connectable tool in the next section.
+* * *
+
+With the workflow published, it is available in the agent builder as a connectable tool in the next section.
 
 # Connect to your agent
 
@@ -280,7 +282,9 @@ Always call the Monster Query tool before selecting a monster. Do not guess mons
 
 > **Coding agents are non-deterministic.** Your prompt will produce different results than the example above; that is expected. What matters is that the agent calls the tool, reasons over the candidates, and returns all five required output fields.
 
-With the tool connected and the agent contract updated, you're ready to test the full pipeline in the next section.
+* * *
+
+With the tool connected and the agent contract updated, you are ready to test the full pipeline in the next section.
 
 # Test end-to-end
 

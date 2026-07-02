@@ -134,7 +134,9 @@ Skills install globally to your home directory (for example, `~/.claude/skills/`
 
 <!-- screenshot: step-03.png - terminal showing login status output -->
 
-With the CLI installed and your UiPath account connected, you're ready to scaffold the agent in the next section.
+* * *
+
+With the CLI installed and your UiPath account connected, you are ready to scaffold the agent in the next section.
 
 # Build the agent
 
@@ -330,7 +332,9 @@ If validation fails, confirm that `inputSchema` and `outputSchema` are identical
 
 <!-- screenshot: step-06.png - terminal showing valid validation output -->
 
-With the agent validated locally, you're ready to upload it to Studio Web and run a live test in the next section.
+* * *
+
+With the agent validated locally, you are ready to upload it to Studio Web and run a live test in the next section.
 
 # Test the agent
 

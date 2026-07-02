@@ -110,7 +110,9 @@ Tier 3: Masters of the Realm (Levels 11-16) - scope: whole continents, other pla
 Tier 4: Masters of the World (Levels 17-20) - scope: entire multiverse, cosmic planes. Threats: ancient dragons, demon lords, archdevils, god-like entities.
 ```
 
-With the agent configured, you're ready to test it against real quest descriptions in the next section.
+* * *
+
+With the agent configured, you are ready to test it against real quest descriptions in the next section.
 
 # Test the agent
 
