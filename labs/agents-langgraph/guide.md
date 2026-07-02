@@ -246,7 +246,9 @@ The project has a placeholder entry point at this stage. Re-run `init` in Step 5
 
 ## Step 5 - Build the agent with your coding agent
 
-This is where the UiPath skills pay off. Open your coding agent and prompt it to create the agent logic. The prompt below is short: it describes what the agent should do, not how to build it. The `uipath-agents` skill your coding agent has installed already knows the LangGraph integration patterns, correct SDK imports, Pydantic schema conventions, and the lazy LLM initialization requirement (the LLM client must be initialized inside the node function, not at module load time — UiPath's container runtime does not support module-level LLM objects; see the [SDK quick start](https://uipath.github.io/uipath-python/langchain/quick_start/) for a working example). Without skills, you would need to specify all of that in the prompt itself.
+This is where the UiPath skills pay off. Open your coding agent and prompt it to create the agent logic. The prompt below is short: it describes what the agent should do, not how to build it.
+
+The `uipath-agents` skill your coding agent has installed already knows the LangGraph integration patterns, correct SDK imports, Pydantic schema conventions, and the lazy LLM initialization requirement (the LLM client must be initialized inside the node function, not at module load time — UiPath's container runtime does not support module-level LLM objects; see the [SDK quick start](https://uipath.github.io/uipath-python/langchain/quick_start/) for a working example). Without skills, you would need to specify all of that in the prompt itself.
 
 <!-- test:manual reason="Coding agent prompt - non-deterministic generation, requires human IDE interaction" -->
 Use the following prompt (or adapt it to your use case):
@@ -418,7 +420,9 @@ For this lab, use **Option A**: it shows the connection model that underlies all
    UIPATH_PROJECT_ID=your-project-id-here
    ```
 
-   > **Only the project ID goes in `.env`.** `uip login` stores your auth token globally; you do not need `UIPATH_URL` or `UIPATH_ACCESS_TOKEN` in `.env`. If you have used the UiPath Python SDK before and are used to running `uipath auth` to populate those fields, that step is no longer needed.
+   :::note
+   Only the project ID goes in `.env`. `uip login` stores your auth token globally; you do not need `UIPATH_URL` or `UIPATH_ACCESS_TOKEN` in `.env`. If you have used the UiPath Python SDK before and are used to running `uipath auth` to populate those fields, that step is no longer needed.
+   :::
 
 5. Add `.env` to `.gitignore` to avoid committing it:
 

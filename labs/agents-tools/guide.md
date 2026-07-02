@@ -1,6 +1,6 @@
 # Adding Tools to Your UiPath Agent
 
-This lab builds part of **UiPathfinder**, a D&D-themed reference application on UiPath. It extends an agent built in the [Getting Started with UiPath Agents](../agents/guide.md) lab. You build a live API connector that searches the D&D 5e SRD, then give your Monster Selector agent that connector as a tool. The agent uses it autonomously at runtime: deciding what to search for, calling the API, and selecting the best match from the results.
+This lab builds part of **UiPathfinder**, a D&D-themed reference application on UiPath. It extends an agent built in the [Getting Started with UiPath Agents](../agents/guide.md) lab. You build a live API connector that searches the D&D 5e SRD (System Reference Document), then give your Monster Selector agent that connector as a tool. The agent uses it autonomously at runtime: deciding what to search for, calling the API, and selecting the best match from the results.
 
 By the end you will have `UiPathfinder.QuestParser`: an agent that receives only a quest description, decides what to search for, calls the Monster Query tool, and returns the selected monster's key fields, with no pre-populated list required.
 
@@ -76,8 +76,6 @@ Rename the solution and the default workflow. Open the context menu for each nam
 - **Solution name:** `Monster Query - 5e SRD`
 - **Workflow name:** `API Query - 5e Monsters`
 
-![Renamed solution and workflow in Studio Web](images/agents-tools-step-01b.png)
-
 ### Configure inputs and outputs
 
 Select the **Data Manager** (clipboard icon along the left rail) to access the data variables for the workflow.
@@ -96,14 +94,9 @@ Add one output argument:
 | --- | --- | --- | --- |
 | `monsterResults` | Array | Yes | Monster result list |
 
-![Input and output arguments configured](images/agents-tools-step-01d.png)
-
 ### Add the HTTP request
 
 1. In the workflow canvas, select **+** between activities to open the activity menu. Select **HTTP Request**.
-
-   ![HTTP Request added to the workflow canvas](images/agents-tools-step-01e.png)
-
 2. Open the activity context menu and select **Rename**. Name it `HTTP Request - Open5e Monster Query`.
 3. In the **Properties** pane, set **Authentication** to **Manual authentication**.
 4. Set **Method** to **GET**.
@@ -115,8 +108,6 @@ Add one output argument:
 **Set the Query Parameters property:**
 
 Open the **Query Parameters** property and add the following fields:
-
-![Query Parameters panel open](images/agents-tools-step-01g.png)
 
 | Key | Value |
 | --- | --- |
@@ -149,8 +140,6 @@ What each parameter does:
 
    Set Response defines what the API Workflow returns to its caller (in this case, what the agent's tool receives when it invokes the workflow). Whatever you put in the response body here becomes the tool output the agent reasons over.
 
-   ![Set Response activity added after HTTP Request](images/agents-tools-step-01i.png)
-
 2. Set the response body to:
 
    ```json
@@ -181,8 +170,6 @@ Publishing registers the workflow as a deployable process in Orchestrator. This 
 2. In the publish dialog, select **For me** to publish to your personal workspace feed. A personal workspace feed is a private package repository tied to your Orchestrator workspace; publishing "For me" makes this workflow visible only to you, which is the right scope for development and testing. See [Personal Workspaces](https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/personal-workspaces) in the UiPath docs for details.
 3. Select **Publish** to confirm.
 
-![Publish dialog and confirmation](images/agents-tools-step-01m.png)
-
 > **Workflow not appearing in Available resources in Step 3?** The workflow must be published (not just saved) before it is visible as a tool. If it does not appear, return here and confirm the publish completed successfully, then refresh the agent builder.
 
 # Connect to your agent
@@ -198,8 +185,6 @@ Take a moment to orient on its current state before making changes:
 - **System prompt:** instructs the agent to pick the best match from the provided list
 
 In this lab you remove the `monsters` input and the requirement to pre-populate candidates. The agent fetches them itself using the tool you just built.
-
-![MonsterSelector agent canvas showing current input schema and system prompt](images/agents-tools-step-02.png)
 
 * * *
 
@@ -223,8 +208,6 @@ Give the tool a name and description. The description is what the agent reads at
 
 - **Name:** `Monster Query`
 - **Description:** `Searches the D&D 5e SRD for monsters matching a name or creature type. Returns up to 10 candidates with name, type, CR, size, alignment, and description. Call this tool when you need to find monster candidates for a quest.`
-
-![Tool configuration panel with name and description filled in](images/agents-tools-step-03b.png)
 
 > **The description drives tool selection.** The agent uses this text (not the tool name) to decide when and how to call it. A vague description produces vague tool use. Be specific about what the tool returns and when to use it.
 
@@ -294,8 +277,6 @@ Always call the Monster Query tool before selecting a monster. Do not guess mons
 
 > **Coding agents are non-deterministic.** Your prompt will produce different results than the example above; that is expected. What matters is that the agent calls the tool, reasons over the candidates, and returns all five required output fields.
 
-![Updated system prompt in the Instructions panel](images/agents-tools-step-04b.png)
-
 # Test end-to-end
 
 ## Step 5 - Test end-to-end
@@ -305,8 +286,6 @@ Open the **Test** panel using the toolbar at the top of the agent builder. Enter
 ```text
 The villagers report a massive creature has been destroying farms on the edge of the forest at night.
 ```
-
-![Test panel with quest description entered](images/agents-tools-step-05a.png)
 
 Run the agent and watch the **Execution Trail** at the bottom of the agent builder.
 
