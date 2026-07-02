@@ -396,7 +396,7 @@ You have three options:
 | Option | What happens |
 |---|---|
 | **A: You set it up in Studio Web** | Open Studio Web, create a Coded Agent project, copy the project ID. You paste it into `.env` and push from the CLI. |
-| **B: CLI packages and uploads** | CLI packages the agent and publishes it to your [personal workspace](https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/personal-workspaces) feed. No Studio Web setup required. Use `uip solution pack` then `uip solution publish`; see the [uip solution docs](https://docs.uipath.com/uipath-cli/standalone/latest/user-guide/uip-solution) for the full command reference. |
+| **B: CLI packages and uploads** | CLI packages the agent and publishes it to your [personal workspace](https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/personal-workspaces) feed without Studio Web setup. See the [uip solution docs](https://docs.uipath.com/uipath-cli/standalone/latest/user-guide/uip-solution) for the command reference. |
 | **C: Local dev server only** | Run `uip codedagent dev` for a local web UI. Nothing is published to the cloud. |
 
 For this lab, use **Option A**: it shows the connection model that underlies all three options.

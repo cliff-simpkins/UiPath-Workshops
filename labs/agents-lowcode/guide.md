@@ -174,6 +174,5 @@ You built and tested a low-code agent in Studio Web:
 
 - [Getting Started with UiPath Agents](../agents/guide.md) - build and configure a low-code agent from the CLI using `uip agent init`, without opening Studio Web, then upload and test it there.
 - [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) - extend an agent with tools that call external APIs.
-- [Getting Started with Agent Evals](../../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) - build evaluation sets, run cloud evaluations, and interpret scores.
 - [UiPath Agents documentation](https://docs.uipath.com) - full reference for low-code and coded agent capabilities.
 - [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion.

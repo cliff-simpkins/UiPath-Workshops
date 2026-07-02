@@ -319,7 +319,6 @@ The two-step reasoning chain (search term selection and candidate evaluation) is
 
 ## What's next
 
-- [Getting Started with Agent Evals](../../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) - evaluate the agent you just built and use the results to drive prompt iteration.
 - [Open5e API docs](https://open5e.com/api-docs) - explore the full monster search API to understand what fields are available.
 - [UiPath Integration Service](https://docs.uipath.com/integration-service) - build tools that connect to SaaS APIs without writing a custom workflow.
 - [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion.

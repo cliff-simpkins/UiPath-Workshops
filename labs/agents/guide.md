@@ -16,7 +16,7 @@ There are a few approaches to create UiPath agents. This uses the UiPath CLI; yo
 
 ## What you are building
 
-This lab walks you through building a **Monster Selector**, a low-code agent for a fictional Adventurer's Guild in a fantasy role-playing game (RPG) world. The agent picks the most thematically appropriate monster for a quest from a list of candidates. It is deliberately simple so the focus stays on the CLI workflow, not the domain logic. The same agent appears in the companion [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) and [Getting Started with Agent Evals](../../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) labs.
+This lab walks you through building a **Monster Selector**, a low-code agent for a fictional Adventurer's Guild in a fantasy role-playing game (RPG) world. The agent picks the most thematically appropriate monster for a quest from a list of candidates. It is deliberately simple so the focus stays on the CLI workflow, not the domain logic. The same agent appears in the companion [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) lab.
 
 Here is the full design of what you are building:
 
@@ -415,7 +415,6 @@ Key commands from this lab:
 ## What's next
 
 - [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) - extend Monster Selector with a tool that calls the D&D 5e API directly, removing the `monsters[]` input and letting the agent decide what to search for.
-- [Getting Started with Agent Evals](../../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) - build evaluation sets, run cloud evaluations, and interpret scores against this agent.
 - **Orchestration patterns** *(future lab)*: your agent is callable from UiPath Flow projects, API workflows, and other agents.
 - [UiPath Agents documentation](https://docs.uipath.com) - full reference for low-code and coded agent capabilities.
 - [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion
