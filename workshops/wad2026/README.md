@@ -23,12 +23,3 @@ Real documents don't match your template, and the agent that worked at design ti
 
 ## Prerequisites
 Comfort reading code and JSON. No platform experience needed. Laptop + browser.
-
----
-
-### Notes (internal)
-- ~145 words (WAD abstract median ≈ 139; middle band 90–185).
-- Spine: deterministic document flow → add agent + traces → output & trajectory evals (catch a live regression) → publish to durable/governed orchestration. HITL shown as a placeholder node, not built.
-- Build surface: Maestro Flow in Studio Web (browser) — chosen to eliminate setup churn; deliberately NOT the bring-your-own-coding-agent/CLI path.
-- Positioning: validated against the UiPath "Your agent needed a platform. Now it has one." blog — thesis match ("the hard part was never the demo; it's production"). Brand kept light in public copy; speaker affiliation carries attribution.
-- "Glue it together yourself" is a rhetorical foil (the without-platform path), not the in-room build.
