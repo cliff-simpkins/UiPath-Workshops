@@ -1,9 +1,10 @@
 # WeAreDevelopers World Congress 2026 — Workshop Submission
 
 **Event:** WeAreDevelopers World Congress · 8–10 July 2026 · Berlin
+
 **Format:** 2-hour hands-on workshop (18 seats) · Intermediate level
+
 **Category:** AI – Engineering & Platforms
-**Status:** Draft v3 — pending final scenario lock (exact agent task TBD at smoke test)
 
 ---
 
