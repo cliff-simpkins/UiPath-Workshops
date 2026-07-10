@@ -1,11 +1,9 @@
 {
   "$resourceType": "tool",
-  "id": "bc069619-6765-49b0-9b28-6fde733fea61",
-  "type": "integration",
-  "location": "external",
   "name": "Web Search",
   "description": "Web search executes a search of the public domain using a natural language search query. The search results are available in the output. Web search offers near-real time search results, but certain time sensitive data like stock prices or weather will not consistently be current. There could be a few days lag. Be sure to pass in date/time and/or location as arguments in the query if required.",
-  "isEnabled": true,
+  "location": "external",
+  "type": "integration",
   "inputSchema": {
     "type": "object",
     "properties": {
@@ -49,24 +47,22 @@
         "description": "Either \"i\" (include) or \"e\" (exclude)."
       }
     },
-    "additionalProperties": false,
     "required": [
       "provider",
       "query"
     ]
   },
   "outputSchema": {
-    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
       "formattedResults": {
-        "title": "Formatted results",
         "type": "string",
+        "title": "Formatted results",
         "description": "The search results string containing title, URL, and snippet"
       },
       "results[*]": {
-        "title": "Results",
         "type": "array",
+        "title": "Results",
         "items": {
           "$ref": "#/definitions/results[*]"
         }
@@ -77,56 +73,47 @@
         "type": "object",
         "properties": {
           "title": {
-            "title": "Result title",
             "type": "string",
+            "title": "Result title",
             "description": "The title of a search result item."
           },
           "snippet": {
-            "title": "Result snippet",
             "type": "string",
+            "title": "Result snippet",
             "description": "A brief summary or excerpt of a search result item."
           },
           "url": {
-            "title": "Result url",
             "type": "string",
+            "title": "Result url",
             "description": "The web address of the search result."
           }
         }
       }
     }
   },
-  "iconUrl": "https://cloud.uipath.com/elements_/scaleunit_/a6827719-5651-4da8-a093-6b3e05f247c7/v3/element/elements/uipath-uipath-airdk/image",
   "settings": {},
-  "guardrail": {
-    "policies": []
-  },
-  "isPreview": false,
   "properties": {
     "toolPath": "/v2/webSearch",
     "objectName": "v2::webSearch",
     "toolDisplayName": "Web Search",
     "toolDescription": "Web search executes a search of the public domain using a natural language search query. The search results are available in the output. Web search offers near-real time search results, but certain time sensitive data like stock prices or weather will not consistently be current. There could be a few days lag. Be sure to pass in date/time and/or location as arguments in the query if required.",
     "method": "POST",
-    "bodyStructure": {
-      "contentType": "json"
-    },
     "connection": {
-      "id": "7e8ed8d1-f77e-4f01-a8fa-c67d15885d30",
-      "name": "UiPath GenAI Activities",
+      "id": "",
+      "name": "",
       "elementInstanceId": 0,
       "apiBaseUri": "",
-      "state": "enabled",
+      "state": "changed",
       "isDefault": false,
       "connector": {
         "key": "uipath-uipath-airdk",
         "name": "UiPath GenAI Activities",
         "image": "https://cloud.uipath.com/elements_/scaleunit_/a6827719-5651-4da8-a093-6b3e05f247c7/v3/element/elements/uipath-uipath-airdk/image",
-        "enabled": true,
-        "isPreview": false
+        "enabled": true
       },
       "folder": {
-        "key": "b0581cc5-eda5-4ed5-bde0-90124169e078",
-        "path": "b0581cc5-eda5-4ed5-bde0-90124169e078"
+        "key": "00000000-0000-0000-0000-000000000000",
+        "path": ""
       },
       "solutionProperties": {
         "resourceKey": "7e8ed8d1-f77e-4f01-a8fa-c67d15885d30"
@@ -138,14 +125,13 @@
         "displayName": "Search Engine",
         "type": "string",
         "fieldLocation": "body",
+        "fieldVariant": "static",
         "value": "GoogleCustomSearch",
         "description": "The search engine to use",
+        "dynamic": false,
         "position": "primary",
         "sortOrder": 1,
         "required": true,
-        "fieldVariant": "static",
-        "isCascading": false,
-        "dynamic": false,
         "enumValues": [
           {
             "name": "GoogleCustomSearch",
@@ -154,98 +140,109 @@
         ],
         "loadReferenceOptionsByDefault": null,
         "dynamicBehavior": [],
-        "reference": null
+        "reference": null,
+        "isCascading": false
       },
       {
         "name": "query",
         "displayName": "Search",
         "type": "string",
         "fieldLocation": "body",
+        "fieldVariant": "dynamic",
         "value": "{{prompt}}",
         "description": "The natural language query to search the web for",
+        "dynamic": true,
         "position": "primary",
         "sortOrder": 2,
         "required": true,
-        "fieldVariant": "dynamic",
-        "isCascading": false,
-        "dynamic": true,
         "enumValues": null,
         "loadReferenceOptionsByDefault": null,
         "dynamicBehavior": [],
-        "reference": null
+        "reference": null,
+        "isCascading": false
       },
       {
         "name": "num",
         "displayName": "Number of results",
         "type": "integer",
         "fieldLocation": "body",
+        "fieldVariant": "dynamic",
         "value": "{{prompt}}",
         "description": "The number of results. Default to 10.",
+        "dynamic": true,
         "position": "secondary",
         "sortOrder": 3,
         "required": false,
-        "fieldVariant": "dynamic",
-        "isCascading": false,
-        "dynamic": true,
         "enumValues": null,
         "loadReferenceOptionsByDefault": null,
         "dynamicBehavior": [],
-        "reference": null
+        "reference": null,
+        "isCascading": false
       },
       {
         "name": "siteSearch",
         "displayName": "Site Search",
         "type": "string",
         "fieldLocation": "body",
+        "fieldVariant": "dynamic",
         "value": "{{prompt}}",
         "description": "Restrict or exclude results for a domain.",
+        "dynamic": true,
         "position": "secondary",
         "sortOrder": 4,
         "required": false,
-        "fieldVariant": "dynamic",
-        "isCascading": false,
-        "dynamic": true,
         "enumValues": null,
         "loadReferenceOptionsByDefault": null,
         "dynamicBehavior": [],
-        "reference": null
+        "reference": null,
+        "isCascading": false
       },
       {
         "name": "siteSearchFilter",
         "displayName": "Site Search Filter",
         "type": "string",
         "fieldLocation": "body",
+        "fieldVariant": "dynamic",
         "value": "{{prompt}}",
         "description": "Either \"i\" (include) or \"e\" (exclude).",
+        "dynamic": true,
         "position": "secondary",
         "sortOrder": 5,
         "required": false,
-        "fieldVariant": "dynamic",
-        "isCascading": false,
-        "dynamic": true,
         "enumValues": null,
         "loadReferenceOptionsByDefault": null,
         "dynamicBehavior": [],
-        "reference": null
+        "reference": null,
+        "isCascading": false
       },
       {
         "name": "start",
         "displayName": "Start",
         "type": "integer",
         "fieldLocation": "body",
+        "fieldVariant": "dynamic",
         "value": "{{prompt}}",
         "description": "First result index (pagination).",
+        "dynamic": true,
         "position": "secondary",
         "sortOrder": 6,
         "required": false,
-        "fieldVariant": "dynamic",
-        "isCascading": false,
-        "dynamic": true,
         "enumValues": null,
         "loadReferenceOptionsByDefault": null,
         "dynamicBehavior": [],
-        "reference": null
+        "reference": null,
+        "isCascading": false
       }
-    ]
-  }
+    ],
+    "bodyStructure": {
+      "contentType": "json"
+    }
+  },
+  "guardrail": {
+    "policies": []
+  },
+  "iconUrl": "https://cloud.uipath.com/elements_/scaleunit_/a6827719-5651-4da8-a093-6b3e05f247c7/v3/element/elements/uipath-uipath-airdk/image",
+  "id": "bc069619-6765-49b0-9b28-6fde733fea61",
+  "isPreview": false,
+  "isEnabled": true
 }

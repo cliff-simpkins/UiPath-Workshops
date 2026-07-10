@@ -12,11 +12,11 @@
         <uipath:inputOutput id="scriptGetInvoice.error" name="error" type="object" elementId="scriptGetInvoice" />
         <uipath:inputOutput id="decisionVendorName.matchedCase" name="matchedCase" type="string" elementId="decisionVendorName" />
         <uipath:inputOutput id="decisionVendorName.matchedCaseId" name="matchedCaseId" type="string" elementId="decisionVendorName" />
-        <uipath:inputOutput id="humanReviewVendorName.output" name="output" type="object" elementId="humanReviewVendorName" />
-        <uipath:inputOutput id="humanReviewVendorName.status" name="status" type="string" elementId="humanReviewVendorName" />
-        <uipath:inputOutput id="vendorResearchAgent1.error" name="error" type="object" elementId="vendorResearchAgent1" />
         <uipath:inputOutput id="ixpExtractInvoiceData.output" name="output" type="object" elementId="ixpExtractInvoiceData" />
         <uipath:inputOutput id="ixpExtractInvoiceData.error" name="error" type="object" elementId="ixpExtractInvoiceData" />
+        <uipath:inputOutput id="switchNameMatchOutcome.matchedCase" name="matchedCase" type="string" elementId="switchNameMatchOutcome" />
+        <uipath:inputOutput id="switchNameMatchOutcome.matchedCaseId" name="matchedCaseId" type="string" elementId="switchNameMatchOutcome" />
+        <uipath:inputOutput id="vendorResearchAgent1.error" name="error" type="object" elementId="vendorResearchAgent1" />
         <uipath:inputOutput id="emailReceived.output" name="output" type="jsonSchema" elementId="emailReceived" />
         <uipath:inputOutput id="downloadInvoice.output" name="output" type="jsonSchema" elementId="downloadInvoice" />
         <uipath:inputOutput id="vendorResearchAgent1.output" name="output" type="jsonSchema" elementId="vendorResearchAgent1" />
@@ -95,7 +95,7 @@
         </uipath:activity>
       </bpmn:extensionElements>
       <bpmn:incoming>xy-edge__decisionVendorNamefalse-vendorResearchAgent1input</bpmn:incoming>
-      <bpmn:outgoing>edge_vendorResearchAgent1-output-uipath.human-in-the-loop-1781814016362-input</bpmn:outgoing>
+      <bpmn:outgoing>xy-edge__vendorResearchAgent1output-switch1input</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sendTask id="queryPoData" name="Query - POs">
       <bpmn:extensionElements>
@@ -210,36 +210,11 @@ return sanitizeKeys(result);]]></bpmn:script>
       <bpmn:outgoing>xy-edge__decisionVendorNamefalse-vendorResearchAgent1input</bpmn:outgoing>
       <bpmn:outgoing>decisionVendorName-true-end1-input</bpmn:outgoing>
     </bpmn:inclusiveGateway>
-    <bpmn:userTask id="humanReviewVendorName" name="Human - Review Vendor Match">
-      <bpmn:extensionElements>
-        <uipath:activity version="v1">
-          <uipath:type value="Actions.HITL" version="v2" />
-          <uipath:context>
-            <uipath:input name="hitlType" type="string" value="quick" />
-            <uipath:input name="__hitlFormSchema" type="json"><![CDATA[{"title":"Invoice Form","fields":[{"id":"invoiceVendor","type":"string","label":"Invoice Vendor","direction":"input","required":false,"binding":"=vars.vendorName_invoice"},{"id":"poVendor","type":"string","label":"PO Vendor","direction":"input","required":false,"binding":"=vars.vendorName_po"},{"id":"findings","type":"string","label":"Findings","direction":"input","required":false,"binding":"vars.vendorResearchAgent1.output.reasoning"}],"outcomes":[{"id":"submit","name":"Valid","type":"string","action":"Continue","isPrimary":true},{"id":"outcome-1780347884705","name":"Invalid","type":"string","action":"End","isPrimary":false}],"id":"2e3e5e5f-c98f-4c87-b971-9f8bf73c4f2e"}]]></uipath:input>
-            <uipath:input name="hitlSchemaId" type="string" value="2e3e5e5f-c98f-4c87-b971-9f8bf73c4f2e" />
-            <uipath:input name="__hitlInputBindings" type="json"><![CDATA[{"invoiceVendor":"=vars.vendorName_invoice","poVendor":"=vars.vendorName_po","findings":"vars.vendorResearchAgent1.output.reasoning"}]]></uipath:input>
-            <uipath:input name="taskTitle" type="string" value="Invoice Form" />
-            <uipath:input name="assignmentCriteria" type="string" value="AllUsers" />
-            <uipath:input name="recipient" type="json"><![CDATA[{"Value":"WeAreDevelopers_2026_20260616-Participants","Type":1}]]></uipath:input>
-            <uipath:input name="customAssignees" type="string" value="" />
-            <uipath:input name="slackConnectionKey" type="string" value="Slack" />
-            <uipath:input name="teamsConnectionKey" type="string" value="Teams" />
-            <uipath:inputSchema type="jsonSchema"><![CDATA[{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"invoiceVendor":{"type":"string","title":"Invoice Vendor"},"poVendor":{"type":"string","title":"PO Vendor"},"findings":{"type":"string","title":"Findings"}}}]]></uipath:inputSchema>
-          </uipath:context>
-          <uipath:input name="HitlTaskArguments" type="json" target="bodyField"><![CDATA[{"invoiceVendor":"=js:vars.vendorName_invoice","poVendor":"=js:vars.vendorName_po","findings":"=js:vars.vendorResearchAgent1.output.reasoning"}]]></uipath:input>
-          <uipath:output name="humanReviewVendorName.output" type="object" source="=result" var="humanReviewVendorName.output" />
-          <uipath:output name="humanReviewVendorName.status" type="string" source="=result.Action" var="humanReviewVendorName.status" options="[{&#34;value&#34;:&#34;Valid&#34;,&#34;label&#34;:&#34;Valid&#34;},{&#34;value&#34;:&#34;Invalid&#34;,&#34;label&#34;:&#34;Invalid&#34;}]" />
-        </uipath:activity>
-      </bpmn:extensionElements>
-      <bpmn:incoming>edge_vendorResearchAgent1-output-uipath.human-in-the-loop-1781814016362-input</bpmn:incoming>
-      <bpmn:outgoing>edge_humanReviewVendorName-outcome-outcome-1780347884705-core.control.end-1781814185720-input</bpmn:outgoing>
-      <bpmn:outgoing>humanReviewVendorName-outcome-submit-end1-input</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:endEvent id="end1" name="End">
-      <bpmn:incoming>edge_humanReviewVendorName-outcome-outcome-1780347884705-core.control.end-1781814185720-input</bpmn:incoming>
       <bpmn:incoming>decisionVendorName-true-end1-input</bpmn:incoming>
-      <bpmn:incoming>humanReviewVendorName-outcome-submit-end1-input</bpmn:incoming>
+      <bpmn:incoming>xy-edge__switch1case-default-1-end1input</bpmn:incoming>
+      <bpmn:incoming>xy-edge__switch1case-mqzug2zf-7tsck-end1input</bpmn:incoming>
+      <bpmn:incoming>xy-edge__switch1default-end1input</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:serviceTask id="ixpExtractInvoiceData" name="IXP - Extract Invoice">
       <bpmn:extensionElements>
@@ -260,14 +235,16 @@ return sanitizeKeys(result);]]></bpmn:script>
       <bpmn:incoming>xy-edge__downloadInvoiceoutput-ixpExtractInvoiceDatainput</bpmn:incoming>
       <bpmn:outgoing>documentExtraction1-success-scriptGetInvoice-input</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="switchNameMatchOutcome" name="Switch - Vendor Research Routing" default="xy-edge__switch1default-end1input">
+      <bpmn:incoming>xy-edge__vendorResearchAgent1output-switch1input</bpmn:incoming>
+      <bpmn:outgoing>xy-edge__switch1case-default-1-end1input</bpmn:outgoing>
+      <bpmn:outgoing>xy-edge__switch1case-mqzug2zf-7tsck-end1input</bpmn:outgoing>
+      <bpmn:outgoing>xy-edge__switch1default-end1input</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="edge_emailReceived1-output-uipath.connector.uipath-microsoft-outlook365.download-email-attachment-1781795752780-input" sourceRef="emailReceived" targetRef="downloadInvoice" />
     <bpmn:sequenceFlow id="edge_queryEntityRecords1-output-core.logic.decision-1781813508747-input" sourceRef="queryPoData" targetRef="decisionVendorName" />
     <bpmn:sequenceFlow id="xy-edge__decisionVendorNamefalse-vendorResearchAgent1input" name="False" sourceRef="decisionVendorName" targetRef="vendorResearchAgent1">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=js:!(vars.scriptGetInvoice.output.vendor.vendor_name === vars.queryPoData.output[0].vendorName)</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="edge_vendorResearchAgent1-output-uipath.human-in-the-loop-1781814016362-input" sourceRef="vendorResearchAgent1" targetRef="humanReviewVendorName" />
-    <bpmn:sequenceFlow id="edge_humanReviewVendorName-outcome-outcome-1780347884705-core.control.end-1781814185720-input" name="Invalid" sourceRef="humanReviewVendorName" targetRef="end1">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=js:vars.humanReviewVendorName.output.Action === "Invalid"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="documentExtraction1-success-scriptGetInvoice-input" sourceRef="ixpExtractInvoiceData" targetRef="scriptGetInvoice" />
     <bpmn:sequenceFlow id="xy-edge__downloadInvoiceoutput-ixpExtractInvoiceDatainput" sourceRef="downloadInvoice" targetRef="ixpExtractInvoiceData" />
@@ -275,9 +252,14 @@ return sanitizeKeys(result);]]></bpmn:script>
     <bpmn:sequenceFlow id="decisionVendorName-true-end1-input" name="True" sourceRef="decisionVendorName" targetRef="end1">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=js:vars.scriptGetInvoice.output.vendor.vendor_name === vars.queryPoData.output[0].vendorName</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="humanReviewVendorName-outcome-submit-end1-input" name="Valid" sourceRef="humanReviewVendorName" targetRef="end1">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=js:vars.humanReviewVendorName.output.Action === "Valid"</bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="xy-edge__vendorResearchAgent1output-switch1input" sourceRef="vendorResearchAgent1" targetRef="switchNameMatchOutcome" />
+    <bpmn:sequenceFlow id="xy-edge__switch1case-default-1-end1input" name="Valid" sourceRef="switchNameMatchOutcome" targetRef="end1">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=js:vars.vendorResearchAgent1.output.flag === "approve" || (vars.vendorResearchAgent1.output.flag === "review" &amp;&amp; vars.vendorResearchAgent1.output.confidence === "high")</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="xy-edge__switch1case-mqzug2zf-7tsck-end1input" name="Invalid" sourceRef="switchNameMatchOutcome" targetRef="end1">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=js:vars.vendorResearchAgent1.output.flag === "reject" || vars.vendorResearchAgent1.output.flag === "review"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="xy-edge__switch1default-end1input" sourceRef="switchNameMatchOutcome" targetRef="end1" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="Diagram_1">
     <bpmndi:BPMNPlane id="Plane_1" bpmnElement="Process_1">
@@ -302,8 +284,8 @@ return sanitizeKeys(result);]]></bpmn:script>
       <bpmndi:BPMNShape id="vendorResearchAgent1_di" bpmnElement="vendorResearchAgent1">
         <dc:Bounds x="925" y="30" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="humanReviewVendorName_di" bpmnElement="humanReviewVendorName">
-        <dc:Bounds x="1075" y="30" width="100" height="80" />
+      <bpmndi:BPMNShape id="switchNameMatchOutcome_di" bpmnElement="switchNameMatchOutcome" isMarkerVisible="true">
+        <dc:Bounds x="1100" y="45" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="end1_di" bpmnElement="end1">
         <dc:Bounds x="1257" y="52" width="36" height="36" />
@@ -338,16 +320,20 @@ return sanitizeKeys(result);]]></bpmn:script>
         <di:waypoint x="1275" y="140" />
         <di:waypoint x="1275" y="88" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="edge_vendorResearchAgent1-output-uipath.human-in-the-loop-1781814016362-input_di" bpmnElement="edge_vendorResearchAgent1-output-uipath.human-in-the-loop-1781814016362-input">
+      <bpmndi:BPMNEdge id="xy-edge__vendorResearchAgent1output-switch1input_di" bpmnElement="xy-edge__vendorResearchAgent1output-switch1input">
         <di:waypoint x="1025" y="70" />
-        <di:waypoint x="1075" y="70" />
+        <di:waypoint x="1100" y="70" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="edge_humanReviewVendorName-outcome-outcome-1780347884705-core.control.end-1781814185720-input_di" bpmnElement="edge_humanReviewVendorName-outcome-outcome-1780347884705-core.control.end-1781814185720-input">
-        <di:waypoint x="1175" y="70" />
+      <bpmndi:BPMNEdge id="xy-edge__switch1case-default-1-end1input_di" bpmnElement="xy-edge__switch1case-default-1-end1input">
+        <di:waypoint x="1150" y="70" />
         <di:waypoint x="1257" y="70" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="humanReviewVendorName-outcome-submit-end1-input_di" bpmnElement="humanReviewVendorName-outcome-submit-end1-input">
-        <di:waypoint x="1175" y="70" />
+      <bpmndi:BPMNEdge id="xy-edge__switch1case-mqzug2zf-7tsck-end1input_di" bpmnElement="xy-edge__switch1case-mqzug2zf-7tsck-end1input">
+        <di:waypoint x="1150" y="70" />
+        <di:waypoint x="1257" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="xy-edge__switch1default-end1input_di" bpmnElement="xy-edge__switch1default-end1input">
+        <di:waypoint x="1150" y="70" />
         <di:waypoint x="1257" y="70" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

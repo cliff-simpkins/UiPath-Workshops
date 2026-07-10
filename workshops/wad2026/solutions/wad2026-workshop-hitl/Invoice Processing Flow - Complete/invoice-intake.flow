@@ -2136,7 +2136,7 @@
                     "packageId": "113595",
                     "svgIconUrl": "icons/160499b52f7cea190b530fe6f40da7ee03455a8d3fb72dd7f4f68d61e7865a3a.svg",
                     "displayName": "Download Email Attachment",
-                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.26.0.0, Culture=neutral, PublicKeyToken=null",
+                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.28.0.0, Culture=neutral, PublicKeyToken=null",
                     "description": "Downloads an attachment from an email message",
                     "category": "",
                     "activityColor": "#E56D5C",
@@ -2856,7 +2856,7 @@
                     "packageId": "68444",
                     "svgIconUrl": "icons/98381fa079bbcf73264f551006d6ef7580fb53992f3d9f94361eb5d9e06040cb.svg",
                     "displayName": "Query Entity Records",
-                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.26.0.0, Culture=neutral, PublicKeyToken=null",
+                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.28.0.0, Culture=neutral, PublicKeyToken=null",
                     "description": "Retrieves a list of records for the selected Entity from Data Fabric, according to specified filters.",
                     "category": "",
                     "activityColor": "#E56D5C",
@@ -3558,7 +3558,7 @@
                     "packageId": "113595",
                     "svgIconUrl": "icons/160499b52f7cea190b530fe6f40da7ee03455a8d3fb72dd7f4f68d61e7865a3a.svg",
                     "displayName": "Reply To Email",
-                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.26.0.0, Culture=neutral, PublicKeyToken=null",
+                    "assemblyQualifiedName": "UiPath.IntegrationService.Activities.Runtime.Activities.ConnectorActivity, UiPath.IntegrationService.Activities.Runtime, Version=1.28.0.0, Culture=neutral, PublicKeyToken=null",
                     "description": "Reply to specified email with provided information",
                     "category": "",
                     "activityColor": "#E56D5C",
@@ -3727,9 +3727,7 @@
                 "validationMessage": "Only Tool resource nodes can connect here",
                 "addNodePanel": {
                   "searchScope": "deep",
-                  "searchProviders": [
-                    "connector-events"
-                  ],
+                  "searchProviders": [],
                   "refreshOnFocus": "mcp",
                   "createNewActions": [
                     {
@@ -7591,8 +7589,8 @@
       "propertyAttribute": "folderPath"
     }
   ],
-  "solutionId": "baa720e6-c392-44f3-2551-08decd1474e1",
-  "projectId": "84b9bde5-e45a-4f19-a81f-83c36ae366f0",
+  "solutionId": "17acfb56-034c-4561-bd44-905ae9c437fd",
+  "projectId": "67ef5285-97c6-4bdb-b0fa-db2bb97c0f49",
   "layout": {
     "nodes": {
       "emailReceived": {
@@ -7740,8 +7738,8 @@
       },
       "sticky-2": {
         "position": {
-          "x": 928,
-          "y": 352
+          "x": 1104,
+          "y": 368
         },
         "size": {
           "width": 656,

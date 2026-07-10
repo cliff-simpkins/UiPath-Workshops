@@ -3990,104 +3990,6 @@
         }
       },
       {
-        "id": "vendorResearchAgent1.output",
-        "type": "object",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "relationship": {
-              "type": "string",
-              "description": "Relationship between the invoice vendor and the PO vendor. same_entity: different legal names, same company (DBA, abbreviation, translation, with/without suffix). parent_subsidiary: one is the legal parent of the other. affiliate: both share a common parent or are under common control. acquired_or_merged: one acquired or merged with the other. predecessor_successor: rebrand or legal name change. unrelated: no documented relationship. look_alike_or_typosquat: deliberate fraudulent look-alike. unknown: insufficient information.",
-              "enum": [
-                "same_entity",
-                "parent_subsidiary",
-                "affiliate",
-                "acquired_or_merged",
-                "predecessor_successor",
-                "unrelated",
-                "look_alike_or_typosquat",
-                "unknown"
-              ]
-            },
-            "flag": {
-              "type": "string",
-              "description": "Recommended downstream action. approve: legitimate relationship verified with high confidence. review: ambiguous, needs human review. reject: likely fraud or unrelated entity.",
-              "enum": [
-                "approve",
-                "review",
-                "reject"
-              ]
-            },
-            "confidence": {
-              "type": "string",
-              "description": "Confidence in the relationship classification, based on quality and corroboration of sources.",
-              "enum": [
-                "high",
-                "medium",
-                "low"
-              ]
-            },
-            "reasoning": {
-              "type": "string",
-              "description": "Concise explanation of how the relationship was determined. Reference specific corporate facts (acquisition year, parent/subsidiary structure, rebrand) discovered via web search."
-            },
-            "sources": {
-              "type": "array",
-              "description": "URLs of authoritative sources used to determine the relationship (SEC filings, official corporate pages, press releases, reputable news). At least 1 if relationship != unknown.",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "binding": {
-          "nodeId": "vendorResearchAgent1",
-          "outputId": "output"
-        }
-      },
-      {
-        "id": "vendorResearchAgent1.error",
-        "type": "object",
-        "schema": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "type": "object",
-          "required": [
-            "code",
-            "message",
-            "detail",
-            "category",
-            "status"
-          ],
-          "properties": {
-            "code": {
-              "type": "string",
-              "description": "Error code as a string"
-            },
-            "message": {
-              "type": "string",
-              "description": "High-level error message"
-            },
-            "detail": {
-              "type": "string",
-              "description": "Detailed error description"
-            },
-            "category": {
-              "type": "string",
-              "description": "Error category"
-            },
-            "status": {
-              "type": "integer",
-              "description": "HTTP status code"
-            }
-          },
-          "additionalProperties": false
-        },
-        "binding": {
-          "nodeId": "vendorResearchAgent1",
-          "outputId": "error"
-        }
-      },
-      {
         "id": "documentExtraction1.output",
         "type": "object",
         "schema": {
@@ -5391,6 +5293,104 @@
         "binding": {
           "nodeId": "switchNameMatchOutcome",
           "outputId": "matchedCaseId"
+        }
+      },
+      {
+        "id": "vendorResearchAgent1.output",
+        "type": "object",
+        "binding": {
+          "nodeId": "vendorResearchAgent1",
+          "outputId": "output"
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "relationship": {
+              "type": "string",
+              "description": "Relationship between the invoice vendor and the PO vendor. same_entity: different legal names, same company (DBA, abbreviation, translation, with/without suffix). parent_subsidiary: one is the legal parent of the other. affiliate: both share a common parent or are under common control. acquired_or_merged: one acquired or merged with the other. predecessor_successor: rebrand or legal name change. unrelated: no documented relationship. look_alike_or_typosquat: deliberate fraudulent look-alike. unknown: insufficient information.",
+              "enum": [
+                "same_entity",
+                "parent_subsidiary",
+                "affiliate",
+                "acquired_or_merged",
+                "predecessor_successor",
+                "unrelated",
+                "look_alike_or_typosquat",
+                "unknown"
+              ]
+            },
+            "flag": {
+              "type": "string",
+              "description": "Recommended downstream action. approve: legitimate relationship verified with high confidence. review: ambiguous, needs human review. reject: likely fraud or unrelated entity.",
+              "enum": [
+                "approve",
+                "review",
+                "reject"
+              ]
+            },
+            "confidence": {
+              "type": "string",
+              "description": "Confidence in the relationship classification, based on quality and corroboration of sources.",
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ]
+            },
+            "reasoning": {
+              "type": "string",
+              "description": "Concise explanation of how the relationship was determined. Reference specific corporate facts (acquisition year, parent/subsidiary structure, rebrand) discovered via web search."
+            },
+            "sources": {
+              "type": "array",
+              "description": "URLs of authoritative sources used to determine the relationship (SEC filings, official corporate pages, press releases, reputable news). At least 1 if relationship != unknown.",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "vendorResearchAgent1.error",
+        "type": "object",
+        "binding": {
+          "nodeId": "vendorResearchAgent1",
+          "outputId": "error"
+        },
+        "schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "required": [
+            "code",
+            "message",
+            "detail",
+            "category",
+            "status"
+          ],
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "Error code as a string"
+            },
+            "message": {
+              "type": "string",
+              "description": "High-level error message"
+            },
+            "detail": {
+              "type": "string",
+              "description": "Detailed error description"
+            },
+            "category": {
+              "type": "string",
+              "description": "Error category"
+            },
+            "status": {
+              "type": "integer",
+              "description": "HTTP status code"
+            }
+          },
+          "additionalProperties": false
         }
       }
     ],
