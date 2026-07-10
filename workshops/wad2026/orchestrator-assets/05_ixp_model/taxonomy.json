@@ -1,0 +1,421 @@
+{
+  "id": "c39955c747428a05",
+  "owner": "ixp_invoices-3c93d94f-ixp",
+  "name": "ixp_invoices-3c93d94f",
+  "title": "IXP_Invoices",
+  "description": "",
+  "created": "2026-06-18T15:24:29.420030Z",
+  "last_modified": "2026-06-24T05:10:24.195727Z",
+  "model_family": "transformer-english",
+  "source_ids": [
+    "039911a1b8b4b555",
+    "1a17418628b0c15d"
+  ],
+  "has_sentiment": true,
+  "limited_access": false,
+  "entity_defs": [
+    {
+      "id": "f223d38f0b2bebb6",
+      "name": "Amount",
+      "title": "",
+      "inherits_from": [
+        "0000000000000044"
+      ],
+      "trainable": true,
+      "color": 0,
+      "_entity_def_flags": [],
+      "instructions": ""
+    },
+    {
+      "id": "76094005de560cc0",
+      "name": "Boolean",
+      "title": "Boolean",
+      "inherits_from": [
+        "0000000000000046"
+      ],
+      "trainable": true,
+      "color": 1,
+      "_entity_def_flags": [],
+      "instructions": "Use to represent boolean values in text."
+    },
+    {
+      "id": "e0ee5ae628456ac8",
+      "name": "Date",
+      "title": "Date",
+      "inherits_from": [
+        "0000000000000007"
+      ],
+      "trainable": true,
+      "color": 2,
+      "_entity_def_flags": [],
+      "instructions": "Use to represent dates in text."
+    },
+    {
+      "id": "1ebb2634e0a0a173",
+      "name": "Exact Text",
+      "title": "Exact Text",
+      "inherits_from": [],
+      "trainable": true,
+      "color": 3,
+      "_entity_def_flags": [
+        "appears_verbatim"
+      ],
+      "instructions": "Use to represent text that appears verbatim in text."
+    },
+    {
+      "id": "d56af442fea78d96",
+      "name": "Inferred Text",
+      "title": "Inferred Text",
+      "inherits_from": [],
+      "trainable": true,
+      "color": 4,
+      "_entity_def_flags": [],
+      "instructions": "Use for text that might not appear verbatim in the text."
+    },
+    {
+      "id": "14bcead621bef2b7",
+      "name": "Monetary Quantity",
+      "title": "Monetary Quantity",
+      "inherits_from": [
+        "0000000000000006"
+      ],
+      "trainable": true,
+      "color": 5,
+      "_entity_def_flags": [],
+      "instructions": "Use to represent monetary values in text."
+    },
+    {
+      "id": "e6695614febb0ad5",
+      "name": "Number",
+      "title": "Number",
+      "inherits_from": [
+        "0000000000000044"
+      ],
+      "trainable": true,
+      "color": 6,
+      "_entity_def_flags": [],
+      "instructions": "Use to represent amounts or quantities in text."
+    }
+  ],
+  "general_fields": [],
+  "label_groups": [
+    {
+      "name": "default",
+      "label_defs": [
+        {
+          "name": "invoice",
+          "id": "dfcfd16aca666b28",
+          "instructions": "Extract general invoice information.",
+          "moon_form": [
+            {
+              "field_id": "8ef62858d656fdfb",
+              "id": "1ebb2634e0a0a173",
+              "field_type_id": "1ebb2634e0a0a173",
+              "kind": "Exact Text",
+              "name": "invoice_number",
+              "instructions": "Extract the invoice number.",
+              "rule_set": null
+            },
+            {
+              "field_id": "35d981ba7c8f1e86",
+              "id": "e0ee5ae628456ac8",
+              "field_type_id": "e0ee5ae628456ac8",
+              "kind": "Date",
+              "name": "invoice_date",
+              "instructions": "Extract the date the invoice was issued.",
+              "rule_set": null
+            },
+            {
+              "field_id": "5e3fcbd50215cec6",
+              "id": "e0ee5ae628456ac8",
+              "field_type_id": "e0ee5ae628456ac8",
+              "kind": "Date",
+              "name": "due_date",
+              "instructions": "Extract the date the invoice payment is due.",
+              "rule_set": null
+            },
+            {
+              "field_id": "a00cf206da4ab467",
+              "id": "1ebb2634e0a0a173",
+              "field_type_id": "1ebb2634e0a0a173",
+              "kind": "Exact Text",
+              "name": "po_reference",
+              "instructions": "Extract the customer purchase order (PO) reference number.",
+              "rule_set": null
+            },
+            {
+              "field_id": "b7a06de3181fea0c",
+              "id": "1ebb2634e0a0a173",
+              "field_type_id": "1ebb2634e0a0a173",
+              "kind": "Exact Text",
+              "name": "vendor_name",
+              "instructions": "Extract the name of the vendor or supplier to whom payment should be remitted.",
+              "rule_set": null
+            },
+            {
+              "field_id": "a01a4b8b69f94ee1",
+              "id": "1ebb2634e0a0a173",
+              "field_type_id": "1ebb2634e0a0a173",
+              "kind": "Exact Text",
+              "name": "vendor_address",
+              "instructions": "Extract the full address of the vendor or supplier to which payment should be remitted.",
+              "rule_set": null
+            },
+            {
+              "field_id": "f95cb465c98632aa",
+              "id": "14bcead621bef2b7",
+              "field_type_id": "14bcead621bef2b7",
+              "kind": "Monetary Quantity",
+              "name": "subtotal",
+              "instructions": "Extract the subtotal amount of the invoice before tax and freight. If a currency code is missing, assume USD.",
+              "rule_set": null
+            },
+            {
+              "field_id": "c5909c4ae75d4bd9",
+              "id": "14bcead621bef2b7",
+              "field_type_id": "14bcead621bef2b7",
+              "kind": "Monetary Quantity",
+              "name": "tax",
+              "instructions": "Extract the tax amount applied to the invoice. If a currency code is missing, assume USD.",
+              "rule_set": null
+            },
+            {
+              "field_id": "24c409b50b869351",
+              "id": "14bcead621bef2b7",
+              "field_type_id": "14bcead621bef2b7",
+              "kind": "Monetary Quantity",
+              "name": "freight",
+              "instructions": "Extract the freight or shipping cost. If a currency code is missing, assume USD.",
+              "rule_set": null
+            },
+            {
+              "field_id": "c19c5c83f600ad0a",
+              "id": "14bcead621bef2b7",
+              "field_type_id": "14bcead621bef2b7",
+              "kind": "Monetary Quantity",
+              "name": "total",
+              "instructions": "Extract the total amount due for the invoice in USD. If a currency code is missing, assume USD.",
+              "rule_set": null
+            }
+          ]
+        },
+        {
+          "name": "invoice > line_items",
+          "id": "5e53faebcaf10e9b",
+          "instructions": "Extract details for each line item on the invoice.",
+          "moon_form": [
+            {
+              "field_id": "fa415af95d632c57",
+              "id": "1ebb2634e0a0a173",
+              "field_type_id": "1ebb2634e0a0a173",
+              "kind": "Exact Text",
+              "name": "item_description",
+              "instructions": "Extract the description of the item.",
+              "rule_set": null
+            },
+            {
+              "field_id": "89ec40286e5ba037",
+              "id": "f223d38f0b2bebb6",
+              "field_type_id": "f223d38f0b2bebb6",
+              "kind": "Amount",
+              "name": "quantity",
+              "instructions": "Extract the quantity of the item.",
+              "rule_set": null
+            },
+            {
+              "field_id": "a29a8ac4e86f7ed2",
+              "id": "14bcead621bef2b7",
+              "field_type_id": "14bcead621bef2b7",
+              "kind": "Monetary Quantity",
+              "name": "unit_price",
+              "instructions": "Extract the unit price of the item. If a currency code is missing, assume USD.",
+              "rule_set": null
+            },
+            {
+              "field_id": "b3dc304446664b73",
+              "id": "14bcead621bef2b7",
+              "field_type_id": "14bcead621bef2b7",
+              "kind": "Monetary Quantity",
+              "name": "extended_amount",
+              "instructions": "Extract the extended amount for the line item (quantity * unit price). If a currency code is missing, assume USD.",
+              "rule_set": null
+            }
+          ]
+        }
+      ],
+      "label_collection_name": null,
+      "trainable": true,
+      "hidden": false,
+      "instructions": "Extract invoice details including invoice-level data and line items."
+    }
+  ],
+  "label_defs": [
+    {
+      "name": "invoice",
+      "id": "dfcfd16aca666b28",
+      "instructions": "Extract general invoice information.",
+      "moon_form": [
+        {
+          "field_id": "8ef62858d656fdfb",
+          "id": "1ebb2634e0a0a173",
+          "field_type_id": "1ebb2634e0a0a173",
+          "kind": "Exact Text",
+          "name": "invoice_number",
+          "instructions": "Extract the invoice number.",
+          "rule_set": null
+        },
+        {
+          "field_id": "35d981ba7c8f1e86",
+          "id": "e0ee5ae628456ac8",
+          "field_type_id": "e0ee5ae628456ac8",
+          "kind": "Date",
+          "name": "invoice_date",
+          "instructions": "Extract the date the invoice was issued.",
+          "rule_set": null
+        },
+        {
+          "field_id": "5e3fcbd50215cec6",
+          "id": "e0ee5ae628456ac8",
+          "field_type_id": "e0ee5ae628456ac8",
+          "kind": "Date",
+          "name": "due_date",
+          "instructions": "Extract the date the invoice payment is due.",
+          "rule_set": null
+        },
+        {
+          "field_id": "a00cf206da4ab467",
+          "id": "1ebb2634e0a0a173",
+          "field_type_id": "1ebb2634e0a0a173",
+          "kind": "Exact Text",
+          "name": "po_reference",
+          "instructions": "Extract the customer purchase order (PO) reference number.",
+          "rule_set": null
+        },
+        {
+          "field_id": "b7a06de3181fea0c",
+          "id": "1ebb2634e0a0a173",
+          "field_type_id": "1ebb2634e0a0a173",
+          "kind": "Exact Text",
+          "name": "vendor_name",
+          "instructions": "Extract the name of the vendor or supplier to whom payment should be remitted.",
+          "rule_set": null
+        },
+        {
+          "field_id": "a01a4b8b69f94ee1",
+          "id": "1ebb2634e0a0a173",
+          "field_type_id": "1ebb2634e0a0a173",
+          "kind": "Exact Text",
+          "name": "vendor_address",
+          "instructions": "Extract the full address of the vendor or supplier to which payment should be remitted.",
+          "rule_set": null
+        },
+        {
+          "field_id": "f95cb465c98632aa",
+          "id": "14bcead621bef2b7",
+          "field_type_id": "14bcead621bef2b7",
+          "kind": "Monetary Quantity",
+          "name": "subtotal",
+          "instructions": "Extract the subtotal amount of the invoice before tax and freight. If a currency code is missing, assume USD.",
+          "rule_set": null
+        },
+        {
+          "field_id": "c5909c4ae75d4bd9",
+          "id": "14bcead621bef2b7",
+          "field_type_id": "14bcead621bef2b7",
+          "kind": "Monetary Quantity",
+          "name": "tax",
+          "instructions": "Extract the tax amount applied to the invoice. If a currency code is missing, assume USD.",
+          "rule_set": null
+        },
+        {
+          "field_id": "24c409b50b869351",
+          "id": "14bcead621bef2b7",
+          "field_type_id": "14bcead621bef2b7",
+          "kind": "Monetary Quantity",
+          "name": "freight",
+          "instructions": "Extract the freight or shipping cost. If a currency code is missing, assume USD.",
+          "rule_set": null
+        },
+        {
+          "field_id": "c19c5c83f600ad0a",
+          "id": "14bcead621bef2b7",
+          "field_type_id": "14bcead621bef2b7",
+          "kind": "Monetary Quantity",
+          "name": "total",
+          "instructions": "Extract the total amount due for the invoice in USD. If a currency code is missing, assume USD.",
+          "rule_set": null
+        }
+      ]
+    },
+    {
+      "name": "invoice > line_items",
+      "id": "5e53faebcaf10e9b",
+      "instructions": "Extract details for each line item on the invoice.",
+      "moon_form": [
+        {
+          "field_id": "fa415af95d632c57",
+          "id": "1ebb2634e0a0a173",
+          "field_type_id": "1ebb2634e0a0a173",
+          "kind": "Exact Text",
+          "name": "item_description",
+          "instructions": "Extract the description of the item.",
+          "rule_set": null
+        },
+        {
+          "field_id": "89ec40286e5ba037",
+          "id": "f223d38f0b2bebb6",
+          "field_type_id": "f223d38f0b2bebb6",
+          "kind": "Amount",
+          "name": "quantity",
+          "instructions": "Extract the quantity of the item.",
+          "rule_set": null
+        },
+        {
+          "field_id": "a29a8ac4e86f7ed2",
+          "id": "14bcead621bef2b7",
+          "field_type_id": "14bcead621bef2b7",
+          "kind": "Monetary Quantity",
+          "name": "unit_price",
+          "instructions": "Extract the unit price of the item. If a currency code is missing, assume USD.",
+          "rule_set": null
+        },
+        {
+          "field_id": "b3dc304446664b73",
+          "id": "14bcead621bef2b7",
+          "field_type_id": "14bcead621bef2b7",
+          "kind": "Monetary Quantity",
+          "name": "extended_amount",
+          "instructions": "Extract the extended amount for the line item (quantity * unit price). If a currency code is missing, assume USD.",
+          "rule_set": null
+        }
+      ]
+    }
+  ],
+  "_timezone": "UTC",
+  "_label_properties": [],
+  "_preferred_locales": {
+    "default": "en_GB",
+    "preferences": []
+  },
+  "_dataset_flags": [
+    "ixp"
+  ],
+  "_model_config": {
+    "kind": "gpt_ixp",
+    "model_version": "gemini_2_5_flash",
+    "input_config": {
+      "mode": "image_only"
+    },
+    "system_prompt_override": null,
+    "frequency_penalty": null,
+    "temperature": null,
+    "top_p": null,
+    "seed": null,
+    "flags": [],
+    "iterative_config": {
+      "max_num_calls": null,
+      "chunk_size": null
+    },
+    "attribution_method": "word_ids"
+  }
+}

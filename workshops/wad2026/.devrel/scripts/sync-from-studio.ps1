@@ -5,6 +5,11 @@
 #   wad2026-workshop      → WAD2026 Workshop (baa720e6-c392-44f3-2551-08decd1474e1)
 #   wad2026-workshop-hitl → WAD2026 Workshop - with HITL (17acfb56-034c-4561-bd44-905ae9c437fd)
 #
+# Solution IDs above are on tenant WeAreDevelopers_2026_20260616 (content source of truth).
+# The 2026-07-08 event tenant (WeAreDevelopers_2026_Da_20260708) has its own copy:
+#   2ba309c1-3aec-494d-c9da-08dedcfa08d1 — swap into $Solutions if syncing from there.
+# Check the active tenant first: uip login status
+#
 # Usage:
 #   .devrel\scripts\sync-from-studio.ps1
 #   .devrel\scripts\sync-from-studio.ps1 -CommitMessage "custom message"
