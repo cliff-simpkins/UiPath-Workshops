@@ -763,5 +763,5 @@ Explore the UiPath Platform at [https://uipath.com/developers/](https://uipath.c
 
 ---
 
-*Last updated: 2026-07-10 (synced with the UiPath Labs version delivered at WAD2026, 9 July 2026)*  
+*Last updated: 2026-07-13 (synced with the UiPath Labs version delivered at WAD2026, 9 July 2026)*  
 *Solution version: 1.0.0 (WAD2026 Workshop)*
