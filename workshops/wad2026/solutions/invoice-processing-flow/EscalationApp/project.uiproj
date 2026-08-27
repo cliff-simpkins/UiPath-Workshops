@@ -1,0 +1,10 @@
+{
+  "ProjectType": "WebApp",
+  "WebAppSettings": {
+    "AppId": "IDf550ce300ef74f7880b720985a48fc82",
+    "IsCoreProject": true
+  },
+  "Name": "EscalationApp",
+  "Description": null,
+  "MainFile": "Main.xaml"
+}

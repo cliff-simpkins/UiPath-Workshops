@@ -1,0 +1,22 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "EscalationApp",
+    "kind": "package",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "1332b929-cffc-464e-97ae-5b3a8f02d3b9",
+    "dependencies": [],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "name": "EscalationApp"
+    },
+    "locks": [],
+    "key": "83929e65-403d-4808-91ce-3fddc2584868",
+    "files": []
+  }
+}

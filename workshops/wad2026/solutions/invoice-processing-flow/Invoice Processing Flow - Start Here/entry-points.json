@@ -1,0 +1,20 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "content/invoice-intake.bpmn#emailReceived",
+      "uniqueId": "82158464-c32d-4026-83a9-0dd7e5083b32",
+      "type": "processorchestration",
+      "input": {
+        "type": "object",
+        "properties": {}
+      },
+      "output": {
+        "type": "object",
+        "properties": {}
+      },
+      "displayName": "Email Received"
+    }
+  ]
+}

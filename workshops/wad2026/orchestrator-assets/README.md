@@ -2,6 +2,8 @@
 
 Pre-requisites that must be created in UiPath before running the workshop. Create all assets in the workshop Orchestrator folder (not a personal workspace). Follow the numbered steps in order — step 3 depends on step 1 being complete first.
 
+**Setting this up in your own tenant?** Run `orchestrator-assets/setup-tenant.sh --folder-path "<your-folder>"` after `uip login` — it automates steps 1–5 below (buckets, Data Fabric, context grounding, IXP taxonomy, solution upload) against your own tenant and prints the manual-steps checklist at the end. No access to the original workshop tenant required; everything it needs is already in this repo.
+
 ---
 
 ## Step 1 — Storage Buckets (`01_storage_bucket/`)
@@ -94,10 +96,14 @@ Create the three connections listed in `04_integration_service/README.md` (Outlo
 
 ### IXP deployment
 
-The CLI recreation in step 5 publishes the model but cannot deploy it to a folder:
+The CLI recreation in step 5 publishes the model but cannot deploy it to a folder — `uip ixp deployments create`/`list` are documented by the `uipath-ixp` skill but not implemented on the installed CLI (verified against v1.200.0: `error: unknown command`; only `deployments get-taxonomy` exists). Until that ships for real:
 
-1. In the IXP project, deploy the published model version into the workshop Orchestrator folder as **`IXP_Invoices`**
-2. In Studio Web, open each flow's `documentExtraction1` node and rebind it to the new deployment (the imported binding still points at the source tenant's folder GUID)
+1. Open the nine-block app menu → **IXP** → open the **`IXP_Invoices`** project
+2. Select the **Deploy** tab
+3. On the version card you want live (the latest one the script published), click **Deploy**
+4. In the dialog, choose **To folder** (not "To project"), set **Deployment name** to `IXP_Invoices` and **Location** to the workshop Orchestrator folder (e.g. `Shared`), then click **Deploy**
+5. Verify it now appears under **Orchestrator → IXP Models** in that folder
+6. In Studio Web, open each flow's `documentExtraction1` node and rebind it to the new deployment (the imported binding still points at the source tenant's folder GUID)
 
 ### First deploy — link resources to the new tenant (verified 2026-07-09)
 

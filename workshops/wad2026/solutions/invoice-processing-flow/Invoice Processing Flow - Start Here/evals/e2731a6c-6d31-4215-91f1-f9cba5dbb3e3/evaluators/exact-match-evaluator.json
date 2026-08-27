@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "id": "exact-match-eval-001",
+  "name": "Exact Match",
+  "description": "Exact Match",
+  "evaluatorTypeId": "uipath-exact-match",
+  "evaluatorConfig": {
+    "name": "Exact Match",
+    "targetOutputKey": "*",
+    "caseSensitive": false,
+    "negated": false,
+    "defaultEvaluationCriteria": {
+      "expectedOutput": {}
+    }
+  },
+  "fileName": "exact-match-evaluator.json",
+  "createdAt": "2026-06-18T15:05:05.571Z",
+  "updatedAt": "2026-06-18T15:05:05.571Z"
+}

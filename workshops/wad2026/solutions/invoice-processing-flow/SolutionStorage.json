@@ -1,0 +1,25 @@
+{
+  "SolutionId": "29728918-7912-4e0a-85ef-b855457d072e",
+  "Projects": [
+    {
+      "ProjectId": "47a6a8d6-19a2-4b35-8508-316ffc6e3c1b",
+      "ProjectRelativePath": "EscalationApp/project.uiproj"
+    },
+    {
+      "ProjectId": "d903c93f-2f29-420b-b3e1-32f0aacfa546",
+      "ProjectRelativePath": "Discrepancy Investigator Agent/project.uiproj"
+    },
+    {
+      "ProjectId": "80d583a0-bc0b-4feb-b24c-97f71dd38353",
+      "ProjectRelativePath": "Invoice Processing Flow - Start Here/project.uiproj"
+    },
+    {
+      "ProjectId": "b5c5c921-c9b7-4cae-addf-ab3fe65377ae",
+      "ProjectRelativePath": "Vendor Research Agent/project.uiproj"
+    },
+    {
+      "ProjectId": "21c94aa6-6f84-4d4d-a11f-e428d808b122",
+      "ProjectRelativePath": "Invoice Processing Flow - Complete/project.uiproj"
+    }
+  ]
+}

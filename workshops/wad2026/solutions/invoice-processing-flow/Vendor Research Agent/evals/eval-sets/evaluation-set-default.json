@@ -1,0 +1,132 @@
+{
+  "fileName": "evaluation-set-default.json",
+  "id": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+  "name": "VRA Eval Set",
+  "batchSize": 10,
+  "evaluatorRefs": [
+    "b4b4fcce-f6af-4187-837c-d9968ab31e2c",
+    "6675055e-9866-4268-ac8e-a88bd3782642"
+  ],
+  "evaluations": [
+    {
+      "id": "1c1e6e0f-6e52-4544-9427-a794ee5276f4",
+      "name": "Subsidiary - Alphabet Inc. / Google LLC",
+      "inputs": {
+        "invoiceVendorName": "Google",
+        "poVendorName": "Alphabet"
+      },
+      "expectedOutput": {
+        "relationship": "parent_subsidiary",
+        "flag": "approve",
+        "confidence": "high",
+        "reasoning": "I found a documented parent-subsidiary relationship: Alphabet announced in its official investor materials that, upon the 2015 restructuring, Google would become a wholly-owned subsidiary of Alphabet. SEC filings from Alphabet also state that Google LLC is a wholly owned subsidiary of Alphabet. With two independent authoritative sources corroborating the hierarchy, this is a legitimate mismatch and should be approved.",
+        "sources": [
+          "https://abc.xyz/",
+          "https://www.sec.gov/Archives/edgar/data/1652044/000130817924000612/lgoog2024_def14a.htm"
+        ]
+      },
+      "simulationInstructions": "",
+      "expectedAgentBehavior": "Agent must perform at least one web search to verify the corporate relationship, citing authoritative sources confirming Google LLC is a wholly-owned subsidiary of Alphabet Inc.",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "evalSetId": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+      "createdAt": "2026-06-18T16:15:13.741Z",
+      "updatedAt": "2026-06-18T17:40:50.381Z",
+      "source": "firstSuccessfulRun",
+      "toolsToSimulate": []
+    },
+    {
+      "id": "f274b4dd-f892-4ece-97af-8d4c5994ca77",
+      "name": "Predecessor - Meta Platforms Inc. / Facebook, Inc.",
+      "inputs": {
+        "invoiceVendorName": "Meta Platforms Inc.",
+        "poVendorName": "Facebook, Inc."
+      },
+      "expectedOutput": {
+        "relationship": "predecessor_successor",
+        "flag": "approve",
+        "confidence": "high",
+        "reasoning": "Facebook, Inc. rebranded to Meta Platforms, Inc. in October 2021 following a corporate announcement. The two names refer to the same legal entity before and after the name change, as confirmed by SEC filings and official company announcements.",
+        "sources": [
+          "https://investor.fb.com/investor-news/press-release-details/2021/Facebook-Company-Rebrands-to-Meta/",
+          "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801"
+        ]
+      },
+      "expectedAgentBehavior": "Agent must perform at least one web search to verify the corporate relationship between Meta Platforms Inc. and Facebook, Inc., finding evidence of the October 2021 rebrand from Facebook to Meta Platforms.",
+      "simulationInstructions": "",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+      "createdAt": "2026-06-18T17:41:40.395Z",
+      "updatedAt": "2026-06-18T17:41:40.395Z",
+      "source": "manual"
+    },
+    {
+      "id": "a8fd6f34-75d9-4074-93fa-4eef0739eb36",
+      "name": "Unrelated - Apex Global Solutions / United Supply Co.",
+      "inputs": {
+        "invoiceVendorName": "Apex Global Solutions",
+        "poVendorName": "United Supply Co."
+      },
+      "expectedOutput": {
+        "relationship": "unrelated",
+        "flag": "reject",
+        "confidence": "high",
+        "reasoning": "No documented corporate relationship was found between Apex Global Solutions and United Supply Co. Web searches found no acquisitions, mergers, affiliations, or common ownership linking these two entities. The names differ entirely and no credible source connects them.",
+        "sources": []
+      },
+      "expectedAgentBehavior": "Agent must perform web searches to investigate the relationship between Apex Global Solutions and United Supply Co. Agent should conclude these are unrelated entities with no documented corporate connection.",
+      "simulationInstructions": "",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+      "createdAt": "2026-06-18T17:42:27.294Z",
+      "updatedAt": "2026-06-18T17:42:27.294Z",
+      "source": "manual"
+    },
+    {
+      "id": "cf69b3cc-6d9b-4ad8-86ac-8171e1568cef",
+      "name": "Typosquat - Amaz0n",
+      "inputs": {
+        "invoiceVendorName": "Amaz0n Web Services",
+        "poVendorName": "Amazon Web Services"
+      },
+      "expectedOutput": {
+        "relationship": "look_alike_or_typosquat",
+        "flag": "reject",
+        "confidence": "high",
+        "reasoning": "Amaz0n Web Services uses a zero character in place of the letter o in Amazon, a deliberate typosquat pattern. This is not the legitimate Amazon Web Services entity and represents a fraudulent look-alike designed to intercept payment.",
+        "sources": [
+          "https://aws.amazon.com/"
+        ]
+      },
+      "expectedAgentBehavior": "Agent must identify the character substitution (zero for the letter o) in Amaz0n Web Services and classify this as a fraudulent typosquat of Amazon Web Services. Agent should reject this vendor mismatch. ",
+      "simulationInstructions": "",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "c1e6d4dc-dcb3-41fd-aea1-c040cbc19f77",
+      "createdAt": "2026-06-18T17:43:16.673Z",
+      "updatedAt": "2026-06-18T17:43:16.673Z",
+      "source": "manual"
+    }
+  ],
+  "modelSettings": [
+    {
+      "id": "default",
+      "modelName": "same-as-agent",
+      "temperature": "same-as-agent"
+    }
+  ],
+  "createdAt": "2026-06-18T15:06:12.915Z",
+  "updatedAt": "2026-06-18T17:46:09.136Z",
+  "agentMemoryEnabled": false,
+  "agentMemorySettings": [],
+  "lineByLineEvaluation": false
+}

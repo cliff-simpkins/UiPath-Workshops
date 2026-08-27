@@ -1,0 +1,48 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "EscalationApp",
+    "kind": "process",
+    "type": "webApp",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "1332b929-cffc-464e-97ae-5b3a8f02d3b9",
+    "dependencies": [
+      {
+        "kind": "package",
+        "name": "EscalationApp"
+      }
+    ],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "type": "WebApp",
+      "name": "EscalationApp",
+      "package": {
+        "key": "83929e65-403d-4808-91ce-3fddc2584868"
+      },
+      "packageName": "invoice-processing-flow.webApp.EscalationApp",
+      "jobPriority": "Medium",
+      "hiddenForAttendedUser": true,
+      "alwaysRunning": true,
+      "autoStartProcess": false,
+      "jobRecording": "Disabled",
+      "targetFrameworkValue": "Portable",
+      "duration": 40,
+      "frequency": 500,
+      "quality": 100,
+      "remoteControlAccess": "None",
+      "robotSize": "Automatic",
+      "retentionAction": "Delete",
+      "retentionPeriod": 30,
+      "staleRetentionAction": "Delete",
+      "staleRetentionPeriod": 180
+    },
+    "locks": [],
+    "key": "736508b1-1aaf-45b6-9293-8c8ed02f0d31",
+    "files": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "Discrepancy Investigator Agent",
+    "kind": "package",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "7d8c2e2a-1be5-4234-bfd2-9323217ef4bb",
+    "isOverridable": true,
+    "dependencies": [],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "name": "Discrepancy Investigator Agent"
+    },
+    "locks": [],
+    "key": "26370469-b935-4d3f-ad63-1220b4ce56d2",
+    "files": []
+  }
+}

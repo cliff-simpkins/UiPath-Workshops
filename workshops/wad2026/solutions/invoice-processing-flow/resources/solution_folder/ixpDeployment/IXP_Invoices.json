@@ -1,0 +1,25 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "IXP_Invoices",
+    "kind": "ixpDeployment",
+    "apiVersion": "ixp.uipath.com/v1",
+    "dependencies": [],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "name": "IXP_Invoices",
+      "modelVersion": "",
+      "sourcePackageId": "",
+      "dataset": "",
+      "modelUrlName": ""
+    },
+    "locks": [],
+    "key": "4eedb7ce-f827-4cc4-a850-fc101d123cf5",
+    "files": []
+  }
+}

@@ -1,0 +1,5 @@
+# Personal debug variable overwrites — not portable across users
+userProfile/
+
+# Packed solution archives — redundant with the source directory
+*.uis

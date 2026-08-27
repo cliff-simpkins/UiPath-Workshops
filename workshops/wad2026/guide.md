@@ -14,11 +14,11 @@ You'll leave with a running agent, a reusable eval set, and a mental model of wh
 | ----------------------- | -------------------------------------------------------------- |
 | **Environment**         | UiPath Studio Web - browser only, no install required          |
 | **Join URL**            | `[Provided by Facilitator]`                                    |
-| **Tenant**              | `WeAreDevelopers_2026_20260616`                                |
+| **Tenant**              | `[Provided by Facilitator]`                                    |
 | **Studio Web**          | `https://cloud.uipath.com/uipathlabstraining/studio_/projects` |
-| **Workshop solution**   | `WAD2026 Workshop`                                             |
+| **Workshop solution**   | `Invoice Processing Flow`                                      |
 | **Test email address**  | `UiPathlabsdemo@uipath.com`                                    |
-| **Your subject filter** | `WAD-[YourName]` (e.g. `WAD-alex`)                             |
+| **Your subject filter** | `inv-[YourName]` (e.g. `inv-alex`)                             |
 
 ---
 
@@ -53,7 +53,7 @@ This workshop uses shared data stores and connections that have already been con
 1. Open your browser and go to the URL provided by facilitator.
 2. Select the **Continue with Microsoft** authentication option
 3. Enter your name and you will be provided with a username and password to use
-4. If prompted for a tenant, select **WeAreDevelopers_2026_20260616**. *But don't worry if you are not prompted for a tenant.*
+4. If prompted for a tenant, select the tenant your facilitator provided. *But don't worry if you are not prompted for a tenant.*
 
 To verify the tenant you are working in, you can check the Tenant Selector in the upper-right corner of the screen - either from the [Home](https://cloud.uipath.com/) or the Studio projects pages.
 
@@ -69,7 +69,7 @@ To verify the tenant you are working in, you can check the Tenant Selector in th
 A complete reference solution is pre-built and shared in the workspace. You'll duplicate it to get your own editable copy - your changes stay isolated from everyone else's.
 
 1. Navigate to Studio Web: `https://cloud.uipath.com/uipathlabstraining/studio_/projects`
-2. Find the solution named `**WAD2026 Workshop**` - **do not open it directly**
+2. Find the solution named `**Invoice Processing Flow**` - **do not open it directly**
 3. Open the three-dot menu (⋮) on the right side of the row and select **Duplicate**
 4. Open your new copy, which should have a number appended to it
   ![Duplicate the project](images/ws-flow-step-03.gif)
@@ -193,7 +193,7 @@ To enable resiliency and compliance, our orchestration connects to our backend s
 
 When you duplicate a solution, the connections (email, Data Fabric, Storage Bucket, GenAI) point at the original solution's configuration. As they move into your workspace, you need to update these connections before you can run anything.
 
-1. Open your copy of the **WAD2026 Workshop**
+1. Open your copy of the **Invoice Processing Flow** solution
 2. Open the **Project Explorer** panel (folders icon along left bar), and check the **Connections** and **Indexes** nodes in the bottom left of the screen (see image below)
 3. For each connection and index that shows a warning indicator, select it, then choose the matching workshop connection from the dropdown
 
@@ -302,7 +302,7 @@ Now let's test the agent with known inputs that will trigger the Human In the Lo
 2. Open the escalation in the UiPath Action Center, which should look something like the below:
   1. If you see a `Open in Action App` button at the top, you can use it to jump directly into the UiPath Action Center Inbox
   2. If you don't see the button, there are two additional ways to navigate:
-    - You can navigate to [your Action Center Inbox](https://cloud.uipath.com/uipathlabstraining/WeAreDevelopers_2026_20260616/actions_/tasks) directly by opening up **UiPath Actions** from the nine-block menu icon in the upper-left.
+    - You can navigate to your Action Center Inbox directly by opening up **UiPath Actions** from the nine-block menu icon in the upper-left.
       - You can select the `EscalationApp` step in the **Execution Trace**, and the link will be shown in the execution trace details pane
 3. Within the `Escalation Task`, select **Approve**
   ![The Action Center inbox showing the pending Escalation Task with Approve and Reject buttons](images/ws-flow-step-12b.png)
@@ -427,7 +427,7 @@ Before adding the Discrepancy Investigator Agent into the workflow, confirm the 
 **Test 1 - Perfect match (true branch, currently empty):**
 
 1. From your email client, compose a new email to `**UiPathlabsdemo@uipath.com**`
-2. Set the subject to `**WAD-[YourName]**`
+2. Set the subject to `**inv-[YourName]**`
 3. Attach `**case-4-perfect-match-invoice.pdf**` and send the email
 4. Select `**Debug on the Cloud**` in the flow and wait for the trigger to pick up the email
 5. Watch the run - you'll see paths that were followed, and activity nodes that were activated, outlined in green
@@ -574,7 +574,7 @@ Finally, let's configure the **Reply to Email** node:
 
 ## Step 21 - Test: Run the full flow end-to-end (5 min)
 
-1. From your email client, compose an email to `**UiPathlabsdemo@uipath.com**` with subject `**WAD-[YourName]**`
+1. From your email client, compose an email to `**UiPathlabsdemo@uipath.com**` with subject `**inv-[YourName]**`
 2. Attach `**case-4-perfect-match-invoice.pdf**`
 3. Send it and watch the run
 
@@ -634,7 +634,7 @@ If required, also refresh the `Vendor_Contracts` index by selecting `Vendor_Cont
 Once successfully deployed, ensure that the email trigger has been created:
 
 1. Expand the **My workspace** folder node within the **My Folders** pane of Orchestrator
-2. Select the folder node that matches your Solution's name - for example, `WAD2026 Workshop`
+2. Select the folder node that matches your Solution's name - for example, `Invoice Processing Flow`
 3. Select the **Automations** tab within Orchestrator to show the automations published into that folder.
 4. Select the **Triggers** sub-tab within Automations to show your automation triggers
 5. Finally, select the **Event Triggers** sub-sub-tab to show your event-based triggers. Because your workflow is waiting on an email received event, your workflow projects show up here.
@@ -688,7 +688,7 @@ As you publish, you will notice that Studio auto-increments your version number 
 
 ### **Send additional invoices and observe their progress**
 
-With your flow running, send each to `**UiPathlabsdemo@uipath.com**` with subject `**WAD-[YourName]**` and the invoice PDF attached.
+With your flow running, send each to `**UiPathlabsdemo@uipath.com**` with subject `**inv-[YourName]**` and the invoice PDF attached.
 
 Now that it is running in Orchestrator, the automation should pick up the emails and process them automatically. As you wait for the automation to run, remember that the O365 email trigger runs every 5 minutes.
 
@@ -764,4 +764,4 @@ Explore the UiPath Platform at [https://uipath.com/developers/](https://uipath.c
 ---
 
 *Last updated: 2026-07-13 (synced with the UiPath Labs version delivered at WAD2026, 9 July 2026)*  
-*Solution version: 1.0.0 (WAD2026 Workshop)*
+*Solution version: 1.0.0 (Invoice Processing Flow)*

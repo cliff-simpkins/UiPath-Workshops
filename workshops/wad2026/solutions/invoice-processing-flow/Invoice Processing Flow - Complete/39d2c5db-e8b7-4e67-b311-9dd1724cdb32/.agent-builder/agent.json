@@ -1,0 +1,97 @@
+{
+  "version": "1.1.0",
+  "settings": {
+    "model": "anthropic.claude-sonnet-4-6",
+    "maxTokens": 16384,
+    "temperature": 0,
+    "engine": "basic-v2",
+    "maxIterations": 25,
+    "mode": "standard"
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "vendorName_invoice": {
+        "type": "string",
+        "description": "Bound from $vars.vendorName_invoice"
+      },
+      "scriptPrepareBrief__output": {
+        "type": "object",
+        "description": "Bound from $vars.scriptPrepareBrief.output"
+      },
+      "discrepancyInvestigatorAgent__output": {
+        "type": "object",
+        "description": "Bound from $vars.discrepancyInvestigatorAgent.output"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "required": [
+      "body"
+    ],
+    "properties": {
+      "body": {
+        "type": "string"
+      }
+    }
+  },
+  "metadata": {
+    "storageVersion": "50.0.0",
+    "isConversational": false,
+    "showProjectCreationExperience": false
+  },
+  "type": "lowCode",
+  "guardrails": [],
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an accounts payable assistant writing a vendor-facing email response. The recipient is the company that submitted the invoice. Write in a professional, external-facing tone.\r\n\r\nRules:\n- Write only the email body in HTML. No subject line.\n- Address the email to the vendor (invoice submitter), not an internal approver.\n- If approved: confirm the invoice was reviewed and approved for payment processing.\n- If escalated: let the vendor know their invoice was flagged for deeper review **and approved**, and **briefly** state why it was flagged.\n- If rejected: inform the vendor the invoice cannot be processed and **briefly** state why.",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": "You are an accounts payable assistant writing a vendor-facing email response. The recipient is the company that submitted the invoice. Write in a professional, external-facing tone.\r\n\r\nRules:\n- Write only the email body in HTML. No subject line.\n- Address the email to the vendor (invoice submitter), not an internal approver.\n- If approved: confirm the invoice was reviewed and approved for payment processing.\n- If escalated: let the vendor know their invoice was flagged for deeper review **and approved**, and **briefly** state why it was flagged.\n- If rejected: inform the vendor the invoice cannot be processed and **briefly** state why."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "- Vendor name:  {{input.vendorName_invoice}}\n- Brief:   {{input.scriptPrepareBrief__output}}\n- Full discrepancy investigation (if needed):  {{input.discrepancyInvestigatorAgent__output}}\n ",
+      "contentTokens": [
+        {
+          "type": "simpleText",
+          "rawString": "- Vendor name:  "
+        },
+        {
+          "type": "variable",
+          "rawString": "input.vendorName_invoice"
+        },
+        {
+          "type": "simpleText",
+          "rawString": "\n- Brief:   "
+        },
+        {
+          "type": "variable",
+          "rawString": "input.scriptPrepareBrief__output"
+        },
+        {
+          "type": "simpleText",
+          "rawString": "\n- Full discrepancy investigation (if needed):  "
+        },
+        {
+          "type": "variable",
+          "rawString": "input.discrepancyInvestigatorAgent__output"
+        },
+        {
+          "type": "simpleText",
+          "rawString": "\n "
+        }
+      ]
+    }
+  ],
+  "projectId": "39d2c5db-e8b7-4e67-b311-9dd1724cdb32",
+  "id": "39d2c5db-e8b7-4e67-b311-9dd1724cdb32",
+  "name": "Agent - Draft Email",
+  "resources": [],
+  "features": []
+}

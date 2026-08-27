@@ -2,13 +2,18 @@
 # Run from any directory — uses paths relative to this script's location.
 #
 # Downloads two solutions:
-#   wad2026-workshop      → WAD2026 Workshop (baa720e6-c392-44f3-2551-08decd1474e1)
-#   wad2026-workshop-hitl → WAD2026 Workshop - with HITL (17acfb56-034c-4561-bd44-905ae9c437fd)
+#   invoice-processing-flow → Invoice Processing Flow (29728918-7912-4e0a-85ef-b855457d072e)
+#   wad2026-workshop-hitl   → WAD2026 Workshop - with HITL (17acfb56-034c-4561-bd44-905ae9c437fd)
 #
 # Solution IDs above are on tenant WeAreDevelopers_2026_20260616 (content source of truth).
-# The 2026-07-08 event tenant (WeAreDevelopers_2026_Da_20260708) has its own copy:
-#   2ba309c1-3aec-494d-c9da-08dedcfa08d1 — swap into $Solutions if syncing from there.
 # Check the active tenant first: uip login status
+#
+# 2026-08-26: invoice-processing-flow replaced wad2026-workshop as the de-branded,
+# self-serve-ready solution (renamed + a couple of corrected node values in Studio
+# Web). wad2026-workshop (baa720e6-c392-44f3-2551-08decd1474e1) stays on disk as a
+# historical snapshot of the actual 8 July event but is no longer synced here.
+# The 2026-07-08 event tenant (WeAreDevelopers_2026_Da_20260708) has its own copy
+# of the old solution: 2ba309c1-3aec-494d-c9da-08dedcfa08d1.
 #
 # Usage:
 #   .devrel\scripts\sync-from-studio.ps1
@@ -21,7 +26,7 @@ param(
 )
 
 $Solutions = @(
-    @{ Id = "baa720e6-c392-44f3-2551-08decd1474e1"; Dir = "wad2026-workshop" },
+    @{ Id = "29728918-7912-4e0a-85ef-b855457d072e"; Dir = "invoice-processing-flow" },
     @{ Id = "17acfb56-034c-4561-bd44-905ae9c437fd"; Dir = "wad2026-workshop-hitl" }
 )
 
