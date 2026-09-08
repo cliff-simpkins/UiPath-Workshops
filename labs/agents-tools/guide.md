@@ -1,6 +1,6 @@
 # Adding Tools to Your UiPath Agent
 
-This lab builds part of **UiPathfinder**, a D&D-themed reference application on UiPath. It extends an agent built in the [Getting Started with UiPath Agents](../agents/guide.md) lab. You build a live API connector that searches the D&D 5e SRD (System Reference Document), then give your Monster Selector agent that connector as a tool. The agent uses it autonomously at runtime: deciding what to search for, calling the API, and selecting the best match from the results.
+This lab builds part of **UiPathfinder**, an RPG Adventure system built on UiPath for a fictional Adventurer's Guild. It extends an agent built in the [Getting Started with UiPath Agents](../agents/guide.md) lab. You build a live API connector that searches the 5e SRD (System Reference Document), then give your Monster Selector agent that connector as a tool. The agent uses it autonomously at runtime: deciding what to search for, calling the API, and selecting the best match from the results.
 
 By the end you will have `UiPathfinder.QuestParser`: an agent that receives only a quest description, decides what to search for, calls the Monster Query tool, and returns the selected monster's key fields, with no pre-populated list required.
 
@@ -8,7 +8,7 @@ Without a tool, the agent depends on the caller to pre-fetch candidates and pass
 
 You will do the following:
 
-1. Build a Monster Query API Workflow that calls the D&D 5e SRD.
+1. Build a Monster Query API Workflow that calls the 5e SRD.
 2. Connect it to your Monster Selector agent as a tool.
 3. Update the agent contract to reflect the new capability.
 4. Test the full tool-using agent end-to-end.
@@ -19,12 +19,12 @@ You will do the following:
 
 | Component | Details |
 | --- | --- |
-| **API Workflow** | Accepts `searchName` (string), calls the Open5e D&D 5e SRD API, returns `monsterResults` array |
+| **API Workflow** | Accepts `searchName` (string), calls the Open5e 5e SRD API, returns `monsterResults` array |
 | **Agent input: `questDescription`** | `string`; the quest description. The agent fetches its own candidates via the tool |
-| **Agent output: `monsterIndex`** | `string`; slug identifier of the selected monster |
+| **Agent output: `monsterIndex`** | `string`; the API's `key` identifier for the selected monster, for example `srd_goblin` |
 | **Agent output: `monsterName`** | `string`; display name of the selected monster |
-| **Agent output: `monsterType`** | `string`; creature type (for example, beast, undead, dragon) |
-| **Agent output: `monsterCr`** | `string`; challenge rating |
+| **Agent output: `monsterType`** | `string`; creature type (for example, beast, undead, dragon). The API returns this as an object, so the agent reads `type.name` |
+| **Agent output: `monsterCr`** | `string`; challenge rating. The API returns a number, such as `0.25`, which the agent renders as text |
 | **Agent output: `monsterReasoning`** | `string`; the agent's explanation of why it selected this monster for the quest |
 
 * * *
@@ -44,7 +44,7 @@ uip --version
 - **Studio Web** - runs in your browser; no desktop installation required. Open [Studio Web](https://cloud.uipath.com) in Chrome, Edge, or Firefox before starting.
 - **UiPath account** - sign up or log in to [UiPath Automation Cloud](https://cloud.uipath.com) before starting.
 - **Node.js 18+** - required to install the UiPath CLI. Install from [nodejs.org](https://nodejs.org/) if needed.
-- **UiPath CLI v1.1+** - required to deploy the starter. Check with `uip --version`.
+- **UiPath CLI v1.198.0+** - required to deploy the starter. Check with `uip --version`; install or upgrade with `npm install -g @uipath/cli`.
 - **A Monster Selector agent in Studio Web** - this lab builds on the agent from [Getting Started with UiPath Agents](../agents/guide.md). If you completed that lab, your agent is already there. If not, deploy the starter:
 
 <!-- test:manual reason="requires git clone and uip login before starter upload" -->
@@ -61,15 +61,17 @@ Open [Studio Web](https://cloud.uipath.com) and confirm **MonsterSelector** appe
 
 ## Step 1 - Build the Monster Query API workflow
 
-An API Workflow is a lightweight workflow published as an API endpoint. You build one that wraps the [Open5e](https://open5e.com/) D&D 5e SRD monster search: one input, one HTTP request, one output. Once published, it appears in the agent builder as a tool your agent can call.
+An API Workflow is a lightweight workflow published as an API endpoint. You build one that wraps the [Open5e](https://open5e.com/) 5e SRD monster search: one input, one HTTP request, one output. Once published, it appears in the agent builder as a tool your agent can call.
 
 This step has six sub-steps; budget 10–15 minutes to complete it.
 
 ### Create a new API workflow project
 
-Select **Create New** from your Cloud Workspace and choose **API Workflow** as the project type.
+Select **Create New** from your Cloud Workspace. In the **Start building** dialog, choose **API Workflow** under **Task automation**.
 
-![Studio Web new project dialog with API Workflow type selected](images/agents-tools-step-01a.png)
+Selecting the type creates the project immediately, with no name prompt, so you rename it in the next step.
+
+![Start building dialog opened from Create New, with API Workflow listed under Task automation](images/agents-tools-step-01a.png)
 
 Rename the solution and the default workflow. Open the context menu for each name in the project explorer and select **Rename**:
 
@@ -96,34 +98,39 @@ Add one output argument:
 
 ### Add the HTTP request
 
-1. In the workflow canvas, select **+** between activities to open the activity menu. Select **HTTP Request**.
+1. In the workflow canvas, select **+** between activities to open the activity menu. Select **HTTP**. The activity appears on the canvas as **HTTP Request**.
 2. Open the activity context menu and select **Rename**. Name it `HTTP Request - Open5e Monster Query`.
-3. In the **Properties** pane, set **Authentication** to **Manual authentication**.
-4. Set **Method** to **GET**.
-5. Set **URL** to `https://api.open5e.com/v1/monsters/`.
-6. Rename the activity output to `searchResults`.
+3. In the **Properties** pane, confirm **Authentication** is **Manual authentication** and **Method** is **GET**. Both are the defaults on a new activity, so there is normally nothing to change.
+4. Set **URL** to `https://api.open5e.com/v2/creatures/`.
+5. Rename the activity output to `searchResults`.
 
-![HTTP Request configured with name, method, and URL](images/agents-tools-step-01f.png)
+![HTTP Request properties with Authentication set to Manual authentication, Method GET, and URL https://api.open5e.com/v2/creatures/](images/agents-tools-step-01f.png)
 
-**Set the Query Parameters property:**
+**Set the Query parameters property:**
 
-Open the **Query Parameters** property and add the following fields:
+Open the **Query parameters** property, which opens a **Dictionary editor** with Key and Value columns, and add the following fields:
 
 | Key | Value |
 | --- | --- |
-| `name__icontains` | `@searchName` |
-| `document__slug` | `wotc-srd` |
+| `name__icontains` | the `searchName` input argument - see the warning below |
+| `document__key` | `srd-2014` |
 | `limit` | `10` |
-| `fields` | `slug,name,desc,type,size,cr,challenge_rating,alignment,v2_converted_path` |
+| `fields` | `key,name,type,size,challenge_rating,alignment` |
+
+> **Warning: `name__icontains` takes the `searchName` variable, and you must pick it from the variable picker rather than type it.** In the value field, type `@` to open the picker and select **searchName**. The field then renders the value as a chip, and the stored value is `$input.searchName`.
+>
+> Typing `@searchName` as plain text does **not** resolve to the variable. It is sent to the API as the literal string `@searchName`, which returns HTTP 200 with zero results while every node on the canvas stays green. If your workflow succeeds but finds no monsters, check this field first and confirm it renders as a chip.
 
 What each parameter does:
 
 - `name__icontains`: case-insensitive partial match; `dragon` returns "Adult Red Dragon", "Young Blue Dragon", and others
-- `document__slug: wotc-srd`: filters to the official D&D 5e SRD; without it, results include third-party homebrew content
+- `document__key: srd-2014`: filters to the official 5e SRD; without it, results include every publisher in the database, third-party content included
 - `limit: 10`: caps candidates at 10; enough for the agent to reason over without flooding its context
-- `fields`: limits the response to only the fields the agent needs; the full Open5e monster object is much larger and would waste token budget
+- `fields`: limits the response to only the fields the agent needs; the full v2 creature object is much larger and would waste token budget
 
-![Query Parameters configured with all four fields](images/agents-tools-step-01h.png)
+> **Warning: Open5e ignores query parameters it does not recognize, and returns HTTP 200 anyway.** Misspell `document__key`, or use the v1 spelling `document__slug`, and the filter is silently dropped: the call succeeds, the run is green, and the agent receives creatures from every publisher instead of the SRD. A `goblin` search returns 2 results with the filter applied and 29 without it, so check that the result count looks like a handful rather than a catalogue.
+
+![Dictionary editor showing the four query parameters, with name__icontains bound to the searchName chip and document__key set to srd-2014](images/agents-tools-step-01h.png)
 
 ### HTTP Request property reference
 
@@ -132,14 +139,14 @@ The activity exposes the standard HTTP building blocks. Most you will configure 
 - **Authentication**: pre-built options for OAuth 2.0, API key, and Basic auth. Set to "Manual authentication" here because Open5e requires none. For authenticated APIs, choose the appropriate option and supply credentials.
 - **Headers**: key/value pairs sent with every request. Common uses: `Authorization: Bearer <token>` for token-based APIs, `Accept: application/json` to control response format, and API versioning headers.
 - **Body**: used with POST, PUT, and PATCH requests to send JSON, form data, or raw content. Not applicable for GET requests, which carry parameters in the URL via query parameters.
-- **Query Parameters**: key/value pairs appended to the URL. The `@variableName` syntax references workflow arguments by name; `@searchName` pulls in the `searchName` input argument defined in the Data Manager. See [configuring activities](https://docs.uipath.com/studio-web/automation-cloud/latest/user-guide/configuring-activities) for more on variables and expressions in Studio Web.
-- **Output (renamed to `searchResults`)**: receives the full HTTP response including status code, headers, and body. Renaming from the default keeps the Set Response expression readable.
+- **Query parameters**: key/value pairs appended to the URL. To reference a workflow argument, type `@` to open the variable picker and select the argument - the field stores `$input.<name>` and displays it as a chip. `@` is the picker's trigger character, not a reference syntax you can type out. See [configuring activities](https://docs.uipath.com/studio-web/automation-cloud/latest/user-guide/configuring-activities) for more on variables and expressions in Studio Web.
+- **Output (renamed to `searchResults`)**: receives the full HTTP response including status code, headers, and body. Renaming from the default keeps the Response expression readable.
 
 ### Add the response
 
-1. In the workflow canvas, select **+** after the HTTP Request and select **Set Response**.
+1. In the workflow canvas, select **+** after the HTTP Request and select **Response**.
 
-   Set Response defines what the API Workflow returns to its caller (in this case, what the agent's tool receives when it invokes the workflow). Whatever you put in the response body here becomes the tool output the agent reasons over.
+   The Response activity defines what the API Workflow returns to its caller (in this case, what the agent's tool receives when it invokes the workflow). Whatever you put in the response body here becomes the tool output the agent reasons over.
 
 2. Set the response body to:
 
@@ -151,7 +158,7 @@ The activity exposes the standard HTTP building blocks. Most you will configure 
 
 `$context.outputs` contains every named output from the activities in this workflow. `searchResults` is the output variable you renamed on the HTTP Request activity; `.content.results` navigates into the response envelope that Open5e wraps its data in, down to the actual array of monster entries. For more information, check out [the UiPath documentation on using Javascript to access workflow data](https://docs.uipath.com/studio-web/automation-cloud/latest/user-guide/managing-api-workflows#accessing-data-using-javascript).
 
-![Set Response configured with monsterResults mapping](images/agents-tools-step-01j.png)
+![Response activity with monsterResults mapped to the searchResults content array](images/agents-tools-step-01j.png)
 
 ### Test the workflow
 
@@ -159,9 +166,9 @@ The activity exposes the standard HTTP building blocks. Most you will configure 
 2. In the input panel, set `searchName` to `dragon` or `goblin` and run the workflow.
 3. Verify the response includes a `monsterResults` array with monster entries before continuing.
 
-A successful response contains up to 10 entries, each with fields like `name`, `type`, `cr`, and `slug`. If you see an empty array, try a different search term; not every creature name has an exact match in the SRD.
+A successful response contains up to 10 entries, each with `key`, `name`, `alignment`, and `challenge_rating`, plus nested `type` and `size` objects. Searching `goblin` returns Goblin and Hobgoblin. If you see an empty array, try a different search term; not every creature name has an exact match in the SRD.
 
-![Debug output showing monsterResults array with entries](images/agents-tools-step-01l.png)
+![Debug output showing the monsterResults array with key srd_goblin, challenge_rating 0.25, and nested type and size objects](images/agents-tools-step-01l.png)
 
 ### Publish to your feed
 
@@ -186,7 +193,7 @@ In Studio Web, navigate to your **MonsterSelector** solution and open it in the 
 Take a moment to orient on its current state before making changes:
 
 - **Input:** `questDescription` (string) and `monsters` (array of candidates passed in by the caller)
-- **Output:** `monsterIndex` (string): the slug of the chosen monster
+- **Output:** `monsterIndex` (string): the `key` of the chosen monster, for example `srd_goblin`
 - **System prompt:** instructs the agent to pick the best match from the provided list
 
 In this lab you remove the `monsters` input and the requirement to pre-populate candidates. The agent fetches them itself using the tool you just built.
@@ -200,10 +207,12 @@ In this lab you remove the `monsters` input and the requirement to pre-populate 
 Make sure you are on the **Canvas** view: use the **Canvas / Form** toggle at the top of the agent builder. The **+** button under Tools is only visible in Canvas view.
 
 1. On the agent canvas, select **+** under **Tools**.
-2. From the **Toolbox** panel, select **API workflow**.
-3. From the **Available resources** panel, select the workflow you created in Step 1.
+2. In the **Choose tool** panel, select **API workflow** under **Toolbox**.
+3. Under **Available resources**, select the workflow you created in Step 1.
 
-> **Available resources is empty?** The workflow must be published before it appears here. Return to Step 1 and complete the **Publish to your feed** sub-step, then come back and try again.
+   Your workflow is listed by its **project** name, nested under a `<workspace>/<solution>` folder line - so if you renamed the solution in Step 1, look for `API Query - 5e Monsters`, not the solution name. You can also filter with the **Search API workflows** box above the list.
+
+> **Available resources empty, or showing "No tools found"?** The workflow must be published before it appears here. Return to Step 1 and complete the **Publish to your feed** sub-step, then come back and try again.
 
 ![Choose tool panel showing API workflow selected and Available resources list](images/agents-tools-step-03a.png)
 
@@ -212,7 +221,7 @@ Make sure you are on the **Canvas** view: use the **Canvas / Form** toggle at th
 Give the tool a name and description. The description is what the agent reads at runtime to decide when and how to call the tool; write it as an instruction to the agent, not a label for humans:
 
 - **Name:** `Monster Query`
-- **Description:** `Searches the D&D 5e SRD for monsters matching a name or creature type. Returns up to 10 candidates with name, type, CR, size, alignment, and description. Call this tool when you need to find monster candidates for a quest.`
+- **Description:** `Searches the 5e SRD for monsters matching a name or creature type. Returns up to 10 candidates with key, name, type, size, challenge rating, and alignment. Call this tool when you need to find monster candidates for a quest.`
 
 > **The description drives tool selection.** The agent reads this description — not the tool name — to decide when and how to call the tool. A vague description produces vague tool use. Be specific about what the tool returns and when to use it.
 
@@ -236,6 +245,9 @@ To remove the `monsters` property:
 2. The **Data Manager** panel has three groupings: **Inputs**, **Outputs**, and **Variables**; `monsters` should be in the **Inputs** list.
 3. Point to `monsters` to reveal the edit and delete icons to the right of the label: a pencil icon (**edit**) and a trashcan icon (**delete**).
 4. Select the delete icon to remove `monsters`.
+5. Open the agent's **Properties** panel and remove the now-dangling `monsters` reference from the **User prompt**: select the **x** on the `monsters` chip. The User prompt should be left with only the `questDescription` chip.
+
+> **Warning: Deleting the input does not clear the prompt that references it.** After step 4 the **User prompt** still carries a `monsters` chip, which Studio Web renders in red and flags with an error badge on **Inputs**. The agent will not run until you remove that chip, so do not skip step 5.
 
 You should now only have one input: `questDescription`:
 
@@ -269,7 +281,7 @@ Within the same **Data Manager** panel:
 To open the **Properties** panel, select the agent on the canvas or select the wrench icon in the upper-right corner. Replace the system message with:
 
 ```text
-You are a quest classifier for an adventurer's guild. Given a quest description, your job is to find the most thematically appropriate monster from the D&D 5e SRD and to return information about that monster.
+You are a quest classifier for an adventurer's guild. Given a quest description, your job is to find the most thematically appropriate monster from the 5e SRD and to return information about that monster.
 
 When given a quest description:
 1. Analyze the quest to determine what kind of creature fits the context - consider creature type, challenge rating, environment, and theme.
@@ -290,7 +302,7 @@ With the tool connected and the agent contract updated, you are ready to test th
 
 ## Step 5 - Test end-to-end
 
-Open the **Test** panel using the toolbar at the top of the agent builder. Enter a quest description:
+Select **Debug** from the toolbar at the top of the agent builder. In the **Debug configuration** dialog, open the **Entrypoint arguments** tab and enter a quest description, then select **Save & Debug**:
 
 ```text
 The villagers report a massive creature has been destroying farms on the edge of the forest at night.
@@ -308,11 +320,13 @@ You should see:
 2. The tool returns a list of candidates.
 3. The agent selects the best match and returns the five output fields.
 
-![Execution Trail showing agent calling Monster Query tool with search term](images/agents-tools-step-05c.png)
+Select the **HTTP Request - Open5e Monster Query** span to see the request the tool actually sent: the `v2/creatures/` URL, the search term the agent chose in `name__icontains`, and the `document__key` and `fields` values you configured in Step 1. The response below it carries the `key` identifier for each candidate.
 
-Verify the output contains all five fields: `monsterIndex`, `monsterName`, `monsterType`, `monsterCr`, and `monsterReasoning`. The `monsterReasoning` field should explain why the agent chose this monster for the quest.
+![Execution trace with the HTTP Request span selected, showing the v2/creatures URL, the query parameters, and a results entry keyed srd_cloud-giant](images/agents-tools-step-05c.png)
 
-![Test output panel showing all five fields populated](images/agents-tools-step-05d.png)
+Verify the output contains all five fields: `monsterIndex`, `monsterName`, `monsterType`, `monsterCr`, and `monsterReasoning`. `monsterIndex` is the API's `key`, so it carries the `srd_` prefix - for example `srd_giant-ape`. The `monsterReasoning` field should explain why the agent chose this monster for the quest.
+
+![Agent output showing all five fields populated, with monsterIndex srd_giant-ape and a full monsterReasoning explanation](images/agents-tools-step-05d.png)
 
 * * *
 
@@ -320,7 +334,7 @@ Verify the output contains all five fields: `monsterIndex`, `monsterName`, `mons
 
 You have built the first component of UiPathfinder:
 
-- Built a live API connector that searches the D&D 5e SRD: one input, one HTTP request, one output.
+- Built a live API connector that searches the 5e SRD: one input, one HTTP request, one output.
 - Connected it to your agent as a tool with a single selection in the agent builder.
 - The agent now decides autonomously when to call the tool, what to search for, and which candidate best fits the quest.
 

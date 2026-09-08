@@ -213,7 +213,7 @@ The JSON below implements the design from [What you are building](#what-you-are-
       },
       "monsters": {
         "type": "array",
-        "description": "Candidate monsters from the D&D 5e API"
+        "description": "Candidate monsters from the 5e SRD API"
       }
     },
     "required": ["questDescription", "monsters"]
@@ -286,7 +286,7 @@ The JSON below defines a single `agent` entry point, which you call in the steps
           },
           "monsters": {
             "type": "array",
-            "description": "Candidate monsters from the D&D 5e API"
+            "description": "Candidate monsters from the 5e SRD API"
           }
         },
         "required": ["questDescription", "monsters"]
@@ -422,7 +422,7 @@ Key commands from this lab:
 
 ## What's next
 
-- [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) - extend Monster Selector with a tool that calls the D&D 5e API directly, removing the `monsters[]` input and letting the agent decide what to search for.
+- [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) - extend Monster Selector with a tool that calls the 5e SRD API directly, removing the `monsters[]` input and letting the agent decide what to search for.
 - **Orchestration patterns** *(future lab)*: your agent is callable from UiPath Flow projects, API workflows, and other agents.
 - [UiPath Agents documentation](https://docs.uipath.com) - full reference for low-code and coded agent capabilities.
 - [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion
@@ -433,4 +433,4 @@ Key commands from this lab:
 >
 > For example, to recreate the Monster Selector agent you just built above:
 >
-> *"Create a low-code UiPath agent named MonsterSelector. Input schema: `questDescription` (string, "Description of the quest") and `monsters` (array, "Candidate monsters from the D&D 5e API"). Output schema: `monsterIndex` (string, "The index slug of the chosen monster"). System prompt: 'You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.' Validate and upload."*
+> *"Create a low-code UiPath agent named MonsterSelector. Input schema: `questDescription` (string, "Description of the quest") and `monsters` (array, "Candidate monsters from the 5e SRD API"). Output schema: `monsterIndex` (string, "The index slug of the chosen monster"). System prompt: 'You are an RPG game master helping to select the most thematically appropriate monster for a quest. Given a quest description and a list of candidate monsters (each with a name and an index slug), pick the ONE monster whose lore, environment, or threat level best fits the quest. Return ONLY the index slug of your chosen monster. Do not return the full object or any commentary - just the string slug. If multiple candidates fit, favor the most iconic or thematically resonant choice.' Validate and upload."*
