@@ -4,14 +4,32 @@ In this lab, you will install the UiPath CLI and coding agent skills, then use y
 
 1. Install the UiPath CLI and coding agent skills.
 2. Scaffold a local project and build a LangGraph agent guided by skills.
-3. Run and evaluate the agent locally.
-4. Connect the project to UiPath Studio Web and push your first version.
+3. Add a live external lookup tool to the agent.
+4. Run and evaluate the agent locally.
+5. Connect the project to UiPath Studio Web and push your first version.
 
 By the end, you will have a working LangGraph agent built through your coding agent, guided by UiPath skills, with evaluation traces flowing to Studio Web.
 
-There are a few approaches to create UiPath agents. This uses the LangGraph SDK; you can also create agents using the [low-code Agent Builder](../agents-lowcode/guide.md) and using the [UiPath CLI](../agents/guide.md).
+There are three approaches to create UiPath agents. This uses the LangGraph SDK; you can also create agents using the [low-code Agent Builder](../agents-lowcode/guide.md) and using the [UiPath CLI](../agents/guide.md).
 
 **Estimated time:** 45–60 minutes
+
+## What you are building
+
+This lab walks you through building a **quest intake classifier** for a fictional adventurer's guild: a coded LangGraph agent that reads a quest description and sorts it into one of four difficulty tiers.
+
+It starts as a simple, single-node classifier so the focus stays on the CLI workflow, not the domain logic. Then you give it a tool so it can check its answer against a live external API before finalizing a tier, instead of guessing from vibes alone.
+
+Here is the full design of what you are building:
+
+| Component | Details |
+| --- | --- |
+| **Input: `description`** | `string`; the incoming quest description |
+| **Output: `tier`** | A `Literal` type constrained to exactly `"Trivial"`, `"Standard"`, `"Heroic"`, or `"Legendary"`, not a plain string, so the model cannot emit an out-of-vocabulary tier |
+| **Output: `reasoning`** | `string`; the agent's explanation for the tier it chose |
+| **Tool: `get_challenge_rating`** | A LangGraph tool, called only when a quest names or implies a specific creature, that looks up its challenge rating from the [Open5e System Reference Document (SRD) API](https://open5e.com/api-docs) and cites it in the reasoning |
+
+> **Why add a tool at all?** A driving reason to run a LangGraph agent on UiPath, instead of a low-code agent, is complex Python logic that can call out to external systems, not just classify text. The tool step in this lab demonstrates that: the agent decides at runtime whether a quest needs verification, calls a live API, and reasons over the result.
 
 * * *
 
@@ -27,7 +45,7 @@ node --version
 uv --version
 ```
 
-- **CLI version** - validated against UiPath CLI v1.1.0 (installed in Step 1). Different versions may behave differently; report drift with `uip feedback send`.
+- **CLI version** - validated against UiPath CLI v1.201.0 (installed in Step 1). Different versions may behave differently; report drift with `uip feedback send`.
 - **UiPath account** - sign up or log in to [UiPath Automation Cloud](https://cloud.uipath.com) before starting.
 - **Node.js 18+** - required to install the UiPath CLI. Check with `node --version`. Download from [nodejs.org](https://nodejs.org/) if needed.
 - **VS Code** with a coding agent (Claude Code, Copilot, or Cursor). The lab instructions use Claude Code, but any supported coding agent will work.
@@ -45,7 +63,7 @@ No existing knowledge of UiPath is required for this lab, but it will make it go
 
 > **Two "agents" in this lab.** "Coded agent" is UiPath's term for a Python agent deployed on the platform; this lab builds one using the LangGraph SDK. The lab instructions also reference your "coding agent" (Claude Code, Copilot, Cursor) to help write the Python code.
 >
-> When the instructions say "ask your coding agent," they mean your IDE assistant. When they say "run the agent" or "your LangGraph agent," they mean the UiPath agent being built.
+> When the instructions say "ask your coding agent," they mean your integrated development environment (IDE) assistant; when they say "run the agent" or "your LangGraph agent," they mean the UiPath agent being built.
 
 # Set up your environment
 
@@ -67,7 +85,7 @@ The [UiPath CLI](https://docs.uipath.com/uipath-cli/standalone/latest/user-guide
    uip --version
    ```
 
-   You should see a version number like `1.1.0`.
+   You should see a version number like `1.201.0`.
 
 3. Install the coded agent tool: this adds the `uip codedagent` command group used throughout this lab:
 
@@ -102,42 +120,9 @@ uip skills install --agent claude
 
 If you are using a different coding agent, replace `claude` with your agent: `cursor`, `copilot`, `gemini`, or `codex`.
 
-The command emits JSON listing the installed skills. The skill catalog grows with each CLI release; your output may include more skills than shown here. The following reflects CLI v1.1.0:
+The command reports success along with the number of skills installed (26 as of this writing). The exact list grows with each CLI release, so do not worry if yours differs.
 
-```json
-{
-  "Result": "Success",
-  "Code": "SkillsInstall",
-  "Data": {
-    "RootDir": "C:\\Users\\<you>",
-    "Skills": [
-      "uipath-agents",
-      "uipath-coded-apps",
-      "uipath-data-fabric",
-      "uipath-diagnostics",
-      "uipath-feedback",
-      "uipath-gov-access-policy",
-      "uipath-gov-aops-policy",
-      "uipath-human-in-the-loop",
-      "uipath-interact",
-      "uipath-maestro-case",
-      "uipath-maestro-flow",
-      "uipath-planner",
-      "uipath-platform",
-      "uipath-review",
-      "uipath-rpa",
-      "uipath-rpa-legacy",
-      "uipath-solution-design",
-      "uipath-tasks",
-      "uipath-test"
-    ],
-    "Agents": ["claude"],
-    "Installed": 19
-  }
-}
-```
-
-The skills are installed globally to your home directory (for example, `~/.claude/skills/` for Claude Code). They are available in every project from this point forward.
+For Claude Code specifically, skills are registered through a Claude Code plugin marketplace in addition to being copied to your home directory (for example, `~/.claude/skills/`). They are available in every project from this point forward. If a re-install looks stale or skills don't show up in your coding agent, re-run the install with `--force`, which resets the Claude Code marketplace registration and plugin cache.
 
 <!-- screenshot: step-02.png - terminal showing skills install output -->
 
@@ -254,33 +239,39 @@ The project has a placeholder entry point at this stage. Re-run `init` in Step 5
 
 This is where the UiPath skills pay off. Open your coding agent and prompt it to create the agent logic. The prompt below is short: it describes what the agent should do, not how to build it.
 
-The `uipath-agents` skill your coding agent has installed already knows the LangGraph integration patterns, correct SDK imports, Pydantic schema conventions, and the lazy LLM initialization requirement (the LLM client must be initialized inside the node function, not at module load time — UiPath's container runtime does not support module-level LLM objects; see the [SDK quick start](https://uipath.github.io/uipath-python/langchain/quick_start/) for a working example). Without skills, you would need to specify all of that in the prompt itself.
+The `uipath-agents` skill your coding agent has installed already knows the LangGraph integration patterns, correct SDK imports, Pydantic schema conventions, and relevant SDK requirements. Without these skills, you would need to specify all of this in the prompt itself.
 
 <!-- test:manual reason="Coding agent prompt - non-deterministic generation, requires human IDE interaction" -->
 Use the following prompt (or adapt it to your use case):
 
-```
-Create a UiPath coded agent using LangGraph.
+```text
+Update main.py to implement this UiPath coded agent using LangGraph as a single-node graph with no tools and no retry or error-handling logic.
 
-The agent is a quest intake classifier for a D&D adventurer's guild. Given a
+The agent is a quest intake classifier for a fantasy adventurer's guild. Given a
 description of an incoming quest, it classifies the difficulty as one of four tiers:
 - Trivial: Simple errands anyone can handle (e.g., deliver a letter, clear rats from a cellar)
 - Standard: Moderate quests requiring some skill (e.g., escort a merchant caravan)
 - Heroic: Difficult quests requiring significant expertise (e.g., slay a wyvern, infiltrate a thieves' guild)
 - Legendary: Extreme quests requiring top-tier heroes and special approval (e.g., defeat a lich, close a planar rift)
 
-Return the classification tier and a brief reasoning.
-
-Use these exact field names in the State schema:
+Return the classification tier and a brief reasoning. Use these exact field names in the State schema:
 - Input field: `description` (string)
-- Output fields: `tier` (string) and `reasoning` (string)
+- Output fields: `tier` (a Literal type constrained to exactly "Trivial", "Standard", "Heroic", "Legendary" — not a plain string, so the model can't emit an out-of-vocabulary tier) and `reasoning` (string)
 
-Create a langgraph.json and an input.json with a sample D&D quest for testing.
+Update the existing langgraph.json to point at the new graph, and create an input.json with this exact sample quest: {"description": "Clear the rats out of the inn cellar"}.
+
+Only touch main.py, langgraph.json, and input.json.
+
+Don't run any uip codedagent commands or otherwise verify that the agent runs — I will do this myself.
 ```
+
+> **Why this prompt is so specific.** It names the exact files to touch and tells the coding agent not to run any `uip codedagent` commands or verify its own work. That's deliberate here: the rest of this lab exercises those same CLI commands directly in the next steps, so verification is left to you instead of the coding agent running it first.
+
+The prompt above is a good template to start from in your own projects, but you should remove the last two sentences to enable the coding agent to test its work and organize files to its own judgment.
 
 > **Coding agents are non-deterministic.** Your generated code will differ from any examples shown here; that is expected. What matters is that `main.py` runs without errors and returns a classification.
 
-> **Delivery question:** If your coding agent presents a 'Delivery' question (Studio Web, local dev server, or skip), select **Skip - I'm done** for now. Connect to Studio Web in Step 9.
+And note that if your coding agent presents a 'Delivery' question (Studio Web, local dev server, or skip), select **Skip - I'm done** for now. Connect to Studio Web in Step 10.
 
 After the coding agent finishes, re-run init to pick up the updated entry points from the new Pydantic schemas:
 
@@ -305,9 +296,7 @@ authors = [{ name = "Your Name" }]
 
 * * *
 
-With the agent running locally and the entry points registered, you are ready to run it and build an evaluation set in the next section.
-
-# Evaluate the agent
+With the agent running locally and the entry points registered, you are ready to run it in the next step.
 
 ## Step 6 - Run the agent locally
 
@@ -327,7 +316,7 @@ You can also pass input inline. These examples use Bash single-quote syntax; if 
 uip codedagent run agent '{"description": "Clear the rats out of the inn cellar"}'
 ```
 
-Try a few different inputs to verify the classifications make sense:
+Try your own inputs to verify the classifications make sense, for example:
 
 <!-- test:manual reason="requires built agent project" -->
 ```bash
@@ -338,42 +327,98 @@ uip codedagent run agent '{"description": "Slay the ancient red dragon terrorizi
 
 * * *
 
-## Step 7 - Create evaluation tests
+With the agent classifying correctly, you are ready to give it something to verify its answers against.
 
-Evaluations test how well your agent performs across a range of inputs. The `uipath-agents` skill includes the complete evaluation framework reference: evaluator types, eval set schema, directory structure conventions, and best practices like using `gpt-4.1` (not mini) for LLM judge evaluators. Your coding agent uses this to produce correct evaluator configs and test sets from a short prompt.
+# Add a tool
+
+## Step 7 - Add a live lookup tool
+
+Right now the agent is guessing from vibes: nothing it says about a dragon or a goblin is checked against anything real. To improve the accuracy of the classifier, let's add a tool to verify quest information before finalizing a tier recommendation. To do this, the tool will use the [Open5e API](https://open5e.com/api-docs) to search for creatures published under the 5e System Reference Document (SRD).
+
+This is standard LangGraph, not a UiPath-specific trick: a plain Python function decorated with `@tool`, bound to the model, and the model decides at runtime whether calling it is worth it. Your coding agent wires up that binding syntax for you.
+
+<!-- test:manual reason="Coding agent prompt - non-deterministic generation, requires human IDE interaction" -->
+Ask your coding agent:
+
+```text
+Update main.py to add one Python tool to the existing LangGraph agent: a function that looks up a monster's challenge rating from the Open5e SRD API and uses it to inform the difficulty tier.
+
+Tool behavior:
+- Query GET https://api.open5e.com/v2/creatures/ using the `requests` library (already available as a transitive dependency; add it directly with `uv add requests` only if the import fails), with query parameters: name__icontains=<creature name or type the model supplies>, document__key__in=srd-2024, limit=10, fields=key,name,type,size,challenge_rating,alignment
+- Set a 10-second timeout on the request, and call raise_for_status() before reading the response body — this is a live external API call, so it should fail fast with a clear error instead of hanging or raising a confusing KeyError if Open5e is slow or returns a non-200 response.
+- If the response has zero results, return that as-is — nothing further to do.
+- If the response has more than one result, return the full list and let the agent pick the best match rather than guessing which one is correct.
+- Bind the tool with the standard LangChain @tool decorator. Let the model decide when to call it based on the tool's description — don't force a call on every input.
+- Name the tool function `get_challenge_rating`.
+- In the tool's docstring, describe what counts as a creature in the abstract — don't include a named example creature (e.g., avoid phrasing like "e.g. goblin, young red dragon"). A concrete example name in the docstring can get echoed back by the model as a spurious lookup for a creature that isn't actually in the quest.
+
+Update the system prompt so that:
+- The agent calls this tool whenever the quest description names or strongly implies a specific creature.
+- Only call the tool for creatures explicitly named or strongly implied in the quest description — never for other creatures used as a comparison or reference point.
+- When a `challenge_rating` comes back, the agent uses it to inform the tier classification and cites it explicitly in the `reasoning` output field. Do not fabricate or guess a challenge rating from memory — only cite one that actually came from the tool's response.
+- If no tool call happens, or the tool returns zero results, the agent classifies using its existing judgment, same as before.
+- Don't add new output fields. The State schema stays `tier` and `reasoning` only — the challenge rating goes into the reasoning text, not a new field.
+
+Only touch main.py.
+
+Don't run any uip codedagent commands or otherwise verify that the agent runs — I will do this myself.
+```
+
+> **Why this prompt is so specific.** As in Step 5, the file scoping and the instruction not to run or verify anything is deliberate: the next commands in this lab exercise the tool directly, so verification is left to you.
+
+As you adapt the prompt to your own work, you are again advised to remove the last two sentences to fully enable your coding agent to exercise your code.
+
+> **Coding agents are non-deterministic.** Your generated tool code will differ from any examples shown here; that is expected. What matters is that `main.py` still runs without errors and calls the tool only when a creature is named.
+
+This tool does not add or change any input or output fields, so there is no need to re-run `uip codedagent init` this time. Only re-run it when your Input/Output models change.
+
+Re-run the dragon example from Step 6:
+
+<!-- test:manual reason="requires tool added by coding agent in prior step" -->
+```bash
+uip codedagent run agent '{"description": "Slay the ancient red dragon terrorizing the countryside"}'
+```
+
+Watch the trace this time: the agent calls the SRD lookup, gets back a real challenge rating, and cites it in its reasoning instead of just asserting Legendary. That's the difference between a text classifier and an agent that can go verify itself.
+
+<!-- screenshot: step-07.png - terminal/trace output showing the SRD lookup tool call and the cited challenge rating -->
+
+* * *
+
+With the tool wired in, you are ready to test that the agent uses it correctly and scores well across a range of inputs.
+
+# Evaluate the agent
+
+## Step 8 - Create evaluation tests
+
+Evaluations test how well your agent performs across a range of inputs, including whether it calls your new tool at the right moments. The `uipath-agents` skill includes the complete evaluation framework reference: evaluator types, eval set schema, directory structure conventions, and best practices like using `gpt-4.1` (not mini) for LLM judge evaluators. Your coding agent uses this to produce correct evaluator configs and test sets from a short prompt.
 
 <!-- test:manual reason="Coding agent prompt - non-deterministic generation" -->
 Ask your coding agent:
 
-```
+```text
 Create an evaluation set for the intake classifier agent with 5 test cases:
 
-1. A clearly trivial request (e.g., delivering a letter)
-2. A standard request (e.g., escort a caravan)
-3. A heroic request (e.g., clear a goblin stronghold)
-4. A legendary request (e.g., slay a dragon)
-5. An edge case with ambiguous difficulty
+1. A clearly trivial request (e.g., deliver a letter) - no creature named, get_challenge_rating should not be called
+2. A standard request (e.g., escort a caravan) - no creature named, get_challenge_rating should not be called
+3. A heroic request naming a goblin (e.g., clear a goblin stronghold) - get_challenge_rating should be called exactly once, querying for a goblin, and no other creature
+4. A legendary request naming a dragon (e.g., slay a dragon) - get_challenge_rating should be called exactly once, querying for a dragon, and no other creature
+5. An edge case that's ambiguous on difficulty but also names no specific creature - get_challenge_rating should not be called; this tests that the agent doesn't over-call the tool just because a case is hard to classify
 
-Use both a semantic similarity evaluator (to check the output) and a
-trajectory evaluator (to check the agent's reasoning path).
+Use both a semantic similarity evaluator (to check the output) and a trajectory evaluator (to check whether get_challenge_rating was called, and with what search term, matching the expectations above).
 
-Include evaluator config files in evaluations/evaluators/ and the eval
-set in evaluations/eval-sets/. Use gpt-4.1-2025-04-14 as the model in
-the evaluator configs. Each evaluator config must include a populated
-defaultEvaluationCriteria - use {"expectedOutput": {}} for the
-semantic evaluator and {"expectedAgentBehavior": ""} for the
-trajectory evaluator. Empty {} fails schema validation.
+Include evaluator config files in evaluations/evaluators/ and the eval set, named smoke-test.json, in evaluations/eval-sets/. Use gpt-4.1-2025-04-14 as the model in the evaluator configs. Each evaluator config must include a populated defaultEvaluationCriteria - use {"expectedOutput": {}} for the semantic evaluator and {"expectedAgentBehavior": ""} for the trajectory evaluator. Empty {} fails schema validation.
 ```
 
-<!-- screenshot: step-07.png - eval set file structure in VS Code -->
+<!-- screenshot: step-08.png - eval set file structure in VS Code -->
 
 * * *
 
-## Step 8 - Run evaluations
+## Step 9 - Run evaluations
 
 Run the evaluation set locally:
 
-<!-- test:manual reason="requires built agent project with evaluation files from Steps 5-7" -->
+<!-- test:manual reason="requires built agent project with evaluation files from Steps 5-8" -->
 ```bash
 uip codedagent eval agent evaluations/eval-sets/smoke-test.json --workers 3 --output-file eval-results.json
 ```
@@ -383,17 +428,17 @@ The evaluation framework runs each test case through your agent and scores the r
 | Score | What it measures |
 |---|---|
 | **Semantic similarity** | How closely the agent's output matches the expected output |
-| **Agent trajectory** | Whether the agent took the expected reasoning path |
+| **Agent trajectory** | Whether the agent called `get_challenge_rating` when (and only when) it should have |
 
-> **Expect trajectory scores of 0.0 on this agent.** Trajectory evaluators judge the agent's *reasoning path*: which tools it called, in what order, and how it routed between nodes. This classifier makes no tool calls and has a single node, so every test case scores 0.0. For this single-node classifier, lean on semantic similarity scores.
+> **Trajectory now means something here.** With the tool in place, expect trajectory scores close to 1.0 across all five cases: no tool call on the trivial, standard, and ambiguous cases, and exactly one correctly-targeted tool call on the goblin and dragon cases. A low score tells you the agent called the tool when it should not have, skipped a call it should have made, or looked up the wrong creature, not just whether the final tier happens to be right.
 
-For semantic similarity, scores above 0.8 are generally solid. Review `eval-results.json` to see how your agent performed.
+For semantic similarity, scores above 0.8 are generally solid; expect the same for trajectory now that it is tracking something specific. Review `eval-results.json` to see how your agent performed.
 
 After you connect to Studio Web in the next step, running `uip codedagent eval run` from the CLI uploads results to Studio Web automatically; they appear in the **Evaluation Sets** tab under Runs.
 
 > **The Studio Web Run Evals button is not the same thing.** That button triggers a cloud robot execution requiring Python runtime support — a more involved setup outside the scope of this lab. Use `uip codedagent eval run` from the CLI instead; results appear in Studio Web either way.
 
-<!-- screenshot: step-08.png - terminal showing eval results -->
+<!-- screenshot: step-09.png - terminal showing eval results -->
 
 * * *
 
@@ -401,7 +446,7 @@ With local evaluation results confirmed, you are ready to connect the project to
 
 # Connect to Studio Web
 
-## Step 9 - Connect to Studio Web
+## Step 10 - Connect to Studio Web
 
 Your agent is built and evaluated locally. Now connect it to Studio Web so you get version history, evaluation traces, and the ability to test in the cloud UI.
 
@@ -410,24 +455,26 @@ You have three options:
 | Option | What happens |
 |---|---|
 | **A: You set it up in Studio Web** | Open Studio Web, create a Coded Agent project, copy the project ID. You paste it into `.env` and push from the CLI. |
-| **B: CLI packages and uploads** | CLI packages the agent and publishes it to your [personal workspace](https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/personal-workspaces) feed without Studio Web setup. See the [uip solution docs](https://docs.uipath.com/uipath-cli/standalone/latest/user-guide/uip-solution) for the command reference. |
+| **B: CLI packages and uploads** | `uip codedagent pack`, `publish`, or `deploy` package the agent and publish it to your [personal workspace](https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/personal-workspaces) or tenant feed directly, without Studio Web setup. |
 | **C: Local dev server only** | Run `uip codedagent dev` for a local web UI. Nothing is published to the cloud. |
 
 For this lab, use **Option A**: it shows the connection model that underlies all three options.
 
 ### Option A - Connect via Studio Web
 
-1. Log in to [UiPath Automation Cloud](https://cloud.uipath.com) and open **Studio Web** from the side navigation.
+1. Log in to [UiPath Automation Cloud](https://cloud.uipath.com) and select **Studio Web** from the side navigation.
 
-2. Select **Create New** and select **Agent**. Choose **Coded** as the agent type, then select **Start Fresh**.
+2. Select **Create New** and select **Agent**.
 
-   <!-- screenshot: step-09a.png - Studio Web create new coded agent dialog -->
+3. In the **Select agent type** dialog box, choose **Coded** as the agent type and select **Start Fresh**.
 
-3. Studio Web displays a **Setup your coded agent** panel. Under **Sync from your IDE into Studio Web**, your `UIPATH_PROJECT_ID` appears with a copy button. Copy this value.
+   <!-- screenshot: step-10a.png - Studio Web create new coded agent dialog -->
 
-   <!-- screenshot: step-09b.png - Studio Web setup panel showing UIPATH_PROJECT_ID -->
+4. Studio Web displays a **Setup your coded agent** panel. Under **Sync from your IDE into Studio Web**, your `UIPATH_PROJECT_ID` appears with a copy button. Copy this value.
 
-4. Open the `.env` file in your project root and add the project ID:
+   <!-- screenshot: step-10b.png - Studio Web setup panel showing UIPATH_PROJECT_ID -->
+
+5. Return to your IDE and open the `.env` file in your project root to add the project ID:
 
    <!-- test:manual reason="participant must paste their specific project ID" -->
    ```text
@@ -438,27 +485,27 @@ For this lab, use **Option A**: it shows the connection model that underlies all
    Only the project ID goes in `.env`. `uip login` stores your auth token globally; you do not need `UIPATH_URL` or `UIPATH_ACCESS_TOKEN` in `.env`. If you have used the UiPath Python SDK before and are used to running `uipath auth` to populate those fields, that step is no longer needed.
    :::
 
-5. Add `.env` to `.gitignore` to avoid committing it:
+6. Add `.env` to the `.gitignore` file to avoid committing it:
 
    <!-- test:manual reason="requires .gitignore file in project root" -->
    ```bash
    echo ".env" >> .gitignore
    ```
 
-6. Push your agent to Studio Web:
+7. Push your agent to Studio Web from the command line:
 
-   <!-- test:manual reason="requires UIPATH_PROJECT_ID in .env and built project from Steps 4-7" -->
+   <!-- test:manual reason="requires UIPATH_PROJECT_ID in .env and built project from Steps 4-8" -->
    ```bash
    uip codedagent push
    ```
 
-   A successful push returns confirmation and increments the version to `0.0.1`. Open your project in Studio Web; the agent definition, your evaluation sets, and version `0.0.1` appear in the version history.
+A successful push returns confirmation and increments the version to `0.0.1`. Open your project in Studio Web; the agent definition, your evaluation sets, and version `0.0.1` appear in the version history.
 
-   <!-- screenshot: step-09c.png - Studio Web showing v0.0.1 agent with evaluation sets -->
+<!-- screenshot: step-10c.png - Studio Web showing v0.0.1 agent with evaluation sets -->
 
 * * *
 
-## Step 10 - Iterate and improve *(optional)*
+## Step 11 - Iterate and improve *(optional)*
 
 With evaluations in place and Studio Web connected, you can iterate on your agent and observe the effect on scores:
 
@@ -488,7 +535,8 @@ You have built a LangGraph agent on UiPath using the CLI and coding agent skills
 - Scaffolded a local Python project with the correct LangGraph structure using `uip codedagent new`.
 - Used your coding agent to build the agent logic, guided by UiPath skills, not detailed prompts.
 - Ran the agent locally and verified outputs before touching the cloud.
-- Created an evaluation set and scored the agent locally.
+- Gave the agent a tool to verify its own answer against a live external API.
+- Created an evaluation set, including a trajectory check on tool use, and scored the agent locally.
 - Connected to Studio Web and pushed the first version with full evaluation history.
 
 ## What's next
