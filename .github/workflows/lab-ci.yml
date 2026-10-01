@@ -1,43 +1,49 @@
 name: Lab CI
 
-# Runs each lab's tests nightly and on PR.
+# Runs each lab's tests weekly and on PR.
 # Per ADR-0002, test_lab.py is not committed — extracted on demand from guide.md.
 # Auth-required tests are skipped in CI (UIPATH_TEST_AUTH unset).
 # Wiring a test tenant is follow-up work (not needed for MVP).
 
 on:
   schedule:
-    # Daily at 13:00 UTC (~06:00 PT). Catches drift from CLI/skills releases.
-    - cron: "0 13 * * *"
+    # Weekly, Mondays at 13:00 UTC (~06:00 PT). Catches drift from CLI/skills releases.
+    - cron: "0 13 * * 1"
   pull_request:
     paths:
       - "labs/**"
       - "tools/extract.py"
+      - ".github/workflows/lab-ci.yml"
   push:
     branches: [main]
     paths:
       - "labs/**"
       - "tools/extract.py"
+      - ".github/workflows/lab-ci.yml"
   workflow_dispatch:
 
 jobs:
   test-labs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Install pytest and uv
         run: pip install pytest uv
+
+      # Labs run `uip skills install --agent claude`, which needs the claude CLI on PATH.
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
 
       - name: Extract and run tests for each lab
         env:
