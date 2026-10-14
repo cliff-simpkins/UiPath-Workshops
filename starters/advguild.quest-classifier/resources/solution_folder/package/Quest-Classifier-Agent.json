@@ -1,0 +1,23 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "Quest-Classifier-Agent",
+    "kind": "package",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "fc4bd445-852a-4eea-a889-69117bf67e07",
+    "isOverridable": true,
+    "dependencies": [],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "name": "Quest-Classifier-Agent"
+    },
+    "locks": [],
+    "key": "bbc94d48-acbc-452f-8380-848f18a5089e",
+    "files": []
+  }
+}

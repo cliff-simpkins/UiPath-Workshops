@@ -1,0 +1,122 @@
+{
+  "fileName": "evaluation-set-default.json",
+  "id": "f01e9179-1308-48eb-aa12-941b46765b2c",
+  "name": "Default Evaluation Set",
+  "batchSize": 10,
+  "evaluatorRefs": [
+    "254f478e-1448-4486-96d9-ed8a9cf6444c"
+  ],
+  "evaluations": [
+    {
+      "id": "c30b9f9b-d4f1-46c5-82d1-a153f5c5f66e",
+      "name": "trivial-rats",
+      "inputs": {
+        "questDescription": "Clear the rats out of the inn cellar. They are loud and they are eating all of the cheese."
+      },
+      "expectedOutput": {
+        "tier": "Trivial",
+        "reasoning": "Clearing an inn cellar of rats is a simple pest-control errand requiring little adventuring expertise. The likely threat is ordinary rats, which are a minor nuisance rather than a dangerous monster."
+      },
+      "expectedAgentBehavior": "",
+      "simulationInstructions": "",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "f01e9179-1308-48eb-aa12-941b46765b2c",
+      "createdAt": "2026-10-13T21:52:35.224Z",
+      "updatedAt": "2026-10-13T21:58:40.183Z",
+      "source": "firstSuccessfulRun"
+    },
+    {
+      "id": "2ec3f7bf-55a3-4c4c-8086-da719ed45197",
+      "name": "heroic-relic",
+      "inputs": {
+        "questDescription": "Recover a stolen relic from a noble's estate. The guards are many, the owner is powerful, and nobody who has tried has come back."
+      },
+      "expectedOutput": {
+        "tier": "Heroic",
+        "reasoning": "Recovering the relic requires a dangerous infiltration of a heavily guarded estate where prior attempts have ended fatally. The likely threats are numerous elite guards and possibly lethal magical or concealed defenses, though no specific monster is stated."
+      },
+      "expectedAgentBehavior": "",
+      "simulationInstructions": "",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "f01e9179-1308-48eb-aa12-941b46765b2c",
+      "createdAt": "2026-10-13T21:56:34.715Z",
+      "updatedAt": "2026-10-13T21:58:53.100Z",
+      "source": "debugRun"
+    },
+    {
+      "id": "2b3f1e39-2d8d-4b96-a03f-74bbca2ae65d",
+      "name": "legendary-dragon",
+      "inputs": {
+        "questDescription": "Slay the ancient red dragon terrorizing the countryside."
+      },
+      "expectedOutput": {
+        "tier": "Legendary",
+        "reasoning": "Slaying an ancient red dragon terrorizing an entire countryside is an extreme combat objective requiring top-tier heroes. The hostile threat is explicitly an ancient red dragon, a devastating and exceptionally powerful monster."
+      },
+      "expectedAgentBehavior": "",
+      "simulationInstructions": "",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "f01e9179-1308-48eb-aa12-941b46765b2c",
+      "createdAt": "2026-10-13T21:56:56.008Z",
+      "updatedAt": "2026-10-13T21:59:06.373Z",
+      "source": "debugRun"
+    },
+    {
+      "id": "a2a832ac-4ecf-40ce-80d4-3bcd1f52e07b",
+      "name": "trivial-letter",
+      "inputs": {
+        "questDescription": "Deliver a sealed letter to the magistrate in the next town."
+      },
+      "expectedOutput": {
+        "tier": "Trivial",
+        "reasoning": "Delivering a sealed letter to the next town is a simple errand requiring little adventuring expertise. No monster or hostile threat is stated, so any danger is uncertain and likely minimal."
+      },
+      "expectedAgentBehavior": "",
+      "simulationInstructions": "",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "f01e9179-1308-48eb-aa12-941b46765b2c",
+      "createdAt": "2026-10-13T21:57:13.963Z",
+      "updatedAt": "2026-10-13T21:59:16.357Z",
+      "source": "debugRun"
+    },
+    {
+      "id": "382e8294-225b-45aa-ae89-6cc57430ef89",
+      "name": "standard-caravan",
+      "inputs": {
+        "questDescription": "Escort a merchant caravan through the hill country to the coast."
+      },
+      "expectedOutput": {
+        "tier": "Standard",
+        "reasoning": "Escorting a merchant caravan through hill country requires alert guards and competent adventuring skill over a potentially exposed journey. The likely threat is bandits or roaming monsters along the route, though no specific creature is stated."
+      },
+      "expectedAgentBehavior": "",
+      "simulationInstructions": "",
+      "simulateInput": false,
+      "inputGenerationInstructions": "",
+      "simulateTools": false,
+      "toolsToSimulate": [],
+      "evalSetId": "f01e9179-1308-48eb-aa12-941b46765b2c",
+      "createdAt": "2026-10-13T21:57:31.926Z",
+      "updatedAt": "2026-10-13T21:59:31.860Z",
+      "source": "debugRun"
+    }
+  ],
+  "modelSettings": [],
+  "createdAt": "2026-10-13T21:35:03.863Z",
+  "updatedAt": "2026-10-14T00:15:43.830Z",
+  "agentMemoryEnabled": false,
+  "agentMemorySettings": [],
+  "lineByLineEvaluation": false
+}

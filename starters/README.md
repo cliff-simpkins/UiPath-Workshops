@@ -7,6 +7,7 @@ Reusable UiPath artifacts - agents, workflows, and solutions - that the workshop
 | Starter | Type | Produced by | Consumed by |
 | --- | --- | --- | --- |
 | [monster-selector](monster-selector/) | Low-code agent | [Getting Started with UiPath Agents](../labs/agents/guide.md) | [Getting Started with Agent Evals](../Getting-Started-With-Agent-Evals/Getting-Started-With-Agent-Evals.md) |
+| [advguild.quest-classifier](advguild.quest-classifier/) | Low-code agent | [Building a Low-Code Agent in Studio Web](../labs/agents-lowcode/guide.md) | [Adding Tools to Your UiPath Agent](../labs/agents-tools/guide.md) |
 | [monster-query-api](monster-query-api/) | API Workflow package | Pre-built | Future Maestro lab (participants build this themselves in [Adding Tools to Your UiPath Agent](../labs/agents-tools/guide.md)) |
 
 ## How to use a starter

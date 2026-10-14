@@ -1,0 +1,42 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "/content/agent.json",
+      "type": "agent",
+      "uniqueId": "3f890cc8-2b57-4e47-9de0-e1e3a9750571",
+      "input": {
+        "type": "object",
+        "required": [
+          "questDescription"
+        ],
+        "properties": {
+          "questDescription": {
+            "type": "string",
+            "description": "The fantasy RPG quest description to classify. Provide the quest details as text; do not leave this value empty."
+          }
+        },
+        "title": "Inputs"
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "tier",
+          "reasoning"
+        ],
+        "properties": {
+          "tier": {
+            "type": "string",
+            "description": "The quest difficulty tier. Return exactly one of: Trivial, Standard, Heroic, or Legendary; do not return any other value."
+          },
+          "reasoning": {
+            "type": "string",
+            "description": "A brief explanation in exactly two sentences covering the quest difficulty and the monster or threat the party is likely to face."
+          }
+        },
+        "title": "Outputs"
+      }
+    }
+  ]
+}

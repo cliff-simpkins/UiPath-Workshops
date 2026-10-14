@@ -1,0 +1,48 @@
+{
+  "docVersion": "1.0.0",
+  "resource": {
+    "name": "Quest-Classifier-Agent",
+    "kind": "process",
+    "type": "agent",
+    "apiVersion": "orchestrator.uipath.com/v1",
+    "projectKey": "fc4bd445-852a-4eea-a889-69117bf67e07",
+    "isOverridable": true,
+    "dependencies": [
+      {
+        "name": "Quest-Classifier-Agent",
+        "kind": "package"
+      }
+    ],
+    "runtimeDependencies": [],
+    "folders": [
+      {
+        "fullyQualifiedName": "solution_folder"
+      }
+    ],
+    "spec": {
+      "type": "Agent",
+      "name": "Quest-Classifier-Agent",
+      "package": {
+        "key": "bbc94d48-acbc-452f-8380-848f18a5089e"
+      },
+      "packageName": "AdvGuild.quest-classifier.agent.Quest-Classifier-Agent",
+      "hiddenForAttendedUser": false,
+      "alwaysRunning": false,
+      "autoStartProcess": false,
+      "targetFrameworkValue": "Portable",
+      "agentMemory": false,
+      "isConversational": false,
+      "retentionAction": "Delete",
+      "retentionPeriod": 30,
+      "staleRetentionAction": "Delete",
+      "staleRetentionPeriod": 180,
+      "tags": [],
+      "entryPoints": "{\n  \"$schema\": \"https://cloud.uipath.com/draft/2024-12/entry-point\",\n  \"$id\": \"entry-points.json\",\n  \"entryPoints\": [\n    {\n      \"filePath\": \"/content/agent.json\",\n      \"type\": \"agent\",\n      \"uniqueId\": \"3f890cc8-2b57-4e47-9de0-e1e3a9750571\",\n      \"input\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"questDescription\"\n        ],\n        \"properties\": {\n          \"questDescription\": {\n            \"type\": \"string\",\n            \"description\": \"The fantasy RPG quest description to classify. Provide the quest details as text; do not leave this value empty.\"\n          }\n        },\n        \"title\": \"Inputs\"\n      },\n      \"output\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"tier\",\n          \"reasoning\"\n        ],\n        \"properties\": {\n          \"tier\": {\n            \"type\": \"string\",\n            \"description\": \"The quest difficulty tier. Return exactly one of: Trivial, Standard, Heroic, or Legendary; do not return any other value.\"\n          },\n          \"reasoning\": {\n            \"type\": \"string\",\n            \"description\": \"A brief explanation in exactly two sentences covering the quest difficulty and the monster or threat the party is likely to face.\"\n          }\n        },\n        \"title\": \"Outputs\"\n      }\n    }\n  ]\n}",
+      "entryPointName": "/content/agent.json",
+      "entryPointUniqueId": "3f890cc8-2b57-4e47-9de0-e1e3a9750571"
+    },
+    "locks": [],
+    "key": "27c757cb-d135-4fe7-86ee-6264f37755b6",
+    "files": []
+  }
+}

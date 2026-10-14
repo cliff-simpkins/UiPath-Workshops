@@ -1,5 +1,5 @@
 id: agents-lowcode
 title: Building a Low-Code Agent in Studio Web
-description: Build a low-code agent in Studio Web using Autopilot, with no CLI, no code, and no IDE required.
+description: Build a low-code quest classifier in Studio Web using Autopilot, test it, and evaluate it, with no CLI, no code, and no IDE required.
 target_time_min: 30
 audience: professional-developer

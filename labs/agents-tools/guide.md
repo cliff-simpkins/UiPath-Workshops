@@ -1,35 +1,44 @@
 # Adding Tools to Your UiPath Agent
 
-This lab builds part of **UiPathfinder**, an RPG Adventure system built on UiPath for a fictional Adventurer's Guild. It extends an agent built in the [Getting Started with UiPath Agents](../agents/guide.md) lab. You build a live API connector that searches the 5e SRD (System Reference Document), then give your Monster Selector agent that connector as a tool. The agent uses it autonomously at runtime: deciding what to search for, calling the API, and selecting the best match from the results.
+This lab extends the quest classifier you built in [Building a Low-Code Agent in Studio Web](../agents-lowcode/guide.md). That agent sorts a quest into one of four difficulty tiers, but its reasoning comes entirely from the model's training: ask it about an ancient red dragon and it answers Legendary because dragons are dangerous. In this lab, you give it a tool that looks the creature up in the 5e SRD (System Reference Document), so the tier rests on a real challenge rating that the agent cites in its reasoning.
 
-By the end you will have `UiPathfinder.QuestParser`: an agent that receives only a quest description, decides what to search for, calls the Monster Query tool, and returns the selected monster's key fields, with no pre-populated list required.
-
-Without a tool, the agent depends on the caller to pre-fetch candidates and pass them in as data. Adding a tool changes that: the agent decides at runtime what to search for, calls the API, and reasons over live results. This is the pattern behind most production agent workflows; the agent's value comes from its ability to fetch and reason, not just classify what it is handed.
+The agent decides at runtime whether a quest needs a lookup at all. A quest that names a creature gets one; a quest to deliver a letter does not. That decision, and whether the agent makes it well, is what the evaluation at the end of this lab measures.
 
 You will do the following:
 
-1. Build a Monster Query API Workflow that calls the 5e SRD.
-2. Connect it to your Monster Selector agent as a tool.
-3. Update the agent contract to reflect the new capability.
-4. Test the full tool-using agent end-to-end.
+1. Build a Monster Query API Workflow that searches the 5e SRD.
+2. Connect it to your quest classifier as a tool.
+3. Replace the system prompt so the agent knows when to call the tool and how to use what it returns.
+4. Test the agent on quests that do and do not need a lookup.
+5. Evaluate how the agent uses the tool with a tool-aware evaluation set.
 
-**Estimated time:** 30-45 minutes
+**Estimated time:** 40-50 minutes
 
 ## What you are building
 
 | Component | Details |
 | --- | --- |
-| **API Workflow** | Accepts `searchName` (string), calls the Open5e 5e SRD API, returns `monsterResults` array |
-| **Agent input: `questDescription`** | `string`; the quest description. The agent fetches its own candidates via the tool |
-| **Agent output: `monsterIndex`** | `string`; the API's `key` identifier for the selected monster, for example `srd_goblin` |
-| **Agent output: `monsterName`** | `string`; display name of the selected monster |
-| **Agent output: `monsterType`** | `string`; creature type (for example, beast, undead, dragon). The API returns this as an object, so the agent reads `type.name` |
-| **Agent output: `monsterCr`** | `string`; challenge rating. The API returns a number, such as `0.25`, which the agent renders as text |
-| **Agent output: `monsterReasoning`** | `string`; the agent's explanation of why it selected this monster for the quest |
+| **API Workflow** | Accepts `searchName` (string), calls the Open5e 5e SRD API, returns a `monsterResults` array |
+| **Tool: Monster Query** | The API Workflow, connected to the agent. Called only when a quest names or strongly implies a specific creature |
+| **Agent input: `questDescription`** | `string`; unchanged from the low-code lab |
+| **Agent output: `tier`** | `string`; unchanged: exactly one of `Trivial`, `Standard`, `Heroic`, or `Legendary`. When the tool returns a challenge rating, the tier follows from it |
+| **Agent output: `reasoning`** | `string`; unchanged, but now cites the challenge rating whenever the tool returned one |
+| **Evaluation set** | A tool-aware set, scored by both a semantic similarity evaluator and a trajectory evaluator |
 
 * * *
 
 ## Prerequisites
+
+- **Studio Web** - runs in your browser; no desktop installation required. Open [Studio Web](https://cloud.uipath.com) in Chrome, Edge, or Firefox before starting.
+- **UiPath account** - sign up or log in to [UiPath Automation Cloud](https://cloud.uipath.com) before starting.
+- **A quest classifier agent in Studio Web** - this lab builds on the agent from [Building a Low-Code Agent in Studio Web](../agents-lowcode/guide.md), including its evaluation set. If you completed that lab, your agent is already in your workspace, and you need nothing else: the rest of this lab runs entirely in the browser.
+
+### If you need the starter agent
+
+If you did not complete the earlier lab, deploy the quest classifier starter instead. It includes the agent and the evaluation set from that lab. This path needs two local tools:
+
+- **Node.js 18+** - required to install the UiPath CLI. Install from [nodejs.org](https://nodejs.org/) if needed.
+- **UiPath CLI v1.198.0+** - check with `uip --version`; install or upgrade with `npm install -g @uipath/cli`.
 
 <!-- test:prereq name="Node.js" version=">=18" ignore-for-docs="true" -->
 ```bash
@@ -41,21 +50,17 @@ node --version
 uip --version
 ```
 
-- **Studio Web** - runs in your browser; no desktop installation required. Open [Studio Web](https://cloud.uipath.com) in Chrome, Edge, or Firefox before starting.
-- **UiPath account** - sign up or log in to [UiPath Automation Cloud](https://cloud.uipath.com) before starting.
-- **Node.js 18+** - required to install the UiPath CLI. Install from [nodejs.org](https://nodejs.org/) if needed.
-- **UiPath CLI v1.198.0+** - required to deploy the starter. Check with `uip --version`; install or upgrade with `npm install -g @uipath/cli`.
-- **A Monster Selector agent in Studio Web** - this lab builds on the agent from [Getting Started with UiPath Agents](../agents/guide.md). If you completed that lab, your agent is already there. If not, deploy the starter:
+Then deploy the starter:
 
 <!-- test:manual reason="requires git clone and uip login before starter upload" -->
 ```bash
 git clone https://github.com/cliff-simpkins/UiPath-Workshops.git
-cd UiPath-Workshops/starters/monster-selector
+cd UiPath-Workshops/starters/advguild.quest-classifier
 uip login
 uip solution upload .
 ```
 
-Open [Studio Web](https://cloud.uipath.com) and confirm **MonsterSelector** appears in your workspace before beginning Step 1.
+Open [Studio Web](https://cloud.uipath.com) and confirm **AdvGuild.quest-classifier** appears in your workspace before beginning Step 1.
 
 # Build the API workflow
 
@@ -113,7 +118,7 @@ Open the **Query parameters** property, which opens a **Dictionary editor** with
 | Key | Value |
 | --- | --- |
 | `name__icontains` | the `searchName` input argument - see the warning below |
-| `document__key` | `srd-2014` |
+| `document__key` | `srd-2024` |
 | `limit` | `10` |
 | `fields` | `key,name,type,size,challenge_rating,alignment` |
 
@@ -124,13 +129,13 @@ Open the **Query parameters** property, which opens a **Dictionary editor** with
 What each parameter does:
 
 - `name__icontains`: case-insensitive partial match; `dragon` returns "Adult Red Dragon", "Young Blue Dragon", and others
-- `document__key: srd-2014`: filters to the official 5e SRD; without it, results include every publisher in the database, third-party content included
+- `document__key: srd-2024`: filters to the official 5e SRD (the 2024 edition); without it, results include every publisher in the database, third-party content included
 - `limit: 10`: caps candidates at 10; enough for the agent to reason over without flooding its context
 - `fields`: limits the response to only the fields the agent needs; the full v2 creature object is much larger and would waste token budget
 
-> **Warning: Open5e ignores query parameters it does not recognize, and returns HTTP 200 anyway.** Misspell `document__key`, or use the v1 spelling `document__slug`, and the filter is silently dropped: the call succeeds, the run is green, and the agent receives creatures from every publisher instead of the SRD. A `goblin` search returns 2 results with the filter applied and 29 without it, so check that the result count looks like a handful rather than a catalogue.
+> **Warning: Open5e ignores query parameters it does not recognize, and returns HTTP 200 anyway.** Misspell `document__key`, or use the v1 spelling `document__slug`, and the filter is silently dropped: the call succeeds, the run is green, and the agent receives creatures from every publisher instead of the SRD. A `goblin` search returns 5 results with the filter applied and 29 without it, so check that the result count looks like a handful rather than a catalogue.
 
-![Dictionary editor showing the four query parameters, with name__icontains bound to the searchName chip and document__key set to srd-2014](images/agents-tools-step-01h.png)
+![Dictionary editor showing the four query parameters, with name__icontains bound to the searchName chip and document__key set to srd-2024](images/agents-tools-step-01h.png)
 
 ### HTTP Request property reference
 
@@ -166,9 +171,11 @@ The activity exposes the standard HTTP building blocks. Most you will configure 
 2. In the input panel, set `searchName` to `dragon` or `goblin` and run the workflow.
 3. Verify the response includes a `monsterResults` array with monster entries before continuing.
 
-A successful response contains up to 10 entries, each with `key`, `name`, `alignment`, and `challenge_rating`, plus nested `type` and `size` objects. Searching `goblin` returns Goblin and Hobgoblin. If you see an empty array, try a different search term; not every creature name has an exact match in the SRD.
+A successful response contains up to 10 entries, each with `key`, `name`, `alignment`, and `challenge_rating`, plus nested `type` and `size` objects. Searching `goblin` returns five goblin and hobgoblin variants, such as Goblin Warrior (`srd-2024_goblin-warrior`, challenge rating 0.25) and Hobgoblin Captain. If you see an empty array, try a different search term; not every creature name has an exact match in the SRD.
 
-![Debug output showing the monsterResults array with key srd_goblin, challenge_rating 0.25, and nested type and size objects](images/agents-tools-step-01l.png)
+For a quick check that every query parameter took effect, search `rat`. You should get exactly seven results, all with `srd-2024_` keys, including a Triceratops and two pirates: `name__icontains` matches the search text anywhere in the name. Any other count means a parameter is misspelled or not bound to the variable.
+
+![Debug output showing the monsterResults array with key srd-2024_goblin-warrior, challenge_rating 0.25, and nested type and size objects](images/agents-tools-step-01l.png)
 
 ### Publish to your feed
 
@@ -186,17 +193,18 @@ With the workflow published, it is available in the agent builder as a connectab
 
 # Connect to your agent
 
-## Step 2 - Open the Monster Selector agent
+## Step 2 - Open the quest classifier
 
-In Studio Web, navigate to your **MonsterSelector** solution and open it in the agent builder.
+In Studio Web, open your quest classifier solution in the agent builder: either the one you built in the low-code lab, or **AdvGuild.quest-classifier** if you deployed the starter.
 
 Take a moment to orient on its current state before making changes:
 
-- **Input:** `questDescription` (string) and `monsters` (array of candidates passed in by the caller)
-- **Output:** `monsterIndex` (string): the `key` of the chosen monster, for example `srd_goblin`
-- **System prompt:** instructs the agent to pick the best match from the provided list
+- **Input:** `questDescription` (string).
+- **Outputs:** `tier` (string, one of four values) and `reasoning` (string).
+- **System prompt:** describes the four tiers. If Autopilot wrote it, it most likely also tells the agent to classify from the description alone and not to use tools.
+- **Evaluation set:** the five cases from the low-code lab. You rerun them in Step 6.
 
-In this lab you remove the `monsters` input and the requirement to pre-populate candidates. The agent fetches them itself using the tool you just built.
+In this lab, you do not change the input or the outputs. You add a tool, and you replace the system prompt so the agent knows how to use it.
 
 * * *
 
@@ -221,127 +229,209 @@ Make sure you are on the **Canvas** view: use the **Canvas / Form** toggle at th
 Give the tool a name and description. The description is what the agent reads at runtime to decide when and how to call the tool; write it as an instruction to the agent, not a label for humans:
 
 - **Name:** `Monster Query`
-- **Description:** `Searches the 5e SRD for monsters matching a name or creature type. Returns up to 10 candidates with key, name, type, size, challenge rating, and alignment. Call this tool when you need to find monster candidates for a quest.`
+- **Description:** `Searches the 5e SRD for monsters whose name contains the search text. Search with the most specific creature name the quest gives; a general term such as a creature type can return many matches and miss the one you need. Returns up to 10 candidates with key, name, type, size, challenge rating, and alignment. Call this tool when a quest names or strongly implies a specific creature, to look up its challenge rating.`
 
-> **The description drives tool selection.** The agent reads this description — not the tool name — to decide when and how to call the tool. A vague description produces vague tool use. Be specific about what the tool returns and when to use it.
+> **The description drives tool selection.** The agent reads this description, not the tool name, to decide when and how to call the tool. A vague description produces vague tool use.
+
+The "most specific creature name" instruction earns its place. A search for `dragon` matches 43 creatures, and the 10 that come back are all adult dragons, so a quest about an ancient red dragon never sees the right candidate. A search for `ancient red dragon` returns exactly one result. The description is where you teach the agent how the API behaves.
+
+> **An API workflow is one kind of tool.** An agent can also call RPA workflows, Integration Service connectors (for Slack, Outlook, or an ERP system), document understanding, Maestro cases and flows, DeepRAG, MCP servers, and other agents. The steps to connect and describe the tool are the same.
 
 * * *
 
-## Step 4 - Update the agent contract
+## Step 4 - Replace the system prompt
 
-With the tool connected, update the agent definition to reflect the new contract: the agent no longer needs a pre-populated monster list, and it now returns structured monster data including its own reasoning.
+The current system prompt was written for an agent with no tools. Replace it in full rather than adding to it: if it tells the agent not to use tools, as an Autopilot prompt usually does, an appended instruction to call Monster Query contradicts it, and the agent may never make the call.
 
-The three changes in this step work together: removing `monsters` ends the agent's dependency on the caller for data; the output schema declares what the agent commits to returning; the updated prompt tells the agent how to use its new capability. None of the three works without the others.
+To open the **Properties** panel, select the agent on the canvas or select the wrench icon in the upper-right corner. Replace the system prompt with:
 
-To edit the agent definition, select the agent node on the canvas to open the definition panel on the right.
-
-### Remove monsters from the input
-
-In the agent definition, remove the `monsters` property from the input schema. The updated input should have only `questDescription`.
-
-To remove the `monsters` property:
-
-1. Within the agent, open the **Data Manager** by selecting the **Open Data Manager** icon along the left navbar (it looks like a clipboard).
-2. The **Data Manager** panel has three groupings: **Inputs**, **Outputs**, and **Variables**; `monsters` should be in the **Inputs** list.
-3. Point to `monsters` to reveal the edit and delete icons to the right of the label: a pencil icon (**edit**) and a trashcan icon (**delete**).
-4. Select the delete icon to remove `monsters`.
-5. Open the agent's **Properties** panel and remove the now-dangling `monsters` reference from the **User prompt**: select the **x** on the `monsters` chip. The User prompt should be left with only the `questDescription` chip.
-
-> **Warning: Deleting the input does not clear the prompt that references it.** After step 4 the **User prompt** still carries a `monsters` chip, which Studio Web renders in red and flags with an error badge on **Inputs**. The agent will not run until you remove that chip, so do not skip step 5.
-
-You should now only have one input: `questDescription`:
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `questDescription` | string | Yes | Description of the quest |
-
-### Add the output schema
-
-Add an output schema with the five fields from the design table at [What you are building](agents-tools.md#what-you-are-building).
-
-Within the same **Data Manager** panel:
-
-1. Point to the **Outputs** header to reveal the **Add property** icon (+).
-2. Select **Add Property** to add each of the fields below:
-
-| Field | Type |
-| --- | --- |
-| `monsterIndex` | string |
-| `monsterName` | string |
-| `monsterType` | string |
-| `monsterCr` | string |
-| `monsterReasoning` | string |
-
-> **`monsterReasoning` is agent-generated, not from the API.** The agent writes this field itself: it is the agent's explanation of why the selected monster fits the quest. Unlike the other four fields (which come from the tool's results), `monsterReasoning` reflects the agent's own judgment.
-
-![Input schema with only questDescription and output schema with five fields configured](images/agents-tools-step-04a.png)
-
-### Update the system prompt
-
-To open the **Properties** panel, select the agent on the canvas or select the wrench icon in the upper-right corner. Replace the system message with:
-
+<!-- test:manual reason="system prompt replacement in Agent Canvas Properties panel" -->
 ```text
-You are a quest classifier for an adventurer's guild. Given a quest description, your job is to find the most thematically appropriate monster from the 5e SRD and to return information about that monster.
+You are a quest intake classifier for an adventurer's guild in a fantasy RPG world.
 
-When given a quest description:
-1. Analyze the quest to determine what kind of creature fits the context - consider creature type, challenge rating, environment, and theme.
-2. Call the Monster Query tool with a search term that targets that creature type.
-3. Review the returned candidates and select the best fit for the quest.
-4. Return the selected monster's key fields and a monsterReasoning that explains why this monster fits the quest.
+Classify the incoming quest description into exactly one difficulty tier:
+- Trivial: simple errands anyone can handle (for example, deliver a letter, clear rats from a cellar)
+- Standard: moderate quests requiring some adventuring skill (for example, escort a merchant caravan, hunt a wyvern)
+- Heroic: difficult quests requiring significant adventuring expertise (for example, slay an adult dragon, infiltrate a thieves' guild)
+- Legendary: extreme quests requiring top-tier heroes to complete (for example, defeat a lich, slay an ancient dragon)
 
-Always call the Monster Query tool before selecting a monster. Do not guess monster details from memory.
+Using the Monster Query tool:
+- Call Monster Query when the quest description names or strongly implies a specific creature the adventurers must face.
+- Search with the most specific creature name the quest gives.
+- Only search for creatures in the quest itself, never for a creature you are using as a comparison or reference point.
+- If a search returns no results, you may try one shorter or more general name. Stop after three searches in total.
+- If the tool returns more than one result, pick the best fit: name match first, then number (a group of rats fits "Swarm of Rats" better than "Rat"), then type.
+
+Using the challenge rating:
+- When the tool returns a challenge_rating, set the tier from this map: Trivial 0-5, Standard 6-12, Heroic 13-20, Legendary 21 and above.
+- Cite the exact challenge rating in your reasoning.
+- Never guess or invent a challenge rating. Only cite one the tool actually returned.
+- If you do not call the tool, or it returns nothing that fits, classify from the quest description alone.
+
+Return the tier and a brief, two-sentence reasoning.
 ```
 
-> **Coding agents are non-deterministic.** Your prompt will produce different results than the example above; that is expected. What matters is that the agent calls the tool, reasons over the candidates, and returns all five required output fields.
+The challenge rating map is what turns a lookup into a tier. Swarm of Rats (challenge rating 0.25) lands in Trivial, Wyvern (6) in Standard, Adult Red Dragon (17) in Heroic, and Ancient Red Dragon (24) in Legendary.
+
+> **Keep the examples consistent with the map.** The tier examples and the map are two sources of truth, so they must agree. "Drive back the kobolds" is a tempting Standard example, but kobolds are challenge rating 0.125, which the map puts in Trivial, and a contradiction like that makes the agent's tier unpredictable.
+
+The input and output schemas do not change. The challenge rating goes into the `reasoning` text, not a new field.
+
+> **Agents are non-deterministic.** Your agent's search terms and reasoning will vary from run to run. What matters is that it calls the tool when a quest names a creature, skips it when one does not, and cites only challenge ratings the tool returned.
 
 * * *
 
-With the tool connected and the agent contract updated, you are ready to test the full pipeline in the next section.
+With the tool connected and the system prompt replaced, you are ready to test the agent in the next section.
 
 # Test end-to-end
 
 ## Step 5 - Test end-to-end
 
-Select **Debug** from the toolbar at the top of the agent builder. In the **Debug configuration** dialog, open the **Entrypoint arguments** tab and enter a quest description, then select **Save & Debug**:
+Select **Debug** from the toolbar at the top of the agent builder, enter the following quest, and select **Save & Debug**:
 
+<!-- test:manual reason="debug test case in Studio Web" -->
 ```text
-The villagers report a massive creature has been destroying farms on the edge of the forest at night.
+Slay the ancient red dragon terrorizing the countryside.
 ```
 
-Run the agent and watch the **Execution Trail** at the bottom of the agent builder.
+Watch the **Execution Trail** at the bottom of the agent builder. For this quest, expect:
 
-The Execution Trail shows the agent's full decision process. For a tool-using agent, expect at least three events: the agent's initial analysis of the quest, the tool call with the search term it chose, and the tool response with the candidate list. The agent then reasons over those candidates before producing its final output.
+1. The agent calls **Monster Query** with a search term for the ancient red dragon.
+2. The tool returns one result: Ancient Red Dragon (`srd-2024_ancient-red-dragon`), challenge rating 24.
+3. The agent returns a `tier` of `Legendary`, and its `reasoning` cites the challenge rating of 24.
 
-![Execution Trail showing the agent's full run](images/agents-tools-step-05b.png)
+![Execution Trail showing the Monster Query tool call, its response, and the agent's final output](images/agents-tools-step-05b.png)
 
-You should see:
+Select the **HTTP Request - Open5e Monster Query** span to see the request the tool actually sent: the `v2/creatures/` URL, the search term the agent chose in `name__icontains`, and the `document__key` and `fields` values you configured in Step 1.
 
-1. The agent calls **Monster Query** with a search term it chose based on the quest.
-2. The tool returns a list of candidates.
-3. The agent selects the best match and returns the five output fields.
+![Execution trace with the HTTP Request span selected, showing the v2/creatures URL, the query parameters, and a results entry keyed srd-2024_ancient-red-dragon](images/agents-tools-step-05c.png)
 
-Select the **HTTP Request - Open5e Monster Query** span to see the request the tool actually sent: the `v2/creatures/` URL, the search term the agent chose in `name__icontains`, and the `document__key` and `fields` values you configured in Step 1. The response below it carries the `key` identifier for each candidate.
+Compare this run with the same quest in the low-code lab. The tier is the same, but the reasoning now rests on a number from the SRD instead of on the model's sense that dragons are dangerous.
 
-![Execution trace with the HTTP Request span selected, showing the v2/creatures URL, the query parameters, and a results entry keyed srd_cloud-giant](images/agents-tools-step-05c.png)
+Now run two more quests, letting each finish before you start the next:
 
-Verify the output contains all five fields: `monsterIndex`, `monsterName`, `monsterType`, `monsterCr`, and `monsterReasoning`. `monsterIndex` is the API's `key`, so it carries the `srd_` prefix - for example `srd_giant-ape`. The `monsterReasoning` field should explain why the agent chose this monster for the quest.
+<!-- test:manual reason="debug test case in Studio Web" -->
+```text
+Clear the rats out of the inn cellar. They are loud and they are eating all of the cheese.
+```
 
-![Agent output showing all five fields populated, with monsterIndex srd_giant-ape and a full monsterReasoning explanation](images/agents-tools-step-05d.png)
+Expected: one Monster Query call for rats, Swarm of Rats (challenge rating 0.25), tier `Trivial`.
+
+<!-- test:manual reason="debug test case in Studio Web" -->
+```text
+Deliver a sealed letter to the magistrate in the next town.
+```
+
+Expected: **no** Monster Query call, because the quest names no creature, and tier `Trivial`.
+
+![Execution Trail for the letter quest, showing the agent's output with no tool call](images/agents-tools-step-05d.png)
+
+The letter run matters as much as the dragon run. An agent that calls the tool on every quest wastes an API call and tokens each time, and an agent that never calls it is back to guessing. Step 7 measures both.
+
+* * *
+
+With the agent calling its tool only when it should, you are ready to evaluate it in the next section.
+
+# Evaluate the agent
+
+## Step 6 - Rerun your existing evaluation set
+
+Your agent already has an evaluation set: the five cases from the low-code lab. Before you build anything new, rerun it. This is what an evaluation set is for: checking what a change did to behavior you had already accepted.
+
+1. Open the solution's **Evaluation Sets** node in the project explorer, and open the set from the low-code lab.
+2. Select **Run**.
+3. When the run finishes, select **View all results**, then select the most recent run.
+
+<!-- test:manual reason="evaluation run in Studio Web" -->
+
+<!-- screenshot: agents-tools-step-06a.png - Results of the low-code evaluation set rerun after adding the tool, with lower scores on the rats and dragon cases -->
+
+Expect the tiers to hold, and expect the scores on the rats and dragon cases to drop. Their saved outputs come from the agent before it had a tool, so their reasoning does not cite a challenge rating, and the new reasoning does. The semantic similarity evaluator notices the difference in meaning.
+
+That drop is not a bug to fix. It is the evaluation set doing its job: it shows you exactly which cases a change affected. Here the change is the one you wanted, so the next step builds a set that describes the new behavior.
+
+> **Evaluation scores are non-deterministic.** The evaluator is itself a language model, so scores move by a few points between runs. Look for which cases moved, not for small differences.
+
+* * *
+
+## Step 7 - Build a tool-aware evaluation set
+
+The new set checks two things: what the agent answered, and how it got there.
+
+- **Semantic similarity** - compares the agent's output to the expected output by meaning, not exact wording.
+- **Trajectory** - judges how the agent reached its answer: whether it called the tool, what it searched for, and whether it used only challenge ratings the tool returned. This is the score that tells you whether the tool description and system prompt are doing their job.
+
+### Capture the remaining runs
+
+You already have three runs from Step 5. In the **Debug** panel, run the agent on two more quests:
+
+<!-- test:manual reason="additional debug test cases in Studio Web" -->
+```text
+Escort a merchant caravan through the hill country to the coast.
+```
+
+<!-- test:manual reason="additional debug test cases in Studio Web" -->
+```text
+Recover a stolen relic from a noble's estate. The guards are many, the owner is powerful, and nobody who has tried has come back.
+```
+
+Neither quest names a creature, so neither should call Monster Query. The relic quest is the harder test: the guards and the powerful owner are people, not monsters, and an agent that over-uses its tool may still search for something.
+
+### Create the set and add the runs
+
+1. In **Evaluation Sets**, create a new evaluation set and name it `Quest Classifier with Tools`.
+2. In the **Execution Trail** for your most recent run, select **Add to evaluation set** and choose the new set.
+3. Open the **History** tab in the bottom panel. For each of the other four runs from Steps 5 and 7, select the beaker icon and add it to the same set.
+
+> **Warning: Save only runs you agree with.** The evaluation set treats each saved output as the correct answer. Check that every run reached the expected tier and called the tool only when it should have.
+
+<!-- screenshot: agents-tools-step-07a.png - New evaluation set with the five runs added -->
+
+### Describe the expected behavior
+
+The trajectory evaluator scores each run against a written description of what the agent should do. Open the new set, select **Edit** on each case, rename it, paste its expected behavior into the expected behavior field, and select **Save**:
+
+| Name | Expected behavior |
+| --- | --- |
+| `legendary-ancient-dragon` | Calls Monster Query once before answering, searching for the ancient red dragon rather than for dragons in general. Cites its challenge rating of 24. |
+| `trivial-rats` | Calls Monster Query once before answering, with a search term for rats. Selects Swarm of Rats and cites its challenge rating of 0.25. |
+| `trivial-letter` | Does not call Monster Query, since no creature is named. Classifies from the description alone. |
+| `standard-caravan` | Does not call Monster Query, since no creature is named. Classifies from the description alone. |
+| `no-creature-relic` | Does not call Monster Query, since the quest names no creature; guards and a noble are people, not monsters. Classifies from the description alone as Standard or Heroic. |
+
+Leave Monster Query set to make real calls, not simulated ones; the trajectory evaluator is less useful when tool calls are mocked.
+
+<!-- test:manual reason="evaluation set editing in Studio Web" -->
+
+### Attach both evaluators and run the set
+
+1. In the new set, select the pencil icon next to **Applied Evaluators**. Make sure both a semantic similarity evaluator and a trajectory evaluator are listed. If the project has no trajectory evaluator yet, create one from the same dialog.
+2. Select **Run**.
+3. When the run finishes, select **View all results**, then select the most recent run. Each case shows a semantic similarity score and a trajectory score, from 0 to 100.
+4. Select any case to see the run, its scores, and each evaluator's explanation.
+
+<!-- test:manual reason="evaluation run in Studio Web" -->
+
+<!-- screenshot: agents-tools-step-07b.png - Results with semantic similarity and trajectory scores for the five cases -->
+
+> **Warning: A missing evaluator fails silently.** If you forget to attach the trajectory evaluator, the set still runs and shows only semantic similarity scores. If you see one score per case, revisit **Applied Evaluators**.
+
+A low trajectory score with a high semantic similarity score is the most useful result here: the agent reached a reasonable answer, but not the way you asked. Typical causes are a search term that is too general (the `dragon` problem from Step 3), a tool call on a quest that names no creature, or a challenge rating cited from memory. Fix the tool description or the system prompt, rerun the set, and compare. From here on, rerun both sets after every prompt change.
 
 * * *
 
 ## What you built
 
-You have built the first component of UiPathfinder:
+You extended a low-code agent with a live tool and measured how it uses it:
 
 - Built a live API connector that searches the 5e SRD: one input, one HTTP request, one output.
-- Connected it to your agent as a tool with a single selection in the agent builder.
-- The agent now decides autonomously when to call the tool, what to search for, and which candidate best fits the quest.
-
-The two-step reasoning chain (search term selection and candidate evaluation) is exactly the kind of trajectory that produces meaningful evaluation signal; this is what the next lab is about.
+- Connected it to your quest classifier as a tool, with a description that teaches the agent how to search.
+- Replaced the system prompt so the agent calls the tool only when a quest names a creature, and sets the tier from the challenge rating it returns.
+- Used your existing evaluation set to see what the change did, then built a tool-aware set scored by both semantic similarity and trajectory.
 
 ## What's next
 
-- [Open5e API docs](https://open5e.com/api-docs) - explore the full monster search API to understand what fields are available.
-- [UiPath Integration Service](https://docs.uipath.com/integration-service) - build tools that connect to SaaS APIs without writing a custom workflow.
+- [Building a LangGraph agent](../agents-langgraph/guide.md) - build this same quest classifier, with the same SRD lookup tool, as a coded agent in Python.
+- [Agent evaluations](https://docs.uipath.com/agents/automation-cloud/latest/user-guide/agent-evaluations) - reference for evaluation sets, evaluator types, and simulated tool calls.
+- [Open5e API docs](https://open5e.com/api-docs) - explore the full monster search API and the other fields it can return.
 - [UiPath Community](https://community.uipath.com) - forums, how-tos, and developer discussion.

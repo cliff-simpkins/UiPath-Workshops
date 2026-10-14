@@ -1,0 +1,13 @@
+{
+  "DocVersion": "1.0.0",
+  "StudioMinVersion": "2025.04.0",
+  "SolutionId": "8a275e3e-7cef-4a28-1bca-08df2867d3a3",
+  "Projects": [
+    {
+      "Type": "Agent",
+      "ProjectRelativePath": "Quest-Classifier-Agent/project.uiproj",
+      "Id": "fc4bd445-852a-4eea-a889-69117bf67e07"
+    }
+  ],
+  "AutomationHubIdeaUrl": null
+}
