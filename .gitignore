@@ -19,3 +19,8 @@ __pycache__/
 .pytest_cache/
 **/.pytest_cache/
 .venv/
+
+# Tenant-specific files a Studio Web export or upload can leave in a starter
+starters/**/SolutionStorage.json
+starters/**/userProfile/
+starters/**/.output/

@@ -23,6 +23,8 @@ uip solution upload .   # or the deployment command listed in the starter's READ
 
 Starters are **tenant-neutral** - no `SolutionStorage.json` or cloud project IDs are committed. The first `push` (or equivalent) creates fresh mappings in your own tenant.
 
+> **Note for starter authors.** The solution manifest (`.uipx`) keeps the `SolutionId` of the solution it was exported from. Uploading a starter back into the tenant it came from overwrites that original solution instead of creating a copy, so test a fresh import from a different tenant or account.
+
 ## Adding a new starter
 
 When a workshop produces a reusable artifact - or Klara the Kobold summons forth a new automation assistant - it will be here with its own subfolder and `README.md`. For those wishing to contribute, be sure to keep tenant-specific files (`SolutionStorage.json`, `.env`, local caches) out of the commit.
