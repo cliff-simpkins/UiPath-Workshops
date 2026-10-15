@@ -381,7 +381,7 @@ The trajectory evaluator will score each run against a written description of wh
 
 1. Open **Evaluation Sets** and select **View details** to open the new evaluation set you created.
 2. Select **Edit** on each case to open its settings
-3. For each evaluation, rename it, paste its expected behavior into the expected behavior field, and select **Save**:
+3. For each evaluation, rename it, confirm **Trajectory** is checked, paste its expected behavior into the **Behavior and output notes** field, and select **Save**:
 
 | Name                       | Expected behavior                                                                                                                                    |
 | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -395,7 +395,7 @@ The trajectory evaluator will score each run against a written description of wh
 
 ![Update an evaluation to add trajectory behavior notes](images/agents-tools-step-07b.gif)
 
-For all of our evaluations, we will leave Monster Query to make real calls, not simulated ones; the trajectory evaluator is less useful when tool calls are mocked.
+For all of our evaluations, leave **Simulate** off for Monster Query under **Agent tools**, so the tool makes real calls; the trajectory evaluator is less useful when tool calls are mocked.
 
 <!-- test:manual reason="evaluation set editing in Studio Web" -->
 
