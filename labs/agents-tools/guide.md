@@ -1,12 +1,14 @@
 # Adding Tools to Your UiPath Agent
 
-This lab extends the quest classifier you built in [Building a Low-Code Agent in Studio Web](../agents-lowcode/guide.md). That agent sorts a quest into one of four difficulty tiers, but its reasoning comes entirely from the model's training: ask it about an ancient red dragon and it answers Legendary because dragons are dangerous. In this lab, you give it a tool that looks the creature up in the 5e SRD (System Reference Document), so the tier rests on a real challenge rating that the agent cites in its reasoning.
+This lab extends the quest classifier you built in [Building a Low-Code Agent in Studio Web](../agents-lowcode/guide.md) - adding an API workflow as a tool for the agent. The tool enables the agent to look up creature data from the 5e SRD (System Reference Document), providing real challenge rating data that the agent can use and cite in its reasoning.
 
-The agent decides at runtime whether a quest needs a lookup at all. A quest that names a creature gets one; a quest to deliver a letter does not. That decision, and whether the agent makes it well, is what the evaluation at the end of this lab measures.
+We will start with an agent that sorts a quest into one of four difficulty tiers, but its reasoning comes entirely from the model's training: ask it about an ancient red dragon and it answers Legendary because dragons are dangerous. After adding the tool, the agent will decide at runtime whether a quest needs a lookup at all. A quest that names a creature gets one; a quest to deliver a letter does not. We will also update the evaluation to measure whether the agent makes that decision properly.
+
+Note that while we are adding an API workflow as the tool, there is a wide range of options that you can use - including RPA workflows, functions, MCP servers, remote agent-to-agent, DeepRAG, web searches, and more.
 
 You will do the following:
 
-1. Build a Monster Query API Workflow that searches the 5e SRD.
+1. Build a Monster Query API workflow that searches the 5e SRD.
 2. Connect it to your quest classifier as a tool.
 3. Replace the system prompt so the agent knows when to call the tool and how to use what it returns.
 4. Test the agent on quests that do and do not need a lookup.
@@ -35,22 +37,16 @@ You will do the following:
 
 ### If you need the starter agent
 
-If you did not complete the earlier lab, deploy the quest classifier starter instead. It includes the agent and the evaluation set from that lab. This path needs two local tools:
+If you are starting fresh and did not complete the earlier lab, you can deploy the quest classifier agent and start there. The starter includes the agent and the evaluation set from the prior lab.
 
-- **Node.js 18+** - required to install the UiPath CLI. Install from [nodejs.org](https://nodejs.org/) if needed.
-- **UiPath CLI v1.198.0+** - check with `uip --version`; install or upgrade with `npm install -g @uipath/cli`.
+To restore the starter sample, you'll need the UiPath CLI. To install the CLI, refer to [Environment set up](https://docs.uipath.com/getting-started/other/latest/developer-guide/environment-setup) and complete Step 1 (Install the UiPath CLI and Tools) and Step 4 (Authenticate to UiPath); you do not need the UiPath skills or the VS Code extension steps to complete this lab.
 
-<!-- test:prereq name="Node.js" version=">=18" ignore-for-docs="true" -->
-```bash
-node --version
-```
-
-<!-- test:prereq name="uip" version=">=1.1" ignore-for-docs="true" -->
+<!-- test:prereq name="uip" version=">=1.200" ignore-for-docs="true" -->
 ```bash
 uip --version
 ```
 
-Then deploy the starter:
+Use these CLI commands to deploy the starter:
 
 <!-- test:manual reason="requires git clone and uip login before starter upload" -->
 ```bash
@@ -66,28 +62,27 @@ Open [Studio Web](https://cloud.uipath.com) and confirm **AdvGuild.quest-classif
 
 ## Step 1 - Build the Monster Query API workflow
 
-An API Workflow is a lightweight workflow published as an API endpoint. You build one that wraps the [Open5e](https://open5e.com/) 5e SRD monster search: one input, one HTTP request, one output. Once published, it appears in the agent builder as a tool your agent can call.
+An API workflow is a lightweight workflow published as an API endpoint. You build a simple one that wraps the [Open5e SRD monster search](https://open5e.com/), it takes a string input, does an HTTP request, and returns a string array as output. Because it lives in the same solution as your agent, the agent builder lists it as a tool your agent can call.
 
-This step has six sub-steps; budget 10–15 minutes to complete it.
+This step has five sub-steps; budget 10–15 minutes to complete it.
 
 ### Create a new API workflow project
 
-Select **Create New** from your Cloud Workspace. In the **Start building** dialog, choose **API Workflow** under **Task automation**.
+Open your quest classifier solution in Studio Web: the one from the low-code lab, or **AdvGuild.quest-classifier** if you deployed the starter.
 
-Selecting the type creates the project immediately, with no name prompt, so you rename it in the next step.
+Select **Add to solution** from the Project Explorer pane (`+` icon), and choose **API Workflow** under **Task automation**.
 
-![Start building dialog opened from Create New, with API Workflow listed under Task automation](images/agents-tools-step-01a.png)
+Once the project is added to your solution, rename it to `API Query - 5e Monsters` and select the **Apply** check icon.
 
-Rename the solution and the default workflow. Open the context menu for each name in the project explorer and select **Rename**:
+![Add a new API workflow project to the existing solution](images/agents-tools-step-01a.gif)
 
-- **Solution name:** `Monster Query - 5e SRD`
-- **Workflow name:** `API Query - 5e Monsters`
+You can also rename the project by opening the context menu in the project explorer and select **Rename**.
 
 ### Configure inputs and outputs
 
 Select the **Data Manager** (clipboard icon along the left rail) to access the data variables for the workflow.
 
-![Data Manager panel before adding arguments](images/agents-tools-step-01c.png)
+![Adding inputs and outputs via the Data Manager panel](images/agents-tools-step-01b.gif)
 
 Add one input argument to the workflow:
 
@@ -99,7 +94,7 @@ Add one output argument:
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| `monsterResults` | Array | Yes | Monster result list |
+| `monsterResults` | Array[String] | Yes | Monster result list |
 
 ### Add the HTTP request
 
@@ -168,39 +163,29 @@ The activity exposes the standard HTTP building blocks. Most you will configure 
 ### Test the workflow
 
 1. Select **Debug** from the toolbar.
-2. In the input panel, set `searchName` to `dragon` or `goblin` and run the workflow.
+2. In the input panel, set `searchName` to `rat` and run the workflow.
 3. Verify the response includes a `monsterResults` array with monster entries before continuing.
 
-A successful response contains up to 10 entries, each with `key`, `name`, `alignment`, and `challenge_rating`, plus nested `type` and `size` objects. Searching `goblin` returns five goblin and hobgoblin variants, such as Goblin Warrior (`srd-2024_goblin-warrior`, challenge rating 0.25) and Hobgoblin Captain. If you see an empty array, try a different search term; not every creature name has an exact match in the SRD.
+A successful response contains up to 10 entries, each with `key`, `name`, `alignment`, and `challenge_rating`, plus nested `type` and `size` objects. Searching `rat` returns seven results, including monsters such as a Giant Rat (`srd-2024_giant-rat`, challenge rating 0.125), a Swarm of Rats (`srd-2024_swarm-of-rats`, challenge rating 0.25), and Triceratops (`srd-2024_triceratops`, challenge rating 5). If you see an empty array, try a different search term; not every creature name has an exact match in the SRD.
 
 For a quick check that every query parameter took effect, search `rat`. You should get exactly seven results, all with `srd-2024_` keys, including a Triceratops and two pirates: `name__icontains` matches the search text anywhere in the name. Any other count means a parameter is misspelled or not bound to the variable.
 
-![Debug output showing the monsterResults array with key srd-2024_goblin-warrior, challenge_rating 0.25, and nested type and size objects](images/agents-tools-step-01l.png)
-
-### Publish to your feed
-
-Publishing registers the workflow as a deployable process in Orchestrator. This is what makes it discoverable in the agent builder's **Available resources** list: the builder surfaces published workflows from your workspace, not drafts saved locally in Studio Web.
-
-1. Select **Publish** from the toolbar.
-2. In the publish dialog, select **For me** to publish to your personal workspace feed. A personal workspace feed is a private package repository tied to your Orchestrator workspace; publishing "For me" makes this workflow visible only to you, which is the right scope for development and testing. See [Personal Workspaces](https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/personal-workspaces) in the UiPath docs for details.
-3. Select **Publish** to confirm.
-
-> **Workflow not appearing in Available resources in Step 3?** The workflow must be published (not just saved) before it is visible as a tool. If it does not appear, return here and confirm the publish completed successfully, then refresh the agent builder.
+![Debug output showing the monsterResults array with key srd-2024_goblin-warrior, challenge_rating 0.25, and nested type and size objects](images/agents-tools-step-01l.gif)
 
 * * *
 
-With the workflow published, it is available in the agent builder as a connectable tool in the next section.
+With the workflow returning results, switch back to the agent in the same solution to connect it as a tool.
 
 # Connect to your agent
 
-## Step 2 - Open the quest classifier
+## Step 2 - Open the quest classifier agent
 
-In Studio Web, open your quest classifier solution in the agent builder: either the one you built in the low-code lab, or **AdvGuild.quest-classifier** if you deployed the starter.
+Your solution now holds two projects: the quest classifier agent and the `API Query - 5e Monsters` workflow you just built. In the project explorer, select the agent project to open it in the agent builder. If you deployed the starter, the agent project is **Quest-Classifier-Agent**.
 
-Take a moment to orient on its current state before making changes:
+Take a moment to orient on the agent's current configuration before making changes:
 
-- **Input:** `questDescription` (string).
-- **Outputs:** `tier` (string, one of four values) and `reasoning` (string).
+- **Project Input:** `questDescription` (string).
+- **Project Outputs:** `tier` (string, one of four values) and `reasoning` (string).
 - **System prompt:** describes the four tiers. If Autopilot wrote it, it most likely also tells the agent to classify from the description alone and not to use tools.
 - **Evaluation set:** the five cases from the low-code lab. You rerun them in Step 6.
 
@@ -216,13 +201,13 @@ Make sure you are on the **Canvas** view: use the **Canvas / Form** toggle at th
 
 1. On the agent canvas, select **+** under **Tools**.
 2. In the **Choose tool** panel, select **API workflow** under **Toolbox**.
-3. Under **Available resources**, select the workflow you created in Step 1.
+3. Under **Available resources**, select `API Query - 5e Monsters`, the workflow you added to this solution in Step 1. You can also filter with the **Search API workflows** box above the list.
 
-   Your workflow is listed by its **project** name, nested under a `<workspace>/<solution>` folder line - so if you renamed the solution in Step 1, look for `API Query - 5e Monsters`, not the solution name. You can also filter with the **Search API workflows** box above the list.
+> **Don't see the workflow?** Check the project explorer: `API Query - 5e Monsters` should be listed in the same solution as the agent. If you created it as a separate solution instead, publish it first (**Publish** > **For me**), and it appears here under its project name.
 
-> **Available resources empty, or showing "No tools found"?** The workflow must be published before it appears here. Return to Step 1 and complete the **Publish to your feed** sub-step, then come back and try again.
+> **Same solution or separate?** Keeping the tool in the agent's solution is the simplest setup for a single agent, and the agent's evaluations call it like any other tool. In your own projects, give a tool its own solution and publish it when more than one agent needs to call it.
 
-![Choose tool panel showing API workflow selected and Available resources list](images/agents-tools-step-03a.png)
+![Choose tool panel showing API workflow selected and Available resources list](images/agents-tools-step-03a.gif)
 
 ### Configure the tool description
 
@@ -257,13 +242,15 @@ Classify the incoming quest description into exactly one difficulty tier:
 
 Using the Monster Query tool:
 - Call Monster Query when the quest description names or strongly implies a specific creature the adventurers must face.
+- Creatures include people the party may have to fight, such as bandits or guards.
 - Search with the most specific creature name the quest gives.
 - Only search for creatures in the quest itself, never for a creature you are using as a comparison or reference point.
 - If a search returns no results, you may try one shorter or more general name. Stop after three searches in total.
 - If the tool returns more than one result, pick the best fit: name match first, then number (a group of rats fits "Swarm of Rats" better than "Rat"), then type.
 
 Using the challenge rating:
-- When the tool returns a challenge_rating, set the tier from this map: Trivial 0-5, Standard 6-12, Heroic 13-20, Legendary 21 and above.
+- When the tool returns a challenge_rating, use this map to set the minimum tier: Trivial 0-5, Standard 6-12, Heroic 13-20, Legendary 21 and above.
+- Raise the tier above that minimum when the quest describes many opponents, a powerful leader or patron, or a history of failed attempts. One creature's challenge rating is not the difficulty of the whole quest.
 - Cite the exact challenge rating in your reasoning.
 - Never guess or invent a challenge rating. Only cite one the tool actually returned.
 - If you do not call the tool, or it returns nothing that fits, classify from the quest description alone.
@@ -271,9 +258,9 @@ Using the challenge rating:
 Return the tier and a brief, two-sentence reasoning.
 ```
 
-The challenge rating map is what turns a lookup into a tier. Swarm of Rats (challenge rating 0.25) lands in Trivial, Wyvern (6) in Standard, Adult Red Dragon (17) in Heroic, and Ancient Red Dragon (24) in Legendary.
+The challenge rating map sets the minimum tier, and the quest's context can raise it. Swarm of Rats (challenge rating 0.25) starts at Trivial, Wyvern (6) at Standard, Adult Red Dragon (17) at Heroic, and Ancient Red Dragon (24) at Legendary. A guard is challenge rating 0.125, so a quest with guards starts at Trivial, but one that says the guards are many and nobody has come back raises the tier.
 
-> **Keep the examples consistent with the map.** The tier examples and the map are two sources of truth, so they must agree. "Drive back the kobolds" is a tempting Standard example, but kobolds are challenge rating 0.125, which the map puts in Trivial, and a contradiction like that makes the agent's tier unpredictable.
+> **Keep the examples consistent with the map.** The tier examples and the map are two sources of truth, so they must not contradict each other. Because the map sets a minimum, an example can sit above its creature's minimum tier, but never below it. Listing "hunt a wyvern" as a Trivial example would contradict the map: a wyvern is challenge rating 6, so its minimum is Standard, and a contradiction like that makes the agent's tier unpredictable.
 
 The input and output schemas do not change. The challenge rating goes into the `reasoning` text, not a new field.
 
@@ -308,6 +295,8 @@ Select the **HTTP Request - Open5e Monster Query** span to see the request the t
 
 Compare this run with the same quest in the low-code lab. The tier is the same, but the reasoning now rests on a number from the SRD instead of on the model's sense that dragons are dangerous.
 
+![Execution Trail for the ancient dragon quest, showing the agent's output with no tool call](images/agents-tools-step-05d.png)
+
 Now run two more quests, letting each finish before you start the next:
 
 <!-- test:manual reason="debug test case in Studio Web" -->
@@ -324,33 +313,29 @@ Deliver a sealed letter to the magistrate in the next town.
 
 Expected: **no** Monster Query call, because the quest names no creature, and tier `Trivial`.
 
-![Execution Trail for the letter quest, showing the agent's output with no tool call](images/agents-tools-step-05d.png)
-
 The letter run matters as much as the dragon run. An agent that calls the tool on every quest wastes an API call and tokens each time, and an agent that never calls it is back to guessing. Step 7 measures both.
 
 * * *
 
 With the agent calling its tool only when it should, you are ready to evaluate it in the next section.
 
-# Evaluate the agent
+# Evaluate agent trajectory
 
 ## Step 6 - Rerun your existing evaluation set
 
 Your agent already has an evaluation set: the five cases from the low-code lab. Before you build anything new, rerun it. This is what an evaluation set is for: checking what a change did to behavior you had already accepted.
 
-1. Open the solution's **Evaluation Sets** node in the project explorer, and open the set from the low-code lab.
-2. Select **Run**.
+1. In the project explorer, open the agent's **Evaluation Sets** node, and open the set from the low-code lab.
+2. Select **Run** for the evaluation set.
 3. When the run finishes, select **View all results**, then select the most recent run.
 
 <!-- test:manual reason="evaluation run in Studio Web" -->
 
-<!-- screenshot: agents-tools-step-06a.png - Results of the low-code evaluation set rerun after adding the tool, with lower scores on the rats and dragon cases -->
+Expect the returned tiers to hold, and expect the semantic similarity scores to barely move. In my run, the rats and dragon cases dropped from 100% to 98%. Their saved outputs come from the agent before it had a tool, so the expected reasoning does not cite a challenge rating and the new reasoning does, but the meaning is close enough that semantic similarity hardly registers the change.
 
-Expect the tiers to hold, and expect the scores on the rats and dragon cases to drop. Their saved outputs come from the agent before it had a tool, so their reasoning does not cite a challenge rating, and the new reasoning does. The semantic similarity evaluator notices the difference in meaning.
+That small drop is the lesson. The agent now reaches its answer a different way: it calls a tool, then sets the tier from the challenge rating it gets back. A semantic similarity score compares answers, so it can't see that change. To check how the agent got to its answer, you need a trajectory evaluator, which the next step adds in a new set that describes the new behavior.
 
-That drop is not a bug to fix. It is the evaluation set doing its job: it shows you exactly which cases a change affected. Here the change is the one you wanted, so the next step builds a set that describes the new behavior.
-
-> **Evaluation scores are non-deterministic.** The evaluator is itself a language model, so scores move by a few points between runs. Look for which cases moved, not for small differences.
+> **Evaluation scores are non-deterministic.** The evaluator is itself a language model, so scores move by a few points between runs. A two-point drop like this one is within that normal variation.
 
 * * *
 
@@ -359,7 +344,7 @@ That drop is not a bug to fix. It is the evaluation set doing its job: it shows 
 The new set checks two things: what the agent answered, and how it got there.
 
 - **Semantic similarity** - compares the agent's output to the expected output by meaning, not exact wording.
-- **Trajectory** - judges how the agent reached its answer: whether it called the tool, what it searched for, and whether it used only challenge ratings the tool returned. This is the score that tells you whether the tool description and system prompt are doing their job.
+- **Trajectory** - judges how the agent reached its answer from its tool calls: whether it called the tool, what it searched for, and in what order. This is the score that tells you whether the tool description and system prompt are doing their job.
 
 ### Capture the remaining runs
 
@@ -375,48 +360,63 @@ Escort a merchant caravan through the hill country to the coast.
 Recover a stolen relic from a noble's estate. The guards are many, the owner is powerful, and nobody who has tried has come back.
 ```
 
-Neither quest names a creature, so neither should call Monster Query. The relic quest is the harder test: the guards and the powerful owner are people, not monsters, and an agent that over-uses its tool may still search for something.
+Neither quest names a monster to look up. The relic quest is the harder test: the guards are people the party may have to fight, so one lookup for guards is reasonable, but the relic and its owner aren't threats to search for. An agent that over-uses its tool will search for those too.
 
 ### Create the set and add the runs
 
 1. In **Evaluation Sets**, create a new evaluation set and name it `Quest Classifier with Tools`.
-2. In the **Execution Trail** for your most recent run, select **Add to evaluation set** and choose the new set.
-3. Open the **History** tab in the bottom panel. For each of the other four runs from Steps 5 and 7, select the beaker icon and add it to the same set.
+2. Return to the agent's **Definition** to access the agent's trace history.
+3. Open the **History** tab in the bottom panel, and select the trace for the run that you want to add
+4. Select **Add to evaluation set** and choose the new set from the drop-down.
+5. In the **Add Trace** dialog, review the inputs and outputs and select **Save** to save the trace as an evaluation.
+6. Repeat this process for the other four runs from Steps 5 and 7 - adding each of them to the same set.
 
 > **Warning: Save only runs you agree with.** The evaluation set treats each saved output as the correct answer. Check that every run reached the expected tier and called the tool only when it should have.
 
-<!-- screenshot: agents-tools-step-07a.png - New evaluation set with the five runs added -->
+![Add a trace to the new evaluation set](images/agents-tools-step-07a.gif)
 
 ### Describe the expected behavior
 
-The trajectory evaluator scores each run against a written description of what the agent should do. Open the new set, select **Edit** on each case, rename it, paste its expected behavior into the expected behavior field, and select **Save**:
+The trajectory evaluator will score each run against a written description of what the agent should do. To measure this, we describe the expected behavior for each run.
 
-| Name | Expected behavior |
-| --- | --- |
-| `legendary-ancient-dragon` | Calls Monster Query once before answering, searching for the ancient red dragon rather than for dragons in general. Cites its challenge rating of 24. |
-| `trivial-rats` | Calls Monster Query once before answering, with a search term for rats. Selects Swarm of Rats and cites its challenge rating of 0.25. |
-| `trivial-letter` | Does not call Monster Query, since no creature is named. Classifies from the description alone. |
-| `standard-caravan` | Does not call Monster Query, since no creature is named. Classifies from the description alone. |
-| `no-creature-relic` | Does not call Monster Query, since the quest names no creature; guards and a noble are people, not monsters. Classifies from the description alone as Standard or Heroic. |
+1. Open **Evaluation Sets** and select **View details** to open the new evaluation set you created.
+2. Select **Edit** on each case to open its settings
+3. For each evaluation, rename it, paste its expected behavior into the expected behavior field, and select **Save**:
 
-Leave Monster Query set to make real calls, not simulated ones; the trajectory evaluator is less useful when tool calls are mocked.
+| Name                       | Expected behavior                                                                                                                                    |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `legendary-ancient-dragon` | Calls Monster Query before answering, with a search term naming the ancient red dragon rather than a general term such as "dragon".                  |
+| `trivial-rats`             | Calls Monster Query before answering, with a search term for rats, such as "rat", "rats", or "swarm of rats".                                        |
+| `trivial-letter`           | The tool-call history should be empty. No creature is named, so the agent should not call Monster Query, and an empty history is the correct result. |
+| `standard-caravan`         | The tool-call history should be empty. No creature is named, so the agent should not call Monster Query, and an empty history is the correct result. |
+| `no-creature-relic`        | Calls Monster Query only to look up the guards, or does not look up anything at all. Does not search for the relic or its owner.                     |
+
+> **Describe tool use, not the answer.** The trajectory evaluator reads the agent's tool-call history, which ends at the last tool result: it never sees the final answer. Describe whether the agent calls a tool and what it searches for, and leave the answer to semantic similarity. When the agent shouldn't call a tool, say that an empty history is the correct result; otherwise the evaluator reads the empty history as missing evidence. And allow reasonable variations in search terms rather than pinning one.
+
+![Update an evaluation to add trajectory behavior notes](images/agents-tools-step-07b.gif)
+
+For all of our evaluations, we will leave Monster Query to make real calls, not simulated ones; the trajectory evaluator is less useful when tool calls are mocked.
 
 <!-- test:manual reason="evaluation set editing in Studio Web" -->
 
 ### Attach both evaluators and run the set
 
 1. In the new set, select the pencil icon next to **Applied Evaluators**. Make sure both a semantic similarity evaluator and a trajectory evaluator are listed. If the project has no trajectory evaluator yet, create one from the same dialog.
-2. Select **Run**.
-3. When the run finishes, select **View all results**, then select the most recent run. Each case shows a semantic similarity score and a trajectory score, from 0 to 100.
+2. Select **Evaluate set** to run all of the evaluations in the list.
+3. When the run finishes, select the most recent run. Each case shows a semantic similarity score and a trajectory score, from 0 to 100.
 4. Select any case to see the run, its scores, and each evaluator's explanation.
 
 <!-- test:manual reason="evaluation run in Studio Web" -->
 
-<!-- screenshot: agents-tools-step-07b.png - Results with semantic similarity and trajectory scores for the five cases -->
+![Evaluation set results that includes both trajectory and similarity evaluations](images/agents-tools-step-07c.png)
 
 > **Warning: A missing evaluator fails silently.** If you forget to attach the trajectory evaluator, the set still runs and shows only semantic similarity scores. If you see one score per case, revisit **Applied Evaluators**.
 
-A low trajectory score with a high semantic similarity score is the most useful result here: the agent reached a reasonable answer, but not the way you asked. Typical causes are a search term that is too general (the `dragon` problem from Step 3), a tool call on a quest that names no creature, or a challenge rating cited from memory. Fix the tool description or the system prompt, rerun the set, and compare. From here on, rerun both sets after every prompt change.
+Expect high scores from both evaluators with these descriptions. In my run, semantic similarity averaged 98.6% and trajectory averaged 99.4%. Run the set more than once before you trust a number: the trajectory evaluator is also a language model, and in testing, the same case with the same description scored 45% on one run and 75% on the next. To see how the evaluator scored a case, open it and read its **justification**. [Cliff: link to the evals tutorial, once it exists] goes deeper on how the wording of an expected behavior moves these scores.
+
+> **You may see a justification mention a redundant first call that returned empty.** The evaluator's view of the run currently lists each tool call twice, even though the agent called the tool once (check the **Execution Trail** to confirm). Until that's fixed, avoid expected behaviors that limit the number of tool calls.
+
+Generally, a low trajectory score with a high semantic similarity score is the most useful result here: the agent reached a reasonable answer, but not the way you asked. Typical causes are a search term that is too general (the `dragon` problem from Step 3), or a tool call on a quest that names no creature. When this situation occurs, fix the tool description, the system prompt, or the expected behavior, rerun the set, and compare.
 
 * * *
 
@@ -424,7 +424,7 @@ A low trajectory score with a high semantic similarity score is the most useful 
 
 You extended a low-code agent with a live tool and measured how it uses it:
 
-- Built a live API connector that searches the 5e SRD: one input, one HTTP request, one output.
+- Built an API workflow that searches the 5e SRD (one input, one HTTP request, one output) and added it to the agent's own solution.
 - Connected it to your quest classifier as a tool, with a description that teaches the agent how to search.
 - Replaced the system prompt so the agent calls the tool only when a quest names a creature, and sets the tier from the challenge rating it returns.
 - Used your existing evaluation set to see what the change did, then built a tool-aware set scored by both semantic similarity and trajectory.
