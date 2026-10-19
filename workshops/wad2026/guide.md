@@ -1,6 +1,6 @@
 # Trust, but Verify: Building a Document Agent That Survives Production
 
-**WeAreDevelopers World Congress 2026 - Participant Guide**
+**Workshop Participant Guide**
 
 Over two hours you'll grow a simple document-processing flow into a governed agentic workflow. You'll add an agent with inspectable traces, write evaluations that validate its output and trajectory, catch a regression before it ships, and publish the result to durable, recoverable orchestration.
 
@@ -16,7 +16,7 @@ You'll leave with a running agent, a reusable eval set, and a mental model of wh
 | **Join URL**            | `[Provided by Facilitator]`                                    |
 | **Tenant**              | `[Provided by Facilitator]`                                    |
 | **Studio Web**          | `https://cloud.uipath.com/uipathlabstraining/studio_/projects` |
-| **Workshop solution**   | `Invoice Processing Flow`                                      |
+| **Workshop solution**   | `Trust but Verify - Invoice Processing Flow`                   |
 | **Test email address**  | `UiPathlabsdemo@uipath.com`                                    |
 | **Your subject filter** | `inv-[YourName]` (e.g. `inv-alex`)                             |
 
@@ -41,7 +41,7 @@ The scenario: invoice processing. Yes, it's deliberately boring, and that's the 
 **What you'll touch today:**
 
 - A pre-built **Discrepancy Investigator Agent** ('DIA') - you'll test human-in-the-loop, add agent evaluations, and test them
-- A pre-built **Vendor Research Agent** - you'll run it and inspect its execution trace
+- A pre-built **Vendor Research Agent** ('VRA') - you'll run it and inspect its execution trace
 - A **Maestro Flow** - you'll wire in the DIA, add the email reply, and then publish it to Orchestrator
 
 ---
@@ -64,17 +64,22 @@ To verify the tenant you are working in, you can check the Tenant Selector in th
 
 ---
 
-## Step 3 - Duplicate the workshop solution (2 min)
+## Step 3 - Create your solution from a template (2 min)
 
-A complete reference solution is pre-built and shared in the workspace. You'll duplicate it to get your own editable copy - your changes stay isolated from everyone else's.
+A complete reference solution is pre-built and published as a UiPath template. You'll create your own editable copy of the solution in your Cloud Workspace - your changes will stay isolated from everyone else's.
 
 1. Navigate to Studio Web: `https://cloud.uipath.com/uipathlabstraining/studio_/projects`
-2. Find the solution named `**Invoice Processing Flow**` - **do not open it directly**
-3. Open the three-dot menu (⋮) on the right side of the row and select **Duplicate**
-4. Open your new copy, which should have a number appended to it
-  ![Duplicate the project](images/ws-flow-step-03.gif)
+2. Select **Templates** to view available UiPath solution templates
+3. Search for the `Trust but Verify - Invoice Processing Flow` template. Note that search does partial matches, so you don't need to type the entire template name
+4. Select the template and select the **Create in Cloud Workspace** option to install it into your workspace
 
-Your solution should contain five items:
+![Searching Templates for Trust but Verify - Invoice Processing Flow and creating it in the Cloud Workspace](images/ws-flow-step-03.gif)
+
+Studio Web should automatically open the new solution, and provide you with the option to rename your solution.
+
+By default, your solution will be named `Trust but Verify - Invoice Processing Flow` - you can either keep the name or rename it as you please.
+
+Once opened, your solution should contain five projects:
 
 - **Discrepancy Investigator Agent**
 - **Vendor Research Agent**
@@ -88,7 +93,7 @@ Your solution should contain five items:
 
 Before we start building anything, let's review the end state that we build - an orchestration designed to survive production.
 
-Open **Invoice Processing Flow - Complete** and trace the path from top to bottom.
+Open the **Invoice Processing Flow - Complete** project and trace the path from top to bottom.
 
 The complete flow processes invoices end-to-end:
 
@@ -191,11 +196,12 @@ As we use Studio Web, there are a few areas worth noting - along the left-side o
 
 To enable resiliency and compliance, our orchestration connects to our backend systems using centrally managed connections. These connections can be either managed by you (in your workspace) or by a resource owner (in the shared workspace).
 
-When you duplicate a solution, the connections (email, Data Fabric, Storage Bucket, GenAI) point at the original solution's configuration. As they move into your workspace, you need to update these connections before you can run anything.
+When you create a solution from a template or as a copy of another solution, the connections (email, Data Fabric, Storage Bucket, GenAI, IXP) point at the original solution's configuration. As the solution lands in your workspace, you need to update these connections before you can run anything.
 
-1. Open your copy of the **Invoice Processing Flow** solution
+1. Open your copy of the solution. By default, this is named **Trust but Verify - Invoice Processing Flow**
 2. Open the **Project Explorer** panel (folders icon along left bar), and check the **Connections** and **Indexes** nodes in the bottom left of the screen (see image below)
 3. For each connection and index that shows a warning indicator, select it, then choose the matching workshop connection from the dropdown
+4. For the IXP model *(while in Public Preview)*, rebinding is different: delete the model reference under **IXP models (Standalone)** and allow the project to rebuild the binding on its own when you run it the first time
 
 Connections to rebind:
 
@@ -203,6 +209,7 @@ Connections to rebind:
 - `UiPath GenAI Activities` connection - used for web research access
 - `Data Fabric` connection - supports the purchase order data query
 - `Indexes/Vendor_Contracts` - Storage Bucket that stores vendor contracts
+- `IXP models (Standalone)/IXP_Invoices` - IXP training model for extracting invoice data from PDFs
 
 ![Rebinding connections for the solution](images/ws-flow-step-08a.gif)
 
@@ -210,7 +217,7 @@ To rebind the `Indexes/Vendor_Contracts`, select the text box element that says 
 
 ![Rebinding the vendor contracts](images/ws-flow-step-08b.png)
 
-> **Why rebind now?** A duplicated solution inherits stale references from the original, as well as references in the solution author's workspace. When a new solution is created from an existing one, stale errors cause failures mid-run that can be hard to diagnose under time pressure.
+> **Why rebind now?** A solution created either from a template or a copy carries references to the original author's workspace. Stale references cause failures mid-run that can be hard to diagnose under time pressure, so fix them before you run anything.
 
 ---
 
@@ -244,9 +251,9 @@ Set the **Large Discrepancy** escalation path so that Human-in-the-Loop ('HITL')
 
 Notes for selecting your name:
 
-- You may need to delete the existing recipient by selecting the 'X' icon.
+- You may need to clear the existing recipient by selecting the **X** icon in the textbox.
 - You can find your username by clicking on your profile picture in the upper-right corner of the Studio Web UX
-- Given this lab uses `User n` names that can share the same undername across labs, **using the email address is easier than username**.
+- Given this lab uses `User n` names that can share the same undername across labs, **using the email address is easier than username** as each workshop in the organization has its own set of provisioned users with overlapping names.
 
 ![Locating your username email using the profile icon](images/ws-flow-step-10b.png)
 
@@ -257,13 +264,13 @@ Notes for selecting your name:
 Test the agent with known inputs before connecting it to the flow. This confirms the baseline behavior and lets you read the reasoning directly.
 
 1. In Agent Builder, select the **Debug** tab
-2. Paste the following into the `**invoiceData**` field:
+2. Paste the following into the `invoiceData` field:
 
 ```json
 {"document_type": "invoice", "vendor": "Stratton Office Supply Co.", "invoice_number": "SOS-2026-4412", "invoice_date": "2026-06-01", "due_date": "2026-07-01", "customer_po": "PO-2026-14880", "payment_terms": "Net 30", "currency": "USD", "bill_to": "Customer Accounts Payable", "line_items": [{"description": "HP Office Pro Ink Cartridge 4-pack", "sku": "INK-HP-8034E", "qty": 10, "unit_price": 42.0, "amount": 420.0}, {"description": "Hammermill Premium Copy Paper 500-sheet ream", "sku": "PAPER-HM-500", "qty": 20, "unit_price": 12.5, "amount": 250.0}], "subtotal": 670.0, "tax": 53.6, "freight": 0.0, "total": 723.6}
 ```
 
-1. Paste the following into the `**poData**` field:
+1. Paste the following into the `poData` field:
 
 ```json
 {"document_type": "purchase_order", "buyer": "Acme Procurement", "po_number": "PO-2026-14880", "po_date": "2026-05-15", "payment_terms": "Net 30", "currency": "USD", "status": "Issued", "vendor": "Stratton Office Supply Co.", "ship_to": "Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606", "line_items": [{"description": "HP Office Pro Ink Cartridge 4-pack", "sku": "INK-HP-8034E", "qty": 10, "unit_price": 42.0, "extended": 420.0}, {"description": "Hammermill Premium Copy Paper 500-sheet ream", "sku": "PAPER-HM-500", "qty": 20, "unit_price": 12.5, "extended": 250.0}], "subtotal": 670.0, "tax": 53.6, "total": 723.6}
@@ -284,13 +291,13 @@ Expected result: `recommendation: "approve"`, `escalated: false`, `totalAmountDe
 Now let's test the agent with known inputs that will trigger the Human In the Loop ('HITL') escalation. This uses the UiPath App capabilities that were built with a quick form.
 
 1. In Agent Builder, select the **Debug** tab
-2. Paste the following into the `**invoiceData**` field:
+2. Paste the following into the `invoiceData` field:
 
 ```json
 {"document_type": "invoice", "vendor": "Stratton Office Supply Co.", "invoice_number": "SOS-2026-4412", "invoice_date": "2026-06-01", "due_date": "2026-07-01", "customer_po": "PO-2026-14880", "payment_terms": "Net 30", "currency": "USD", "bill_to": "Customer Accounts Payable", "line_items": [{"description": "HP Office Pro Ink Cartridge 4-pack", "sku": "INK-HP-8034E", "qty": 10, "unit_price": 50.0, "amount": 500.0}, {"description": "Hammermill Premium Copy Paper 500-sheet ream", "sku": "PAPER-HM-500", "qty": 20, "unit_price": 15.0, "amount": 300.0}], "subtotal": 800.0, "tax": 80.0, "freight": 0.0, "total": 880.0}
 ```
 
-1. Paste the following into the `**poData**` field:
+1. Paste the following into the `poData` field:
 
 ```json
 {"document_type": "purchase_order", "buyer": "Acme Procurement", "po_number": "PO-2026-14880", "po_date": "2026-05-15", "payment_terms": "Net 30", "currency": "USD", "status": "Issued", "vendor": "Stratton Office Supply Co.", "ship_to": "Acme Procurement Receiving Dock, 1100 Commerce Plaza, Chicago IL 60606", "line_items": [{"description": "HP Office Pro Ink Cartridge 4-pack", "sku": "INK-HP-8034E", "qty": 10, "unit_price": 42.0, "extended": 420.0}, {"description": "Hammermill Premium Copy Paper 500-sheet ream", "sku": "PAPER-HM-500", "qty": 20, "unit_price": 12.5, "extended": 250.0}], "subtotal": 670.0, "tax": 53.6, "total": 723.6}
@@ -309,7 +316,7 @@ Now let's test the agent with known inputs that will trigger the Human In the Lo
 4. Return to the Agent Builder UX and verify that execution completed by examining the Execution Trace. You should now see an **Agent Output** line with what the agent returns.
   ![Execution Trail post approval](images/ws-flow-step-12c.png)
 
-> **What to notice:** This time, the execution trace shows a very different agent reasoning. It noticed discrepancies and used the tools available to it - first to validating with a human that the increased invoice cost is acceptable, and also validating the contract terms of the invoice against the full purchase order agreement stored in Vendor_Contracts.
+> **What to notice:** This time, the execution trace shows a very different agent reasoning. It noticed discrepancies and used the tools available to it - first validating with a human that the increased invoice cost is acceptable, and also validating the contract terms of the invoice against the full purchase order agreement stored in Vendor_Contracts.
 
 ---
 
@@ -374,7 +381,6 @@ For this agent, we will access the evaluations using another click-path. But the
 
 As you can see, the agent's evaluation scores can be run and accessed either via the **Evaluation Sets** node in the project explorer or via the **Evaluations** tab along the bottom. Either provide you with a way of seeing how your agents perform against the evals.
 
-
 Note the scores. As with the DIA, evals are your regression net - any future prompt change to the VRA should be validated against this set before the agent goes back into the flow.
 
 If you have time at the end of this lab, improving your eval scores by adjusting the prompt and/or inputs is an excellent place to explore further.
@@ -402,7 +408,7 @@ And we will now finish wiring up the workflow!
 
 > **About the pre-wired false branch:** In a real build you'd wire this yourself. We've pre-built it so the 2-hour session can stay focused on the DIA, the evals, and the process orchestration - which is where the interesting decisions live.
 
-> **About the switch node:** We included a decision switch to fully automate task routing coming out of the **Vendor Research Agent**, but you would likely have a human in the loop ('HITL') approval here. We made this a switch to simplify the lab, but we have a HITL solution available if you want to explore that approach on your own.
+> **About the switch node:** We included a decision switch to fully automate task routing coming out of the **Vendor Research Agent**, but you would likely have a human in the loop ('HITL') approval here. We made this a switch to simplify the lab, but you can optionally replace this switch node with a HITL step if you want to explore this approach on your own.
 
 ---
 
@@ -411,10 +417,8 @@ And we will now finish wiring up the workflow!
 Adjust the **Email Received** trigger to trigger on ***your*** emails.
 
 1. Open the `Email Received` node by either double-clicking on it, or selecting it and selecting the properties (wrench icon) in Studio Web
-2. Select the **Filter** option to open the Filter Builder dialog
-  ![The Email Received node Properties with the Filter section highlighted](images/ws-flow-step-17a.png)
-3. In **Filter Builder**, update the `Subject`, replace the `yourname` portion with the name you want your Workflow to trigger from.
-  ![The Filter builder with the Subject condition set to contain WAD-yourname](images/ws-flow-step-17b.png)
+2. In **Filter Builder**, update the `Subject`, replace the `[name]` portion with the name you want your Workflow to trigger from.
+  ![The Filter builder with the Subject condition set to contain inv-name](images/ws-flow-step-17.png)
 
 When selecting the string you want to use, use something that is rather unique. All emails for this lab are going into this email inbox, and how you set your email subject filter is the best way to minimize the amount of false triggers across workshop participants.
 
@@ -426,10 +430,10 @@ Before adding the Discrepancy Investigator Agent into the workflow, confirm the 
 
 **Test 1 - Perfect match (true branch, currently empty):**
 
-1. From your email client, compose a new email to `**UiPathlabsdemo@uipath.com**`
-2. Set the subject to `**inv-[YourName]**`
-3. Attach `**case-4-perfect-match-invoice.pdf**` and send the email
-4. Select `**Debug on the Cloud**` in the flow and wait for the trigger to pick up the email
+1. From your email client, compose a new email to `UiPathlabsdemo@uipath.com`
+2. Set the subject to `inv-[YourName]`
+3. Attach `case-4-perfect-match-invoice.pdf` and send the email
+4. Select **Debug on the Cloud** in the flow and wait for the trigger to pick up the email
 5. Watch the run - you'll see paths that were followed, and activity nodes that were activated, outlined in green
 6. You can inspect the execution trace and details of each step by using the `Execution` tab below the designer
 
@@ -439,7 +443,7 @@ The flow runs through the spine and then ends at the empty true branch - no erro
 
 **Test 2 - Vendor mismatch (false branch, pre-wired):**
 
-Send another email with `**case-1-alphabet-google-invoice.pdf**` attached (same subject).
+Send another email with `case-1-alphabet-google-invoice.pdf` attached (same subject).
 
 This time the flow routes to the false branch. The Vendor Research Agent fires, classifies Alphabet/Google as `parent_subsidiary`, and returns `flag: approve` - which routes the Switch to the `Valid` path. The DIA isn't wired yet, so the flow ends here. That's expected.
 
@@ -464,7 +468,7 @@ Add the Discrepancy Investigator Agent ('DIA') to the true path of the `Decision
   - Enclose each of the values in `JSON.stringify()`  
   ![DIA Variable Picker](images/ws-flow-step-19b.gif)
 
-Your final values should look like the following. Enclosing each variables in the JSON.stringify()call converts the JSON values into strings that the agent can process.
+Your final values should look like the following. Enclosing each variable in the `JSON.stringify()` call converts the JSON values into strings that the agent can process.
 
 - **invoiceData**: `JSON.stringify($vars.scriptGetInvoice.output)`
 - **poData**: `JSON.stringify($vars.queryPoData.output)`
@@ -526,7 +530,7 @@ Configure the script that collects together the information that will be used by
 
 ### Configure the inline email drafting agent
 
-Configure it with a system prompt that drafts a professional AP reply based on the DIA output
+Configure it with a system prompt that drafts a professional Accounts Payable ('AP') reply based on the DIA output
 
 1. Node ID: Rename it to `agentDraftEmailResponse`
 2. Label: `Agent - Draft Email`
@@ -574,8 +578,8 @@ Finally, let's configure the **Reply to Email** node:
 
 ## Step 21 - Test: Run the full flow end-to-end (5 min)
 
-1. From your email client, compose an email to `**UiPathlabsdemo@uipath.com**` with subject `**inv-[YourName]**`
-2. Attach `**case-4-perfect-match-invoice.pdf**`
+1. From your email client, compose an email to `UiPathlabsdemo@uipath.com` with subject `inv-[YourName]`
+2. Attach `case-4-perfect-match-invoice.pdf`
 3. Send it and watch the run
 
 The flow should successfully route through the true branch of the Vendor Match - the Discrepancy Investigator Agent runs, the email reply is prepared, and it's sent.
@@ -617,11 +621,11 @@ If asked to configure the solution's Connections and Indexes, do the following:
 
 1. Select the resource needing to be configured (e.g., **Data Fabric**)
 2. Select the **Link to Existing** button in the upper-right of the screen
-3. Select the **connection name** from the list of options - selecting the `(Shared)` option
+3. Select the **connection name** from the list of options - selecting the `(Shared)` option 
 4. Select the **Link** button to configure your solution deployment to use that connection
-5. Note - If a connection doesn't show the existing shared connection (for example - O365), you may need to search using the same name using the magnifying glass icon, which should refresh the list with the shared connection.
+5. Note - If a connection doesn't show the existing shared connection (for example - O365), you may need to select the **X** icon to clear the existing filter, which should refresh the list with the shared connection.
 
-![Configure the solution connectors while deploying](images/ws-flow-step-23a.png)
+![Configure the solution connectors while deploying](images/ws-flow-step-23a.gif)
 
 If required, also refresh the `Vendor_Contracts` index by selecting `Vendor_Contracts` from the **Indexes** list and selecting the **Use existing** button.
 
@@ -633,11 +637,12 @@ If required, also refresh the `Vendor_Contracts` index by selecting `Vendor_Cont
 
 Once successfully deployed, ensure that the email trigger has been created:
 
-1. Expand the **My workspace** folder node within the **My Folders** pane of Orchestrator
-2. Select the folder node that matches your Solution's name - for example, `Invoice Processing Flow`
-3. Select the **Automations** tab within Orchestrator to show the automations published into that folder.
-4. Select the **Triggers** sub-tab within Automations to show your automation triggers
-5. Finally, select the **Event Triggers** sub-sub-tab to show your event-based triggers. Because your workflow is waiting on an email received event, your workflow projects show up here.
+1. Open **UiPath Orchestrator** by selecting the menu (9 dots icon in upper-left of the screen) and selecting **Orchestrator**
+2. Expand the **My workspace** folder node within the **My Folders** pane of Orchestrator
+3. Select the folder node that matches your Solution's name - for example, `Trust but Verify - Invoice Processing Flow`
+4. Select the **Automations** tab within Orchestrator to show the automations published into that folder.
+5. Select the **Triggers** sub-tab within Automations to show your automation triggers
+6. Finally, select the **Event Triggers** sub-sub-tab to show your event-based triggers. Because your workflow is waiting on an email received event, your workflow projects show up here.
 
 ![The event triggers list in Orchestrator for your published projects](images/ws-flow-step-24.png)
 
@@ -679,7 +684,7 @@ You can update the workflow that you are running in **Orchestrator** by returnin
 
 You may publish a new version for one of two reasons:
 
-1. If you received an error at the **Agent - Draft Email** node above, the Flow may have deployed ahead of the in-line autonomous agent. This is an occassional bug in the Maestro Flow Public Preview, which sometimes happens at the time of this workshop authoring.
+1. If you received an error at the **Agent - Draft Email** node above, the Flow may have deployed ahead of the in-line autonomous agent. This is an occasional bug in the Maestro Flow Public Preview, which sometimes happens at the time of this workshop authoring.
 2. You may have iterated on your orchestration and/or agents, and want to publish the new build into Orchestrator.
 
 As you publish, you will notice that Studio auto-increments your version number for you. UiPath automatically manages project versions, but you can also manage versions in your own repositories such as GitHub or GitLab.
@@ -688,7 +693,7 @@ As you publish, you will notice that Studio auto-increments your version number 
 
 ### **Send additional invoices and observe their progress**
 
-With your flow running, send each to `**UiPathlabsdemo@uipath.com**` with subject `**inv-[YourName]**` and the invoice PDF attached.
+With your flow running, send each to `UiPathlabsdemo@uipath.com` with subject `inv-[YourName]` and the invoice PDF attached.
 
 Now that it is running in Orchestrator, the automation should pick up the emails and process them automatically. As you wait for the automation to run, remember that the O365 email trigger runs every 5 minutes.
 
@@ -728,15 +733,13 @@ If you want to continue experimenting after the workshop to see what long-runnin
 
 ### Add Human-in-the-Loop ('HITL') review to the vendor research path
 
-The flow you built routes automatically based on the VRA agent's confidence score. A more conservative design adds a human review step between the VRA and the DIA agents - pausing the flow for an AP reviewer to confirm before the discrepancy check runs.
+The automation that you built currently routes the invoice automatically based on the VRA's confidence score. A more conservative design adds a human review step between the VRA and the DIA agents - pausing the flow for an AP reviewer to confirm before the discrepancy check runs.
 
-A pre-built version of this flow is available as `**WAD2026 Workshop - with HITL**` in the shared workspace. Open it to see how the `Human - Review Vendor Match` node fits into the routing, and compare it to the Switch-based version you built today. Additionally, this HITL step uses a different part of the UiPath platform toolset.
-
-> **When to use HITL:** The Switch sets a confidence threshold - automate when the agent is sure enough, stop when it isn't. HITL replaces the confidence gate with a human one. Neither is always right; the choice depends on the process risk and the volume of exceptions your team can absorb.
+> **When to use HITL:** The Switch sets a confidence threshold - automate when the agent is sure enough, stop when it isn't. HITL replaces the confidence gate with a human one. Neither is always the right choice; the answer depends on the process risk and the volume of exceptions that your team can absorb.
 
 ### Swap the model and rerun your evals
 
-Switch the DIA to a different model (e.g., Claude Sonnet) and rerun the eval set from Step 13. The scores will likely change - sometimes dramatically - even on cases that "obviously" pass. You should notice that different models will interpret the prompt differently and dig into some surprisingly different discrepancies. Why this exploration matters - evals are good at examining and exposing model-sensitivities, and swapping a model isn't free. Your evals should expose what needs to revalidated when you switch a model (or a model is switched on you by the model provider).
+Switch the DIA to a different model (e.g., Claude Sonnet) and rerun the eval set from Step 13. The scores will likely change - sometimes dramatically - even on cases that "obviously" pass. You should notice that different models will interpret the prompt differently and dig into some surprisingly different discrepancies. Why this exploration matters - evals are good at examining and exposing model-sensitivities, and swapping a model isn't free. Your evals should expose what needs to be revalidated when you switch a model (or a model is switched on you by the model provider).
 
 ---
 
@@ -744,11 +747,11 @@ Switch the DIA to a different model (e.g., Claude Sonnet) and rerun the eval set
 
 You can also directly engage with your orchestration outside of Studio Web.
 
-- For Visual Studio Code, add the **UiPath Maestro extension** to get the Maestro Flow designer within your IDE
+- For Visual Studio Code, add the [**UiPath Maestro extension**](https://marketplace.visualstudio.com/items?itemName=uipath.uipath-maestro) to get the Maestro Flow designer within your IDE
 - For UiPath CLI and skills, install *UiPath for Coding Agents*. There are two installation approaches available:
   - Use npm:
     - Install the UiPath CLI using - `npm install -g @uipath/cli`
-    - Install the UiPath skills using - `uip skills install`
+    - Install the [UiPath skills](https://github.com/UiPath/skills) using - `uip skills install`
   - Or you can use our shell script to install node, Python, .Net, and the CLI:
     - Mac/Linux using bash - `curl -fsSL https://download.uipath.com/uipath-cli/install.sh | bash`
     - Windows using PowerShell - `irm https://download.uipath.com/uipath-cli/install.ps1 | iex`
@@ -763,5 +766,8 @@ Explore the UiPath Platform at [https://uipath.com/developers/](https://uipath.c
 
 ---
 
-*Last updated: 2026-07-13 (synced with the UiPath Labs version delivered at WAD2026, 9 July 2026)*  
-*Solution version: 1.0.0 (Invoice Processing Flow)*
+*Last updated: 2026-10-19 (synced with the UiPath Labs version post-WAD2026)*  
+
+*Originally delivered at WeAreDevelopers 2026 8-9 July, 2026*
+
+*Solution version: 1.0.0 (Trust but Verify - Invoice Processing Flow)*

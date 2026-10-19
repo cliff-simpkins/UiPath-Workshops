@@ -5,6 +5,7 @@
     "entry-points.json": "content/entry-points.json",
     "bindings.json": "content/bindings_v2.json",
     "invoice-intake.bpmn": "content/invoice-intake.bpmn",
-    "invoice-intake.flow": "flow_files/invoice-intake.flow"
+    "invoice-intake.flow": "flow_files/invoice-intake.flow",
+    "fb6fb1c0-333d-4047-8b58-8dffeeb96708/agent.json": "content/fb6fb1c0-333d-4047-8b58-8dffeeb96708/agent.json"
   }
 }

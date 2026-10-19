@@ -111,7 +111,6 @@
     "showProjectCreationExperience": false
   },
   "type": "lowCode",
-  "projectId": "c049eeb9-cc31-4b03-b6c2-d3c3cef269fb",
   "messages": [
     {
       "role": "system",
@@ -149,5 +148,6 @@
         }
       ]
     }
-  ]
+  ],
+  "projectId": "c01c809a-b432-4553-94cc-372237c0498f"
 }

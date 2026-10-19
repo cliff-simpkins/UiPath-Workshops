@@ -1,6 +1,6 @@
 {
   "$schema": "https://cloud.uipath.com/draft/2024-12/operate",
-  "projectId": "84b9bde5-e45a-4f19-a81f-83c36ae366f0",
+  "projectId": "67ef5285-97c6-4bdb-b0fa-db2bb97c0f49",
   "main": "content/invoice-intake.bpmn#emailReceived",
   "contentType": "Flow",
   "targetFramework": "Portable",

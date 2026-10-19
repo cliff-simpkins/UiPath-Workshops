@@ -15,6 +15,42 @@
         "properties": {}
       },
       "displayName": "Email Received"
+    },
+    {
+      "filePath": "content/fb6fb1c0-333d-4047-8b58-8dffeeb96708/agent.json",
+      "uniqueId": "fb6fb1c0-333d-4047-8b58-8dffeeb96708",
+      "type": "agent",
+      "targetRuntime": "pythonAgent",
+      "input": {
+        "type": "object",
+        "properties": {
+          "vendorName_invoice": {
+            "type": "string",
+            "description": "Bound from $vars.vendorName_invoice"
+          },
+          "scriptPrepareBrief__output": {
+            "type": "object",
+            "description": "Bound from $vars.scriptPrepareBrief.output"
+          },
+          "discrepancyInvestigatorAgent1__output": {
+            "type": "object",
+            "description": "Bound from $vars.discrepancyInvestigatorAgent1.output"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "body"
+        ],
+        "properties": {
+          "body": {
+            "type": "string"
+          }
+        }
+      },
+      "displayName": "Agent - Draft Email",
+      "hiddenAtDesignTime": true
     }
   ]
 }

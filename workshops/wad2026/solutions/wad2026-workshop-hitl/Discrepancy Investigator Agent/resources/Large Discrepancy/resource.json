@@ -69,7 +69,13 @@
         "Approve": "continue",
         "Reject": "continue"
       },
-      "recipients": [],
+      "recipients": [
+        {
+          "type": 1,
+          "value": "4d218af9-abde-4f62-a52e-93f8feccf640",
+          "displayName": "User 63"
+        }
+      ],
       "type": "actionCenter",
       "properties": {
         "appName": "EscalationApp",
