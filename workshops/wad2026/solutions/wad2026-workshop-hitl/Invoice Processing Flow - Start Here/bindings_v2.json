@@ -86,6 +86,29 @@
       }
     },
     {
+      "resource": "process",
+      "key": "4b59c65b-d57e-46a6-be2c-463fbeb71ba6",
+      "id": "process4b59c65b-d57e-46a6-be2c-463fbeb71ba6",
+      "value": {
+        "folderPath": {
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "Discrepancy Investigator Agent",
+          "isExpression": false,
+          "displayName": "Process name"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Vendor Research Agent",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "name",
+        "SolutionsSupport": "true",
+        "subType": "Agent"
+      }
+    },
+    {
       "resource": "EventTrigger",
       "key": "b99c337e-b1df-459c-a2ca-194717fc0bf4",
       "id": "EventTriggerb99c337e-b1df-459c-a2ca-194717fc0bf4",
@@ -106,7 +129,7 @@
         "BindingsVersion": "2.2",
         "ObjectName": "Message",
         "Operation": "EMAIL_RECEIVED",
-        "FilterExpression": "(parentFolderId == 'AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=') && ((contains(subject,'WAD-cliff'))&&(hasAttachments==`true`))"
+        "FilterExpression": "(parentFolderId == 'AAMkAGFkZDIwZTFkLTc3NTEtNDM3My05N2RiLWZiZGY4ODM0OTM2YwAuAAAAAADlrP1f2nW5QJRg42t9U93BAQC0yo9bOlOtRLj8h3DUNgUDAAAAAAEMAAA=') && ((contains(subject,'WAD-simon12'))&&(hasAttachments==`true`))"
       }
     },
     {

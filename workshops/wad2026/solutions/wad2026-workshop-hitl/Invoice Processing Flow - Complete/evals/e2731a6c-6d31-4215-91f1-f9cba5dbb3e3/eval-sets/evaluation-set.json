@@ -11,5 +11,10 @@
   "fileName": "evaluation-set.json",
   "createdAt": "2026-06-18T15:05:06.164Z",
   "updatedAt": "2026-06-18T15:05:06.164Z",
-  "schemaVersion": 1
+  "schemaVersion": 4,
+  "target": {
+    "kind": "flow",
+    "entrypoint": "manualTrigger1"
+  },
+  "nodeEval": false
 }
