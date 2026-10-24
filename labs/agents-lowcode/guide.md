@@ -1,6 +1,6 @@
 # Building a Low-Code Agent in Studio Web
 
-In this lab, you will build a low-code agent entirely in the UiPath Studio Web browser interface: no CLI, no code, no IDE required. You will:
+In this lab, you build a low-code agent entirely in the UiPath Studio Web browser interface, with no command-line interface (CLI), code, or integrated development environment (IDE) required. The lab covers these steps:
 
 1. Create a new agent project in Studio Web.
 2. Generate the agent configuration using Autopilot.
@@ -8,13 +8,13 @@ In this lab, you will build a low-code agent entirely in the UiPath Studio Web b
 4. Test the agent live in the Debug panel.
 5. Save your test runs as an evaluation set and score the agent against it.
 
-There are a few approaches to create UiPath agents. This lab explores the Agent Builder project within Studio Web; you can also create agents using the [UiPath CLI](../agents/guide.md). The [LangGraph lab](../agents-langgraph/guide.md) builds this same quest classifier as a coded agent in Python, so you can compare the two approaches side by side.
+There are three approaches to create UiPath agents. This lab explores the Agent Builder project within Studio Web; you can also create agents using the [UiPath CLI](../agents/guide.md). The [LangGraph lab](../agents-langgraph/guide.md) builds this same quest classifier as a coded agent in Python, so you can compare the two approaches side by side.
 
 **Estimated time:** 25-30 minutes
 
 ## What you are building
 
-This lab builds a **quest intake classifier**, a low-code agent for a fictional Adventurer's Guild in a fantasy RPG world. Given a quest description, the agent sorts the quest into one of four difficulty tiers and explains its reasoning.
+This lab builds a quest intake classifier, a low-code agent for a fictional Adventurer's Guild in a fantasy role-playing game world. Given a quest description, the agent sorts the quest into one of four difficulty tiers and explains its reasoning.
 
 | Component | Details |
 | --- | --- |
@@ -35,20 +35,24 @@ No CLI, SDKs, or local tooling is needed for this lab.
 
 # Build the agent
 
+Create an agent project in Studio Web and let Autopilot generate its system prompt, input schema, and output schema from a plain-language description. Then check the generated configuration against the input and outputs the rest of this lab depends on.
+
 ## Step 1 - Open Studio Web
 
-Log in to [UiPath Automation Cloud](https://cloud.uipath.com) and open **Studio Web** from the left navigation. You land on your Cloud Workspace, which shows your existing solutions and a **Create New** button.
+Open Studio Web and start a new agent project from your Cloud Workspace.
 
-1. Select **Create New**.
-2. Select the **Agent** project type from the available options.
+1. Log in to [UiPath Automation Cloud](https://cloud.uipath.com).
+2. Open **Studio Web** from the left navigation. Your Cloud Workspace opens, showing your existing solutions and a **Create New** button.
+3. Open the drop-down menu next to **Create New**.
+4. Select **Agent** from the list of project types.
 
-![Studio new project selection GIF](images/LowCode_Agents-Step-01.gif)
+![Studio Web Cloud Workspace with the Create New drop-down menu open and Agent selected from the list of project types](images/LowCode_Agents-Step-01.gif)
 
 * * *
 
 ## Step 2 - Generate the agent with Autopilot
 
-Studio Web's Autopilot can configure an agent from a plain-language description. You describe what you want, and Autopilot proposes the system prompt, input schema, and output schema.
+Autopilot in Studio Web can configure an agent from a plain-language description. You describe what you want, and Autopilot proposes the system prompt, input schema, and output schema.
 
 1. Select **Autonomous** as the agent type.
 
@@ -70,9 +74,12 @@ Return the tier and a brief, two-sentence reasoning. Use these exact field names
 - Outputs: tier (string, restricted to exactly "Trivial", "Standard", "Heroic", or "Legendary", so the agent can't return any other value) and reasoning (string)
 ```
 
-3. Select **Generate Agent**, then review Autopilot's suggestions and accept them to create the agent.
+3. Select **Generate Agent**.
 
-    ![Studio Web new project dialog with Agent type selected](images/LowCode_Agents-Step-02.png)
+    ![Select agent type dialog with Autonomous selected, the quest classifier description pasted into the Autopilot field, and Generate Agent highlighted](images/LowCode_Agents-Step-02.png)
+
+4. Review the suggestions in the **Autopilot** window. Autopilot walks you through building and configuring the agent from the prompt you gave it.
+5. Accept the suggestions to create the agent.
 
 The prompt is structured on purpose, and each part does a job:
 
@@ -81,28 +88,27 @@ The prompt is structured on purpose, and each part does a job:
 - **Exact field names on their own lines.** Autopilot uses these names verbatim in the schema, and the evaluation set you build later depends on them.
 - **A constraint with its reason.** Restricting `tier` to four values, and saying why, stops the agent from inventing a fifth tier such as "Moderate".
 
-> **Autopilot is non-deterministic.** Your generated configuration may differ from the screenshots - that is expected. What matters is that the agent canvas loads with the input and outputs above. If the canvas shows an error or fails to load, refresh the page and repeat this step.
+> **Autopilot is non-deterministic, so your generated configuration can differ from the screenshots.** Continue when the agent canvas loads with the `questDescription` input and the `tier` and `reasoning` outputs. If the canvas shows an error or fails to load, refresh the page and repeat this step.
 
 * * *
 
 ## Step 3 - Review the agent canvas
 
-Autopilot analyzes the prompt you gave it and walks you through building and configuring the agent. Use the **Autopilot** window to review the suggestions and agree on the final agent design.
+Check that Autopilot built the input, outputs, and tier values that the rest of this lab depends on, and correct anything that is missing or extra.
 
-Once the agent is created, the **Agent Canvas** opens. Select the agent node to open its **Properties** panel on the right side of the screen. You can also open properties using the wrench icon in the upper-right corner of the canvas.
-
-Confirm that Autopilot configured the following correctly:
-
-- **Input** - `questDescription` (string) is listed.
-- **Outputs** - `tier` (string) and `reasoning` (string) are listed.
-- **Tier values** - the four allowed values are exactly `Trivial`, `Standard`, `Heroic`, and `Legendary`.
-- **System prompt** - describes the four tiers with an example of each.
-
-To check the tier values, open the **Data Manager** (the clipboard icon along the left rail) and select the `tier` output. Depending on how Autopilot generated the schema, the four values appear either as a list of allowed values or in the field's description. Either works. If the list or description is missing a tier, or adds one, edit it before you continue.
+1. When the **Agent Canvas** opens, select the agent node to open its **Properties** panel. You can also open properties using the wrench icon in the upper-right corner of the canvas.
+2. Check the following in the generated configuration:
+   - **Input** - `questDescription` (string) is listed.
+   - **Outputs** - `tier` (string) and `reasoning` (string) are listed.
+   - **System prompt** - describes the four tiers with an example of each.
+3. Open the **Data Manager** (the clipboard icon along the left rail).
+4. Select the `tier` output.
+5. Check that the four values are exactly `Trivial`, `Standard`, `Heroic`, and `Legendary`. Depending on how Autopilot generated the schema, the values appear either as a list of allowed values or in the field description. Either works.
+6. If the list or description is missing a tier, or adds one, edit it.
 
 <!-- test:manual reason="UI review and potential editing in Agent Canvas Properties panel and Data Manager" -->
 
-![Agent design canvas with properties panel open](images/LowCode_Agents-Step-03b.png)
+![Agent canvas with callouts marking Autopilot, Project Explorer, and Data Manager on the left rail, the questDescription input and tier and reasoning output schemas, and the Properties panel showing the generated system prompt](images/LowCode_Agents-Step-03b.png)
 
 ### Refine the system prompt *(optional)*
 
@@ -130,15 +136,15 @@ Final reminder: make one consistent tier decision and return exactly two sentenc
 
 * * *
 
-With the agent configured, you are ready to test it against real quest descriptions in the next section.
+With the agent configured, you can test it against real quest descriptions in the next section.
 
 # Test the agent
 
 ## Step 4 - Test the agent
 
-Select **Debug** in the top toolbar. This opens the debug panel where you can run the agent with sample input.
+Select **Debug** in the top toolbar. This opens the **Debug configuration** dialog, where you can run the agent with sample input.
 
-1. In the input panel, paste the following quest:
+1. On the **Entrypoint arguments** tab, paste the following quest into the `questDescription` field:
 
 <!-- test:manual reason="UI interaction - Debug panel input in Studio Web" -->
 ```text
@@ -147,20 +153,18 @@ Clear the rats out of the inn cellar. They are loud and they are eating all of t
 
 2. Select **Save & Debug** to run the agent.
 
-    ![Debug panel with quest description pasted in the input field](images/LowCode_Agents-Step-04a.png)
+    ![Debug configuration dialog on the Entrypoint arguments tab, with the rats quest entered in the questDescription field and Save & Debug highlighted](images/LowCode_Agents-Step-04a.png)
+
+3. Select **Execution Trail** along the bottom of the Studio Web canvas.
+4. Within the **Execution Trace** panel, select **Agent run - Agent**, which shows the run's **Input** and **Output**.
+5. Expand the `reasoning` text to view the string in its entirety.
+6. Review the `tier` and `reasoning` returned by the agent.
+
+    ![Execution Trail tab with the agent run selected in the Execution trace, showing tier Trivial and the expanded two-sentence reasoning in the Output section](images/LowCode_Agents-Step-04b.png)
 
 The agent should return a `tier` of `Trivial` with two sentences of reasoning.
 
-To access the return results:
-
-1. Select **Execution Trail** along the bottom of the Studio Web canvas.
-2. Within the **Execution Trace** panel, select `Agent Output`, which updates the **Agent output** panel.
-3. Review the `tier` and `reasoning` returned by the agent.
-4. Expand the `reasoning` text to view the string in its entirety.
-
-  ![Execution Trace panel showing Agent Output selected with the tier and reasoning values returned](images/LowCode_Agents-Step-04b.png)
-
-> **Agents are non-deterministic.** Even with temperature set to 0, the reasoning text varies across runs. The goal is the right tier and sensible reasoning, not specific exact wording.
+> **Agents are non-deterministic.** The reasoning text varies across runs, so check for the right tier and sensible reasoning instead of specific wording.
 
 Now run the agent on a much bigger threat:
 
@@ -171,7 +175,7 @@ Slay the ancient red dragon terrorizing the countryside.
 
 Expected: tier `Legendary`.
 
-Read the reasoning for this run. It most likely says the dragon is dangerous because dragons are dangerous. Nothing in the answer is checked against real data: the classification comes entirely from the model's training. That is the gap a tool closes. The [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) lab shows how to give an agent a live lookup against the 5e SRD (System Reference Document).
+Read the reasoning for this run. It most likely says the dragon is dangerous because dragons are dangerous. Nothing in the answer is checked against real data: the classification comes entirely from the model's training. The [Adding Tools to Your UiPath Agent](../agents-tools/guide.md) lab gives the agent a live lookup against the 5e SRD (System Reference Document), so its reasoning can cite real data.
 
 ### Run three more quests
 
@@ -227,7 +231,7 @@ Expected: tier `Legendary`.
 
 * * *
 
-With five runs in your history, you are ready to turn them into an evaluation set in the next section.
+With five runs in your history, you can turn them into an evaluation set in the next section.
 
 # Evaluate the agent
 
@@ -235,30 +239,29 @@ With five runs in your history, you are ready to turn them into an evaluation se
 
 An evaluation set is a list of test cases: an input, plus the output you expect. Running the set scores the agent against every case, so you can tell whether a later prompt change broke a tier you had already gotten right.
 
-You build the cases from the runs you just made, so you do not type any expected outputs by hand.
+You build the cases from the runs you just made, so you do not enter any expected outputs by hand.
 
 ### Save the latest run
 
-1. In the **Execution Trail** for your most recent run, select **Add to evaluation set**.
-2. Review the input and output values the dialog shows, and approve them.
-3. Save the run to the evaluation set.
+1. In the **Execution Trail** for the last of your five runs (the relic quest), select **Add to evaluation set**.
+2. Review the input and output values in the dialog.
+3. Select **Save** to add the run to the evaluation set.
 
-    ![Execution Trail with the 'Add to evaluation set' highlighted](images/LowCode_Agents-Step-05a.png)
+    <!-- docs:omit -->
+    ![Execution Trail for a debug run with the Add to evaluation set button highlighted](images/LowCode_Agents-Step-05a.png)
 
-> **Warning: Save only runs you agree with.** The evaluation set treats the saved output as the correct answer. A wrong tier saved here becomes a test that rewards the wrong behavior.
+> **Important: Save only runs you agree with.** The evaluation set treats the saved output as the correct answer. A wrong tier saved here becomes a test that rewards the wrong behavior.
 
 ### Add the other runs from history
 
 1. Open the **History** tab in the bottom panel. It lists every run of the agent.
 2. For each of the other four runs from Step 4, select the beaker icon to add it to the same set.
 
-    ![History tab listing the five debug runs, with the beaker button selected for one](images/LowCode_Agents-Step-05b.png)
+    ![History tab listing five debug traces, with Trace 3 (the ancient red dragon quest, tier Legendary) selected and the beaker button highlighted](images/LowCode_Agents-Step-05b.png)
 
 ### Name each test case
 
-Open the solution's **Evaluation Sets** node in the project explorer. You can also reach evaluation sets from the **Evaluations** tab below the designer. Open the set you saved the runs to; all five cases are listed.
-
-Saved runs get generic names. Select **Edit** on each case and give it a name that says what it tests:
+Saved runs get generic names. Rename each case so its name says what it tests:
 
 | Quest | Name |
 | --- | --- |
@@ -268,9 +271,15 @@ Saved runs get generic names. Select **Edit** on each case and give it a name th
 | Escort a merchant caravan through the hill country to the coast. | `standard-caravan` |
 | Recover a stolen relic from a noble's estate... | `heroic-relic` |
 
-![Edit evaluation dialog open with details to be edited and saved](images/LowCode_Agents-Step-05c.png)
+1. Open the **Evaluation Sets** node of the solution in the project explorer. You can also reach evaluation sets from the **Evaluations** tab in the bottom panel.
+2. Open the set you saved the runs to. All five cases are listed.
+3. Select **Edit** on a case.
+4. Enter the name for that case from the preceding table.
+5. Check that the input is the quest text and the expected output is the run's tier and reasoning.
+6. Select **Save**.
+7. Repeat steps 3 to 6 for each remaining case.
 
-While each case is open, confirm that the input is the quest text and the expected output is the run's tier and reasoning, then select **Save**.
+![Default Evaluation Set with five cases listed and the Edit evaluation panel open, renaming the caravan case to standard-caravan before selecting Save](images/LowCode_Agents-Step-05c.png)
 
 <!-- test:manual reason="evaluation set editing in Studio Web" -->
 
@@ -278,37 +287,36 @@ While each case is open, confirm that the input is the quest text and the expect
 
 ## Step 6 - Run the evaluation set
 
-1. In **Evaluation Sets**, confirm that **Applied Evaluators** lists a semantic similarity evaluator, usually named **Default Evaluator**. If it is empty, select the pencil icon next to it and add one.
-2. Select **Run**.
+Run the evaluation set to score the agent against all five test cases with a semantic similarity evaluator.
 
-    ![Evaluation Sets dialog with Run highlighted](images/LowCode_Agents-Step-06a.png)
+1. In **Evaluation Sets**, select **View details** on your set.
+2. Check that **Applied Evaluators** lists a semantic similarity evaluator, such as **Default Evaluator**.
+3. If **Applied Evaluators** is empty, select the pencil icon next to it and add a semantic similarity evaluator.
+4. Return to **Evaluation Sets** and select **Run** on your set.
 
-3. When the run finishes, select **View all results**.
-4. Select the most recent run from the list, which lists the results for each evaluation in that run. Each case gets a score from 0 to 100.
-5. Select any case to see its output, its score, and the evaluator's explanation.
+    ![Evaluation Sets page showing Default Evaluation Set with 5 evaluations and the Run button highlighted](images/LowCode_Agents-Step-06a.png)
+
+5. When the run finishes, select **View all results**.
+6. Select the most recent run from the list to see the results for each evaluation in that run.
+7. Select any case to see its output, its score, and the evaluator's explanation.
 
 <!-- test:manual reason="evaluation run in Studio Web" -->
 
-![Results tab showing five cases with semantic similarity scores](images/LowCode_Agents-Step-06b.png)
+![Results tab for Default Evaluation Set showing an overall Default Evaluator score of 98.2% and per-case scores for the five named test cases](images/LowCode_Agents-Step-06b.png)
 
-The semantic similarity evaluator compares the meaning of the agent's output to the expected output, not the exact words. A rerun that reaches the same tier with differently worded reasoning still scores well; a run that lands on the wrong tier scores low.
+Each case gets a score from 0 to 100. The semantic similarity evaluator compares the meaning of the agent's output to the expected output, so a rerun that reaches the same tier with differently worded reasoning still scores well, and a run that lands on the wrong tier scores low.
 
-> **Evaluation scores are non-deterministic.** The evaluator is itself a language model, so scores shift by a few points between runs. Watch for a case that drops sharply, not for small movement.
+> **Evaluation scores are non-deterministic.** The evaluator is itself a language model, so scores vary slightly between runs. Watch for a case that drops sharply.
 
-Studio Web also offers a **trajectory** evaluator, which judges how the agent reached its answer rather than what the answer was. On this agent it has little to judge: the agent answers in a single step with no tool calls. Trajectory becomes the more useful score once an agent calls tools and makes decisions along the way.
+Studio Web also offers a trajectory evaluator, which scores the steps and tool calls the agent used to reach its answer. On this agent it has few steps to score: the agent answers in a single step with no tool calls. Trajectory becomes the more useful score once an agent calls tools and makes decisions along the way.
 
-From here on, rerun the set after every prompt change. If a case that used to pass starts failing, you have caught a regression before it shipped.
+From here on, rerun the set after every prompt change. If a case that used to pass starts failing, the change caused a regression.
 
 * * *
 
-## What you built
+## Outcome
 
-You built, tested, and evaluated a low-code agent in Studio Web:
-
-- Created an agent from a structured Autopilot prompt that fixed the field names and constrained the tier to four values.
-- Reviewed the system prompt, input schema, and output schema, including the allowed tier values.
-- Ran five live test cases across the difficulty tiers and read the results in the Execution Trail.
-- Turned those runs into an evaluation set and scored the agent against it with a semantic similarity evaluator.
+Your quest classifier has an evaluation set of five named test cases and a semantic similarity score to compare against after each prompt change.
 
 ## What's next
 
