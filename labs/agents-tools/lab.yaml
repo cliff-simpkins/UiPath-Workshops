@@ -3,3 +3,8 @@ title: Adding Tools to Your UiPath Agent
 description: Give the low-code quest classifier an API Workflow tool that looks up challenge ratings in the 5e SRD, then evaluate when and how the agent uses it.
 target_time_min: 45
 audience: professional-developer
+# Docs section-page descriptions, one per section page (labs-to-docs.py reads section.<section-slug>)
+section.build-the-api-workflow: Build a Monster Query API Workflow that calls the 5e SRD and returns structured monster data.
+section.connect-to-your-agent: Register the API workflow as a tool in the quest classifier agent, describe when to call it, and replace the system prompt so the agent uses it.
+section.test-end-to-end: Run the quest classifier on three quests in the debugger and confirm it calls Monster Query only when a quest names a creature.
+section.evaluate-agent-trajectory: Rerun the existing evaluation set on the tool-using quest classifier, then build a tool-aware set scored by semantic similarity and trajectory evaluators.
