@@ -15,12 +15,10 @@ In this lab, you:
 This lab uses an API workflow as the tool. An agent can also call:
 
 - RPA workflows
-- Functions
 - Integration Service connectors, for systems such as Slack, Outlook, or an enterprise resource planning (ERP) system
 - Document understanding
 - Maestro cases and flows
 - DeepRAG
-- Web searches
 - Model Context Protocol (MCP) servers
 - Other agents, including remote agent-to-agent calls
 
@@ -189,6 +187,7 @@ Searching `rat` returns exactly seven results, all with `srd-2024_` keys, includ
 
 Any other count means a parameter is misspelled or not bound to the variable; fix it before you continue.
 
+<!-- docs:omit -->
 ![Debug run of the API workflow with all three nodes marked Successful and the Logs panel listing rat search results, including Swarm of Rats (challenge_rating 0.25) and Triceratops (challenge_rating 5) with nested size and type objects](images/agents-tools-step-01l.gif)
 
 * * *
@@ -224,7 +223,7 @@ Make sure you are on the **Canvas** view: use the **Canvas / Form** toggle at th
 2. In the **Choose tool** panel, select **API workflow** under **Toolbox**.
 3. Under **Available resources**, select `API Query - 5e Monsters`, the workflow you added to this solution in Step 1. You can also filter the list with the **Search API workflows** box.
 
-> **Don't see the workflow?** Check the project explorer: `API Query - 5e Monsters` should be listed in the same solution as the agent. If you created it as a separate solution instead, publish it first (**Publish** > **For me**), and it appears here under its project name.
+> **Note:** If the workflow isn't listed, check the project explorer: `API Query - 5e Monsters` should be listed in the same solution as the agent. If you created it as a separate solution instead, publish it first (**Publish** > **For me**), and it appears here under its project name.
 
 Keeping the tool in the agent's solution needs no publish step, and the agent's evaluations call it like any other tool. In your own projects, give a tool its own solution and publish it when more than one agent needs to call it.
 
@@ -245,12 +244,10 @@ The "most specific creature name" instruction matters for this API. A search for
 > **An API workflow is one kind of tool.** The steps to connect and describe a tool are the same for every type, and an agent can also call:
 >
 > - RPA workflows
-> - Functions
 > - Integration Service connectors, for systems such as Slack, Outlook, or an enterprise resource planning (ERP) system
 > - Document understanding
 > - Maestro cases and flows
 > - DeepRAG
-> - Web searches
 > - Model Context Protocol (MCP) servers
 > - Other agents, including remote agent-to-agent calls
 
