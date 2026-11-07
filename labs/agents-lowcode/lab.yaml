@@ -3,3 +3,7 @@ title: Building a Low-Code Agent in Studio Web
 description: Build a low-code quest classifier in Studio Web using Autopilot, test it, and evaluate it, with no CLI, no code, and no IDE required.
 target_time_min: 30
 audience: professional-developer
+# Docs section-page descriptions, one per section page (labs-to-docs.py reads section.<section-slug>)
+section.build-the-agent: Use Autopilot to generate the agent configuration, then review and refine the system prompt, inputs, and outputs.
+section.test-the-agent: Run the quest classifier in the Studio Web debugger against five sample quests and check the tier and reasoning it returns.
+section.evaluate-the-agent: Save five debug runs of the quest classifier as a Studio Web evaluation set, name each test case, and score the agent with a semantic similarity evaluator.

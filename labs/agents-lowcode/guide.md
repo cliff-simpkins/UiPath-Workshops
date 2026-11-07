@@ -279,6 +279,7 @@ Saved runs get generic names. Rename each case so its name says what it tests:
 6. Select **Save**.
 7. Repeat steps 3 to 6 for each remaining case.
 
+<!-- docs:omit -->
 ![Default Evaluation Set with five cases listed and the Edit evaluation panel open, renaming the caravan case to standard-caravan before selecting Save](images/LowCode_Agents-Step-05c.png)
 
 <!-- test:manual reason="evaluation set editing in Studio Web" -->
